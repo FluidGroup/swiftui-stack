@@ -21,6 +21,22 @@ final class _StackContext: ObservableObject, Equatable {
       self.base = String(reflecting: base)
     }
   }
+  
+  private struct Destination {
+    
+    let target: StackLookupStragety
+    let _view: (StackPath.ItemBox) -> AnyView
+    
+    init(target: StackLookupStragety, view: @escaping (StackPath.ItemBox) -> AnyView) {
+      self.target = target
+      self._view = view
+    }
+    
+    func make(item: StackPath.ItemBox) -> AnyView {
+      _view(item)
+    }
+    
+  }
 
   nonisolated static func == (lhs: _StackContext, rhs: _StackContext) -> Bool {
     lhs === rhs
@@ -31,7 +47,7 @@ final class _StackContext: ObservableObject, Equatable {
   @Published var path: StackPath = .init()
 
   /// Functions that creates a view associated with type of value.
-  private var destinationTable: [TypeKey: (StackPath.ItemBox) -> AnyView] = [:]
+  private var destinationTable: [TypeKey: Destination] = [:]
 
   private weak var parent: _StackContext?
   private let identifier: StackIdentifier?
@@ -51,7 +67,7 @@ final class _StackContext: ObservableObject, Equatable {
 
     let views = path.values
       .map {
-        makeStackedView(itemBox: $0)
+        makeStackedView(itemBox: $0)?.0
       }
       .compactMap { $0 }
 
@@ -61,6 +77,7 @@ final class _StackContext: ObservableObject, Equatable {
 
   func registerDestination<D: Hashable, Destination: View>(
     for data: D.Type,
+    target: StackLookupStragety,
     destination: @escaping (D) -> Destination
   ) {
 
@@ -74,16 +91,19 @@ final class _StackContext: ObservableObject, Equatable {
       return
     }
 
-    destinationTable[key] = { itemBox in
-      AnyView(destination(itemBox.value as! D))
-    }
+    destinationTable[key] = .init(
+      target: target,
+      view: { itemBox in
+        AnyView(destination(itemBox.value as! D))
+      }
+    )
   }
 
-  private func makeStackedView(itemBox: StackPath.ItemBox) -> StackedView? {
+  private func makeStackedView(itemBox: StackPath.ItemBox) -> (StackedView, StackLookupStragety)? {
 
     let key = TypeKey(any: itemBox.subjectType)
 
-    guard let destinationBuilder = destinationTable[key] else {
+    guard let destination = destinationTable[key] else {
       Log.error(
         .stack,
         "Failed to push - Stack could not found a destination for value \(itemBox) from \(key)."
@@ -94,16 +114,16 @@ final class _StackContext: ObservableObject, Equatable {
     let stackedView = StackedView(
       associated: .value(itemBox),
       identifier: .init(id: itemBox.id),
-      content: destinationBuilder(itemBox)
+      content: destination.make(item: itemBox)
     )
-
-    return stackedView
+        
+    return (stackedView, destination.target)
   }
 
   @discardableResult
   private func _push(itemBox: StackPath.ItemBox) -> _StackedViewIdentifier? {
 
-    guard let view = makeStackedView(itemBox: itemBox) else {
+    guard let view = makeStackedView(itemBox: itemBox)?.0 else {
       return nil
     }
 
@@ -118,7 +138,7 @@ final class _StackContext: ObservableObject, Equatable {
    For value-push
    */
   @discardableResult
-  func push<Value: Hashable>(value: Value) -> _StackedViewIdentifier? {
+  func push<Value: Hashable>(value: Value, target: StackLookupStragety) -> _StackedViewIdentifier? {
     guard let id = _push(itemBox: .init(value)) else {
       return nil
     }
@@ -127,7 +147,7 @@ final class _StackContext: ObservableObject, Equatable {
   }
 
   @discardableResult
-  func push(destination: some View) -> _StackedViewIdentifier {
+  func push(destination: some View, target: StackLookupStragety) -> _StackedViewIdentifier {
 
     let identifier = _StackedViewIdentifier(id: UUID().uuidString)
 
@@ -147,7 +167,7 @@ final class _StackContext: ObservableObject, Equatable {
   /**
    For momentary-push
    */
-  func push(binding: Binding<Bool>, destination: some View) -> _StackedViewIdentifier {
+  func push(binding: Binding<Bool>, destination: some View, target: StackLookupStragety) -> _StackedViewIdentifier {
 
     let identifier = _StackedViewIdentifier(id: UUID().uuidString)
 

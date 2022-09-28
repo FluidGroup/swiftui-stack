@@ -39,12 +39,12 @@ public struct StackLink<Label: View, Destination: View>: View {
       }
       
       if let value {
-        context.push(value: value)
+        context.push(value: value, target: target)
         return
       }
       
       if let destination {
-        context.push(destination: destination)
+        context.push(destination: destination, target: target)
         return
       }
            

@@ -3,7 +3,7 @@ import Stack
 
 struct BookStack: View {
   
-  @State var momentA: Bool = false
+  @State var momentA: Bool = true
   @State var momentB: Bool = false
   @State var path: StackPath = .init()
   

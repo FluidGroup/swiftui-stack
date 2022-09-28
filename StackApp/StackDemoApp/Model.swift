@@ -1,5 +1,5 @@
 
-struct M<Trait>: Hashable {
+struct M<Trait>: Hashable, Identifiable {
   var id: String = UUID().uuidString
 }
 

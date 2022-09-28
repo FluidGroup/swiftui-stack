@@ -61,6 +61,8 @@ public struct Stack<Data, Root: View>: View {
   
   public var body: some View {
     
+    let _ = print("render")
+    
     EnvironmentReader(keyPath: \.stackContext) { parentContext in
       
       ZStack {
@@ -70,11 +72,10 @@ public struct Stack<Data, Root: View>: View {
         }
         
         ForEach(context.stackingViews) {
-          $0
+          EquatableView(content: $0)
             .transition(
-              AnyTransition.move(edge: .trailing)
+              .scale
             )
-            .id($0.id)
         }
         
       }
@@ -105,7 +106,7 @@ public struct Stack<Data, Root: View>: View {
       }
       
     }
-      
+         
   }
   
 }
@@ -141,7 +142,7 @@ struct EnvironmentReader<Content: View, Value>: View {
 /**
  A wrapper view that displays content with identifier which uses on Pop operation.
  */
-struct StackedView: View, Identifiable {
+struct StackedView: View, Identifiable, Equatable {
   
   enum Associated {
     case value(StackPath.ItemBox)
@@ -149,6 +150,10 @@ struct StackedView: View, Identifiable {
     case volatile
   }
   
+  static func == (lhs: StackedView, rhs: StackedView) -> Bool {
+    lhs.id == rhs.id
+  }
+    
   let id: _StackedViewIdentifier
   
   private let content: AnyView
@@ -176,20 +181,38 @@ struct StackedView: View, Identifiable {
 
 extension View {
   
-  public func stackDestination<D, C>(for data: D.Type, @ViewBuilder destination: @escaping (D) -> C) -> some View where D : Hashable, C : View {
-    
-    self.modifier(StackEnvironmentModifier(withValue: { context in
-      guard let context else {
-        return
-      }
-      context.registerDestination(for: data.self, destination: destination)
-    }))
+  public func stackDestination<D, C>(
+    for data: D.Type,
+    target: StackLookupStragety = .current,
+    @ViewBuilder destination: @escaping (D) -> C
+  ) -> some View where D : Hashable, C : View {
+        
+    self.modifier(
+      StackEnvironmentModifier(
+        withValue: { context in
+          guard let context else {
+            return
+          }
+          context.registerDestination(for: data.self, target: target, destination: destination)
+        }
+      )
+    )
     
   }
   
-  public func stackDestination<V>(isPresented: Binding<Bool>, @ViewBuilder destination: @escaping () -> V) -> some View where V : View {
+  public func stackDestination<V>(
+    isPresented: Binding<Bool>,
+    target: StackLookupStragety = .current,
+    @ViewBuilder destination: @escaping () -> V
+  ) -> some View where V : View {
     
-    self.modifier(StackMomentaryPushModifier(isPresented: isPresented, destination: destination))
+    self.modifier(
+      StackMomentaryPushModifier(
+        isPresented: isPresented,
+        destination: destination,
+        target: target
+      )
+    )
     
   }
   
@@ -201,6 +224,7 @@ private struct StackMomentaryPushModifier<Destination: View>: ViewModifier {
   @Binding var isPresented: Bool
   @State var currentIdentifier: _StackedViewIdentifier?
   let destination: () -> Destination
+  let target: StackLookupStragety
       
   func body(content: Content) -> some View {
     
@@ -216,7 +240,8 @@ private struct StackMomentaryPushModifier<Destination: View>: ViewModifier {
           if isPresented {
             currentIdentifier = context.push(
               binding: $isPresented,
-              destination: destination()
+              destination: destination(),
+              target: target
             )
           } else {
             
