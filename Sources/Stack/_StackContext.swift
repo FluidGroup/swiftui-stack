@@ -29,8 +29,18 @@ final class _StackContext: ObservableObject {
   /// Functions that creates a view associated with type of value.
   private var destinationTable: [TypeKey : (StackPath.ItemBox) -> AnyView] = [:]
   
-  init() {
+  private weak var parent: _StackContext?
+  private let identifier: StackIdentifier?
+        
+  init(
+    identifier: StackIdentifier?
+  ) {
+    self.identifier = identifier
     Log.debug(.stack, "Init \(self)")
+  }
+  
+  func set(parent: _StackContext?) {
+    self.parent = parent
   }
   
   func receivePathUpdates(path: StackPath) {
@@ -76,32 +86,57 @@ final class _StackContext: ObservableObject {
     
     return stackedView
   }
-      
-  private func _push(itemBox: StackPath.ItemBox) {
+  
+  @discardableResult
+  private func _push(itemBox: StackPath.ItemBox) -> _StackedViewIdentifier? {
         
     guard let view = makeStackedView(itemBox: itemBox) else {
-      return
+      return nil
     }
    
     withAnimation(.spring()) {
       stackingViews.append(view)
     }
+    
+    return view.id
   }
   
   /**
    For value-push
    */
-  func push<Value: Hashable>(value: Value) {    
-    _push(itemBox: .init(value))
+  @discardableResult
+  func push<Value: Hashable>(value: Value) -> _StackedViewIdentifier? {
+    guard let id = _push(itemBox: .init(value)) else {
+      return nil
+    }
     path.append(value)
+    return id
+  }
+  
+  @discardableResult
+  func push(destination: some View) -> _StackedViewIdentifier {
+    
+    let identifier = _StackedViewIdentifier(id: UUID().uuidString)
+    
+    let stackedView = StackedView(
+      associated: .volatile,
+      identifier: identifier,
+      content: destination
+    )
+    
+    withAnimation(.spring()) {
+      stackingViews.append(stackedView)
+    }
+    
+    return identifier
   }
   
   /**
    For momentary-push
    */
-  func push(binding: Binding<Bool>, destination: some View) -> _StackingIdentifier {
+  func push(binding: Binding<Bool>, destination: some View) -> _StackedViewIdentifier {
     
-    let identifier = _StackingIdentifier(id: UUID().uuidString)
+    let identifier = _StackedViewIdentifier(id: UUID().uuidString)
     
     let stackedView = StackedView(
       associated: .moment(binding),
@@ -120,7 +155,7 @@ final class _StackContext: ObservableObject {
    Pops a view associated with given identifier.
    Turns off the flag of presenting if its Binding presents.
    */
-  func pop(identifier: _StackingIdentifier) {
+  func pop(identifier: _StackedViewIdentifier) {
             
     stackingViews.removeAll(
       after: { e in
@@ -139,6 +174,9 @@ final class _StackContext: ObservableObject {
           
           // turn off is-presenting binding
           binding.wrappedValue = false
+          
+        case .volatile:
+          break
         }
       }
     )
@@ -150,7 +188,7 @@ final class _StackContext: ObservableObject {
   }
 }
 
-struct _StackingIdentifier: Hashable {
+struct _StackedViewIdentifier: Hashable {
   
   enum Identifier: Hashable {
     case objectIdentifier(ObjectIdentifier)
@@ -178,7 +216,7 @@ struct _StackContextKey: EnvironmentKey {
 }
 
 struct _StackFragmentKey: EnvironmentKey {
-  static var defaultValue: _StackingIdentifier? { nil }
+  static var defaultValue: _StackedViewIdentifier? { nil }
 }
 
 extension EnvironmentValues {
@@ -188,7 +226,7 @@ extension EnvironmentValues {
     set { self[_StackContextKey.self] = newValue }
   }
   
-  var stackIdentifier: _StackingIdentifier? {
+  var stackIdentifier: _StackedViewIdentifier? {
     get { self[_StackFragmentKey.self] }
     set { self[_StackFragmentKey.self] = newValue }
   }

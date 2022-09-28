@@ -16,8 +16,6 @@ extension OSLog {
   static let `stack`: OSLog = makeOSLogInDebug { OSLog.init(subsystem: "stack", category: "default") }
 }
 
-// MARK: - Libraries
-
 /**
  - TODO:
   - [ ] Path
@@ -29,7 +27,7 @@ extension OSLog {
  */
 @MainActor
 public struct Stack<Data, Root: View>: View {
-  
+    
   @Backport.StateObject private var context: _StackContext
   
   private let root: Root
@@ -39,6 +37,7 @@ public struct Stack<Data, Root: View>: View {
   @State private var currentPath: StackPath?
   
   public init(
+    identifier: StackIdentifier? = nil,
     @ViewBuilder root: () -> Root
   ) where Data == StackPath {
         
@@ -46,56 +45,89 @@ public struct Stack<Data, Root: View>: View {
     // Instead, context uses two way handlings case of Bindings presents or not.
     self.pathBinding = nil
     self.root = root()
-    self._context = .init(wrappedValue: .init())
+    self._context = .init(wrappedValue: .init(identifier: identifier))
   }
   
   public init(
+    identifier: StackIdentifier? = nil,
     path: Binding<StackPath>,
     @ViewBuilder root: () -> Root
   ) where Data == StackPath {
     
     self.pathBinding = path
     self.root = root()
-    self._context = .init(wrappedValue: .init())
+    self._context = .init(wrappedValue: .init(identifier: identifier))
   }
   
   public var body: some View {
     
-    ZStack {
-            
-      VStack {
-        root
+    EnvironmentReader(keyPath: \.stackContext) { parentContext in
+      
+      ZStack {
+        
+        VStack {
+          root
+        }
+        
+        ForEach(context.stackingViews) {
+          $0
+            .transition(
+              AnyTransition.move(edge: .trailing)
+            )
+            .id($0.id)
+        }
+        
       }
-            
-      ForEach(context.stackingViews) {
-        $0
-          .transition(
-            AnyTransition.move(edge: .trailing)
-          )
-          .id($0.id)
-      }
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
+      // propagates context to descendants
+      .environment(\.stackContext, context)
+      .onReceive(context.$path, perform: { path in
+        Log.debug(.stack, "Receive \(path)")
+        
+        pathBinding?.wrappedValue = path
+        self.currentPath = path
+      })
+      .onChangeWithPrevious(of: pathBinding?.wrappedValue, perform: { path, _ in
+        
+        /*
+         Updates current stacking with path changes.
+         */
+        
+        guard let path, path != self.currentPath else { return }
+        
+        context.receivePathUpdates(path: path)
+      })
       
     }
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
-    // propagates context to descendants
-    .environment(\.stackContext, context)
-    .onReceive(context.$path, perform: { path in
-      Log.debug(.stack, "Receive \(path)")
       
-      pathBinding?.wrappedValue = path
-      self.currentPath = path
-    })
-    .onChangeWithPrevious(of: pathBinding?.wrappedValue, perform: { path, _ in
-            
-      /*
-       Updates current stacking with path changes.
-       */
+  }
+  
+}
 
-      guard let path, path != self.currentPath else { return }
-      
-      context.receivePathUpdates(path: path)
-    })
-    
+public struct StackIdentifier: Hashable {
+  
+  public let rawValue: String
+  
+  public init(_ rawValue: String) {
+    self.rawValue = rawValue
+  }
+  
+}
+
+struct EnvironmentReader<Content: View, Value>: View {
+  
+  @Environment var value: Value
+  private let content: (Value) -> Content
+  
+  init(
+    keyPath: KeyPath<EnvironmentValues, Value>,
+    @ViewBuilder content: @escaping (Value) -> Content) {
+    self._value = Environment(keyPath)
+    self.content = content
+  }
+  
+  var body: some View {
+    content(value)
   }
   
 }
@@ -108,9 +140,10 @@ struct StackedView: View, Identifiable {
   enum Associated {
     case value(StackPath.ItemBox)
     case moment(Binding<Bool>)
+    case volatile
   }
   
-  let id: _StackingIdentifier
+  let id: _StackedViewIdentifier
   
   private let content: AnyView
   
@@ -118,7 +151,7 @@ struct StackedView: View, Identifiable {
   
   init(
     associated: Associated,
-    identifier: _StackingIdentifier,
+    identifier: _StackedViewIdentifier,
     content: some View
   ) {
     self.associated = associated
@@ -160,7 +193,7 @@ private struct StackMomentaryPushModifier<Destination: View>: ViewModifier {
   
   @Environment(\.stackContext) private var context
   @Binding var isPresented: Bool
-  @State var currentIdentifier: _StackingIdentifier?
+  @State var currentIdentifier: _StackedViewIdentifier?
   let destination: () -> Destination
       
   func body(content: Content) -> some View {

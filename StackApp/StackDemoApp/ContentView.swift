@@ -6,10 +6,24 @@
 //
 
 import SwiftUI
+import Stack
 
 struct ContentView: View {
   var body: some View {
-    BookStack()
+    Stack {
+      StackLink {
+        BookStack()
+          .background(Color.white)
+      } label: {
+        Text("Stack")
+      }
+      StackLink {
+        BookStackNoPath()
+          .background(Color.white)
+      } label: {
+        Text("Stack no path")
+      }
+    }
   }
 }
 

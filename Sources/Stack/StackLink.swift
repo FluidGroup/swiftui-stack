@@ -1,28 +1,42 @@
 import SwiftUI
 
-public struct StackLink<Label: View, Value: Hashable>: View {
+public struct StackLink<Label: View, Destination: View>: View {
   
   @Environment(\.stackContext) private var context
   
   private let label: Label
-  private let value: Value?
+  private let value: (any Hashable)?
+  private let destination: Destination?
   
-  public init(value: Value?, @ViewBuilder label: () -> Label) {
+  public init<Value: Hashable>(value: Value?, @ViewBuilder label: () -> Label) where Destination == Never {
     self.label = label()
     self.value = value
+    self.destination = nil
+  }
+  
+  public init(@ViewBuilder destination: () -> Destination, @ViewBuilder label: () -> Label) {
+    self.label = label()
+    self.destination = destination()
+    self.value = nil
   }
   
   public var body: some View {
     Button {
       guard let context else {
-        return
-      }
-      guard let value else {
+        Log.error(.stack, "Attempted to push view in Stack, but found no context")
         return
       }
       
-      context.push(value: value)
+      if let value {
+        context.push(value: value)
+        return
+      }
       
+      if let destination {
+        context.push(destination: destination)
+        return
+      }
+           
     } label: {
       label
     }
