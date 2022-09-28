@@ -4,17 +4,28 @@ public struct StackLink<Label: View, Destination: View>: View {
   
   @Environment(\.stackContext) private var context
   
+  private let target: StackLookupStragety
   private let label: Label
   private let value: (any Hashable)?
   private let destination: Destination?
   
-  public init<Value: Hashable>(value: Value?, @ViewBuilder label: () -> Label) where Destination == Never {
+  public init<Value: Hashable>(
+    target: StackLookupStragety = .current,
+    value: Value?,
+    @ViewBuilder label: () -> Label
+  ) where Destination == Never {
+    self.target = target
     self.label = label()
     self.value = value
     self.destination = nil
   }
   
-  public init(@ViewBuilder destination: () -> Destination, @ViewBuilder label: () -> Label) {
+  public init(
+    target: StackLookupStragety = .current,
+    @ViewBuilder destination: () -> Destination,
+    @ViewBuilder label: () -> Label
+  ) {
+    self.target = target
     self.label = label()
     self.destination = destination()
     self.value = nil
