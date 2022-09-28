@@ -40,6 +40,7 @@ public struct StackUnwindLink<Label: View>: View {
     } label: {
       label
     }
+    .disabled(context == nil)
     
   }
 }

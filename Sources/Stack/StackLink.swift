@@ -40,6 +40,7 @@ public struct StackLink<Label: View, Destination: View>: View {
     } label: {
       label
     }
+    .disabled(context == nil)
     
   }
 }

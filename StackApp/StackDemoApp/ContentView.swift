@@ -10,7 +10,7 @@ import Stack
 
 struct ContentView: View {
   var body: some View {
-    Stack {
+    Stack(identifier: .init("root")) {
       StackLink {
         BookStack()
           .background(Color.white)
@@ -23,6 +23,12 @@ struct ContentView: View {
       } label: {
         Text("Stack no path")
       }
+      StackLink {
+        BookNesting()
+      } label: {
+        Text("Nesting")
+      }
+
     }
   }
 }

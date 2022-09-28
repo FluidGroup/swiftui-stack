@@ -81,6 +81,9 @@ public struct Stack<Data, Root: View>: View {
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       // propagates context to descendants
       .environment(\.stackContext, context)
+      .onAppear(perform: {
+        context.set(parent: parentContext)
+      })
       .onReceive(context.$path, perform: { path in
         Log.debug(.stack, "Receive \(path)")
         
@@ -97,6 +100,9 @@ public struct Stack<Data, Root: View>: View {
         
         context.receivePathUpdates(path: path)
       })
+      .onChangeWithPrevious(of: parentContext) { parent, _ in
+        context.set(parent: parent)
+      }
       
     }
       
