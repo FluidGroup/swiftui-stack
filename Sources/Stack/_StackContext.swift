@@ -50,7 +50,7 @@ final class _StackContext: ObservableObject, Equatable {
   private var destinationTable: [TypeKey: Destination] = [:]
 
   private weak var parent: _StackContext?
-  private let identifier: StackIdentifier?
+  let identifier: StackIdentifier?
 
   init(
     identifier: StackIdentifier?
@@ -138,7 +138,7 @@ final class _StackContext: ObservableObject, Equatable {
    For value-push
    */
   @discardableResult
-  func push<Value: Hashable>(value: Value, target: StackLookupStragety) -> _StackedViewIdentifier? {
+  func push<Value: Hashable>(value: Value) -> _StackedViewIdentifier? {
     guard let id = _push(itemBox: .init(value)) else {
       return nil
     }
@@ -147,7 +147,7 @@ final class _StackContext: ObservableObject, Equatable {
   }
 
   @discardableResult
-  func push(destination: some View, target: StackLookupStragety) -> _StackedViewIdentifier {
+  func push(destination: some View) -> _StackedViewIdentifier {
 
     let identifier = _StackedViewIdentifier(id: UUID().uuidString)
 
@@ -167,7 +167,7 @@ final class _StackContext: ObservableObject, Equatable {
   /**
    For momentary-push
    */
-  func push(binding: Binding<Bool>, destination: some View, target: StackLookupStragety) -> _StackedViewIdentifier {
+  func push(binding: Binding<Bool>, destination: some View) -> _StackedViewIdentifier {
 
     let identifier = _StackedViewIdentifier(id: UUID().uuidString)
 
@@ -182,6 +182,20 @@ final class _StackContext: ObservableObject, Equatable {
     }
 
     return identifier
+  }
+  
+  func lookup(strategy: StackLookupStragety) -> _StackContext? {
+    
+    if let identifier {
+      if strategy.where(identifier) {
+        return self
+      } else {
+        return parent?.lookup(strategy: strategy)
+      }
+    } else {
+      return parent?.lookup(strategy: strategy)
+    }
+    
   }
 
   /**

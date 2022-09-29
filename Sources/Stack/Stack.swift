@@ -228,15 +228,14 @@ private struct StackMomentaryPushModifier<Destination: View>: ViewModifier {
         emitsInitial: true,
         perform: { isPresented, _ in
           
-          guard let context else {
+          guard let context = context?.lookup(strategy: target) else {
             return
           }
           
           if isPresented {
             currentIdentifier = context.push(
               binding: $isPresented,
-              destination: destination(),
-              target: target
+              destination: destination()
             )
           } else {
             

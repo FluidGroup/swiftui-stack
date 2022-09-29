@@ -59,7 +59,7 @@ struct BookNesting: View {
               Stack(identifier: .init("C")) {
                 
                 Group {
-                  StackLink {
+                  StackLink(target: .identifier(.init("B"))) {
                     VStack {
                       Color.purple
                       StackUnwindLink {
@@ -79,8 +79,8 @@ struct BookNesting: View {
         }
         .padding(.leading, 20)
       }
-      .padding(20)
     }
+    .padding(20)
 
   }
 }

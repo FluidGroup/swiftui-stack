@@ -45,6 +45,7 @@ struct ContentView: View {
       }
       StackLink {
         BookNesting()
+          .background(Color.white)
       } label: {
         Text("Nesting")
       }

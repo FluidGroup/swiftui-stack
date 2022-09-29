@@ -33,18 +33,18 @@ public struct StackLink<Label: View, Destination: View>: View {
   
   public var body: some View {
     Button {
-      guard let context else {
+      guard let context = context?.lookup(strategy: target) else {
         Log.error(.stack, "Attempted to push view in Stack, but found no context")
         return
       }
       
       if let value {
-        context.push(value: value, target: target)
+        context.push(value: value)
         return
       }
       
       if let destination {
-        context.push(destination: destination, target: target)
+        context.push(destination: destination)
         return
       }
            
