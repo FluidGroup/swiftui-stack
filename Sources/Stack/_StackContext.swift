@@ -50,12 +50,12 @@ final class _StackContext: ObservableObject, Equatable {
   private var destinationTable: [TypeKey: Destination] = [:]
 
   private weak var parent: _StackContext?
-  let identifier: StackIdentifier?
+  let identifier: StackIdentifier
 
   init(
     identifier: StackIdentifier?
   ) {
-    self.identifier = identifier
+    self.identifier = identifier ?? .init("unnamed")
     Log.debug(.stack, "Init \(self)")
   }
 
@@ -186,12 +186,8 @@ final class _StackContext: ObservableObject, Equatable {
   
   func lookup(strategy: StackLookupStragety) -> _StackContext? {
     
-    if let identifier {
-      if strategy.where(identifier) {
-        return self
-      } else {
-        return parent?.lookup(strategy: strategy)
-      }
+    if strategy.where(identifier) {
+      return self
     } else {
       return parent?.lookup(strategy: strategy)
     }

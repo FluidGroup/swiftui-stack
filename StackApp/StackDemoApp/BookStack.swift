@@ -18,6 +18,8 @@ struct BookStack: View {
     
     VStack {
       
+      NavigationBar()
+      
       StackUnwindLink {
         Text("Back")
       }
@@ -144,7 +146,19 @@ struct BookStack: View {
       }               
      
     }
-    
   }
 }
 
+struct BookStack_Previews: PreviewProvider {
+  
+  struct Wrap: View {
+    @State var path: StackPath = .init()
+    var body: some View {
+      BookStack(path: $path)
+    }
+  }
+  
+  static var previews: some View {
+    Wrap()
+  }
+}
