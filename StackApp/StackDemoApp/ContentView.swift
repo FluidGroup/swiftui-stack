@@ -15,6 +15,11 @@ struct ContentView: View {
   
   var body: some View {
     Stack(identifier: .init("root")) {
+      
+      Button("Reset") {
+        path2 = .init([M<A>.init()])
+      }
+      
       StackLink {
         BookStack(path: $path1)
           .background(Color.white)
@@ -43,7 +48,7 @@ struct ContentView: View {
       } label: {
         Text("Nesting")
       }
-
+          
       TransitionView()
     }
   }

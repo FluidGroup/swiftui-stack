@@ -91,7 +91,6 @@ public struct Stack<Data, Root: View>: View {
         /*
          Updates current stacking with path changes.
          */
-        
         guard let path, path != self.currentPath else { return }
         
         context.receivePathUpdates(path: path)
@@ -265,9 +264,11 @@ private struct StackEnvironmentModifier: ViewModifier {
   }
   
   func body(content: Content) -> some View {
+    
+    _withValue(context)
+    
     return content
       .onAppear {
-        _withValue(context)
       }
       .onDisappear {
         // TODO:

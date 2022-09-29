@@ -1,18 +1,12 @@
 import SwiftUI
 import Stack
 
-struct BookStack: View {
+struct BookStackNoPath: View {
   
-  @State var momentA: Bool = true
+  @State var momentA: Bool = false
   @State var momentB: Bool = false
-      
-  @Binding var path: StackPath
   
   @State var counter: Int = 0
-  
-  init(path: Binding<StackPath>) {
-    self._path = path
-  }
   
   var body: some View {
     
@@ -22,34 +16,7 @@ struct BookStack: View {
         Text("Back")
       }
       
-      HStack {
-        Button("\(counter.description)") {
-          counter += 1
-        }
-        Button("Toggle Moment A") {
-          momentA.toggle()
-        }
-        
-        Button("Set 1") {
-          path = .init()
-          path.append(M<A>(id: "1"))
-          path.append(M<B>(id: "2"))
-          path.append(M<C>(id: "3"))
-        }
-        
-        Button("Set 2") {
-          path = .init()
-          path.append(M<A>(id: "4"))
-          path.append(M<B>(id: "5"))
-          path.append(M<C>(id: "6"))
-        }
-        
-        Button("Append") {
-          path.append(M<A>(id: "4"))
-        }
-      }
-      
-      Stack(path: $path) {
+      Stack {
         
         VStack {
           Text("Root")
@@ -90,7 +57,6 @@ struct BookStack: View {
               }
             }
           }
-          
         }
         .stackDestination(for: M<B>.self) { model in
           ZStack {
@@ -141,10 +107,14 @@ struct BookStack: View {
             }
           }
         }
-      }               
-     
+        
+      }
     }
-    
   }
 }
 
+struct BookStackNoPath_Previews: PreviewProvider {
+  static var previews: some View {
+    BookStackNoPath()
+  }
+}
