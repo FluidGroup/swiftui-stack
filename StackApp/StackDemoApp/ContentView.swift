@@ -9,19 +9,34 @@ import SwiftUI
 import Stack
 
 struct ContentView: View {
+  
+  @State var path1 = StackPath()
+  @State var path2 = StackPath([M<A>.init()])
+  
   var body: some View {
     Stack(identifier: .init("root")) {
       StackLink {
-        BookStack()
+        BookStack(path: $path1)
           .background(Color.white)
       } label: {
         Text("Stack")
+      }
+      StackLink {
+        BookStack(path: $path2)
+          .background(Color.white)
+      } label: {
+        Text("Stack restore-path")
       }
       StackLink {
         BookStackNoPath()
           .background(Color.white)
       } label: {
         Text("Stack no path")
+      }
+      StackLink {
+        BookNavigationStack()
+      } label: {
+        Text("NavigationStack")
       }
       StackLink {
         BookNesting()

@@ -169,30 +169,55 @@ extension View {
   ///
   /// - Returns: A view that fires an action when the specified value changes.
   @ViewBuilder
-  func onChangeWithPrevious<Value: Equatable>(of value: Value, perform action: @escaping (_ newValue: Value, _ oldValue: Value?) -> Void) -> some View {
-    modifier(ChangeModifier(value: value, action: action))
+  func onChangeWithPrevious<Value: Equatable>(
+    of value: Value,
+    emitsInitial: Bool,
+    perform action: @escaping (_ newValue: Value, _ oldValue: Value?) -> Void
+  ) -> some View {
+    modifier(
+      ChangeModifier(
+        value: value,
+        emitsInitial: emitsInitial,
+        action: action
+      )
+    )
   }
   
 }
 
 private struct ChangeModifier<Value: Equatable>: ViewModifier {
+  
   let value: Value
+  let emitsInitial: Bool
   let action: (Value, Value?) -> Void
   
   @State var oldValue: Value?
+  @State var emitCount = 0
   
-  init(value: Value, action: @escaping (Value, Value?) -> Void) {
+  init(
+    value: Value,
+    emitsInitial: Bool,
+    action: @escaping (Value, Value?) -> Void
+  ) {
     self.value = value
     self.action = action
+    self.emitsInitial = emitsInitial
+    
     _oldValue = .init(initialValue: value)
   }
   
   func body(content: Content) -> some View {
     content
       .onReceive(Just(value)) { newValue in
-        guard newValue != oldValue else { return }
-        action(newValue, oldValue)
-        oldValue = newValue
+        
+        if emitsInitial, emitCount == 0 {
+          action(newValue, nil)
+        } else {
+          guard newValue != oldValue else { return }
+          action(newValue, oldValue)
+          oldValue = newValue
+        }
+        emitCount += 1
       }
   }
 }

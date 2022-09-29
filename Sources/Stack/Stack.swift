@@ -60,9 +60,7 @@ public struct Stack<Data, Root: View>: View {
   }
   
   public var body: some View {
-    
-    let _ = print("render")
-    
+        
     EnvironmentReader(keyPath: \.stackContext) { parentContext in
       
       ZStack {
@@ -82,16 +80,13 @@ public struct Stack<Data, Root: View>: View {
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       // propagates context to descendants
       .environment(\.stackContext, context)
-      .onAppear(perform: {
-        context.set(parent: parentContext)
-      })
       .onReceive(context.$path, perform: { path in
         Log.debug(.stack, "Receive \(path)")
         
         pathBinding?.wrappedValue = path
         self.currentPath = path
       })
-      .onChangeWithPrevious(of: pathBinding?.wrappedValue, perform: { path, _ in
+      .onChangeWithPrevious(of: pathBinding?.wrappedValue, emitsInitial: true, perform: { path, _ in
         
         /*
          Updates current stacking with path changes.
@@ -101,7 +96,7 @@ public struct Stack<Data, Root: View>: View {
         
         context.receivePathUpdates(path: path)
       })
-      .onChangeWithPrevious(of: parentContext) { parent, _ in
+      .onChangeWithPrevious(of: parentContext, emitsInitial: true) { parent, _ in
         context.set(parent: parent)
       }
       
@@ -231,6 +226,7 @@ private struct StackMomentaryPushModifier<Destination: View>: ViewModifier {
     content
       .onChangeWithPrevious(
         of: isPresented,
+        emitsInitial: true,
         perform: { isPresented, _ in
           
           guard let context else {

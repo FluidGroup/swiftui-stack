@@ -5,9 +5,14 @@ struct BookStack: View {
   
   @State var momentA: Bool = true
   @State var momentB: Bool = false
-  @State var path: StackPath = .init()
+      
+  @Binding var path: StackPath
   
   @State var counter: Int = 0
+  
+  init(path: Binding<StackPath>) {
+    self._path = path
+  }
   
   var body: some View {
     
@@ -140,12 +145,6 @@ struct BookStack: View {
      
     }
     
-  }
-}
-
-struct BookStack_Previews: PreviewProvider {
-  static var previews: some View {
-    BookStack()
   }
 }
 
