@@ -42,7 +42,7 @@ final class _StackContext: ObservableObject, Equatable {
     lhs === rhs
   }
 
-  @Published private(set) var stackingViews: [StackedView] = []
+  @Published private(set) var stackedViews: [StackedView] = []
 
   @Published var path: StackPath = .init()
 
@@ -71,7 +71,7 @@ final class _StackContext: ObservableObject, Equatable {
       }
       .compactMap { $0 }
 
-    stackingViews = views
+    stackedViews = views
 
   }
 
@@ -128,7 +128,7 @@ final class _StackContext: ObservableObject, Equatable {
     }
 
     withAnimation(.spring()) {
-      stackingViews.append(view)
+      stackedViews.append(view)
     }
 
     return view.id
@@ -158,7 +158,7 @@ final class _StackContext: ObservableObject, Equatable {
     )
 
     withAnimation(.spring()) {
-      stackingViews.append(stackedView)
+      stackedViews.append(stackedView)
     }
 
     return identifier
@@ -178,7 +178,7 @@ final class _StackContext: ObservableObject, Equatable {
     )
 
     withAnimation(.spring()) {
-      stackingViews.append(stackedView)
+      stackedViews.append(stackedView)
     }
 
     return identifier
@@ -200,7 +200,7 @@ final class _StackContext: ObservableObject, Equatable {
    */
   func pop(identifier: _StackedViewIdentifier) {
 
-    stackingViews.removeAll(
+    stackedViews.removeAll(
       after: { e in
         e.id == identifier
       },

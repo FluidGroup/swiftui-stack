@@ -60,23 +60,13 @@ public struct Stack<Data, Root: View>: View {
   }
   
   public var body: some View {
-        
+    
     EnvironmentReader(keyPath: \.stackContext) { parentContext in
       
-      ZStack {
-        
-        VStack {
-          root
-        }
-        
-        ForEach(context.stackingViews) {
-          EquatableView(content: $0)
-            .transition(
-              .scale
-            )
-        }
-        
-      }
+      NativeStack(
+        root: root,
+        stackedViews: context.stackedViews
+      )
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       // propagates context to descendants
       .environment(\.stackContext, context)
@@ -100,9 +90,43 @@ public struct Stack<Data, Root: View>: View {
       }
       
     }
-         
+    
   }
   
+}
+
+public struct NativeStack<Root: View>: View {
+  
+  let root: Root
+  let stackedViews: [StackedView]
+  
+  init(
+    root: Root,
+    stackedViews: [StackedView]
+  ) {
+    self.root = root
+    self.stackedViews = stackedViews
+  }
+  
+  public var body: some View {
+    ZStack {
+      
+      VStack {
+        root
+      }
+      
+      ForEach(stackedViews) {
+        EquatableView(content: $0)
+          .zIndex(1)
+          .transition(
+            .move(edge: .trailing)
+          )
+      }
+      
+    }
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+  }
 }
 
 public struct StackIdentifier: Hashable {
