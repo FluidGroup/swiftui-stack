@@ -231,7 +231,7 @@ final class _StackContext: ObservableObject, Equatable {
   }
 }
 
-struct _StackedViewIdentifier: Hashable {
+public struct _StackedViewIdentifier: Hashable {
 
   enum Identifier: Hashable {
     case objectIdentifier(ObjectIdentifier)

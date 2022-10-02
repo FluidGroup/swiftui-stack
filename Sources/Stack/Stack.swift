@@ -16,6 +16,8 @@ extension OSLog {
   static let `stack`: OSLog = makeOSLogInDebug { OSLog.init(subsystem: "stack", category: "default") }
 }
 
+public typealias Stack<Data, Root: View> = _Stack<Data, Root, NativeStack<Root>>
+
 /**
  - TODO:
   - [ ] Path
@@ -26,7 +28,7 @@ extension OSLog {
  https://www.avanderlee.com/swiftui/navigationlink-programmatically-binding/
  */
 @MainActor
-public struct Stack<Data, Root: View>: View {
+public struct _Stack<Data, Root: View, Target: StackDisplaying>: View where Target.Root == Root {
     
   @Backport.StateObject private var context: _StackContext
   
@@ -63,7 +65,7 @@ public struct Stack<Data, Root: View>: View {
     
     EnvironmentReader(keyPath: \.stackContext) { parentContext in
       
-      NativeStack(
+      Target(
         root: root,
         stackedViews: context.stackedViews
       )
@@ -93,40 +95,6 @@ public struct Stack<Data, Root: View>: View {
     
   }
   
-}
-
-public struct NativeStack<Root: View>: View {
-  
-  let root: Root
-  let stackedViews: [StackedView]
-  
-  init(
-    root: Root,
-    stackedViews: [StackedView]
-  ) {
-    self.root = root
-    self.stackedViews = stackedViews
-  }
-  
-  public var body: some View {
-    ZStack {
-      
-      VStack {
-        root
-      }
-      
-      ForEach(stackedViews) {
-        EquatableView(content: $0)
-          .zIndex(1)
-          .transition(
-            .move(edge: .trailing)
-          )
-      }
-      
-    }
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-  }
 }
 
 public struct StackIdentifier: Hashable {
@@ -160,7 +128,7 @@ struct EnvironmentReader<Content: View, Value>: View {
 /**
  A wrapper view that displays content with identifier which uses on Pop operation.
  */
-struct StackedView: View, Identifiable, Equatable {
+public struct StackedView: View, Identifiable, Equatable {
   
   enum Associated {
     case value(StackPath.ItemBox)
@@ -168,11 +136,11 @@ struct StackedView: View, Identifiable, Equatable {
     case volatile
   }
   
-  static func == (lhs: StackedView, rhs: StackedView) -> Bool {
+  public static func == (lhs: StackedView, rhs: StackedView) -> Bool {
     lhs.id == rhs.id
   }
     
-  let id: _StackedViewIdentifier
+  public let id: _StackedViewIdentifier
   
   private let content: AnyView
   
@@ -188,7 +156,7 @@ struct StackedView: View, Identifiable, Equatable {
     self.content = .init(content)
   }
   
-  var body: some View {
+  public var body: some View {
     content
       .environment(\.stackIdentifier, id)
   }
