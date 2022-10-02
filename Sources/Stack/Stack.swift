@@ -16,7 +16,7 @@ extension OSLog {
   static let `stack`: OSLog = makeOSLogInDebug { OSLog.init(subsystem: "stack", category: "default") }
 }
 
-public typealias Stack<Data, Root: View> = _Stack<Data, Root, NativeStack<Root>>
+public typealias Stack<Data, Root: View> = AbstractStack<Data, Root, NativeStack<Root>>
 
 /**
  - TODO:
@@ -28,7 +28,7 @@ public typealias Stack<Data, Root: View> = _Stack<Data, Root, NativeStack<Root>>
  https://www.avanderlee.com/swiftui/navigationlink-programmatically-binding/
  */
 @MainActor
-public struct _Stack<Data, Root: View, Target: StackDisplaying>: View where Target.Root == Root {
+public struct AbstractStack<Data, Root: View, Target: StackDisplaying>: View where Target.Root == Root {
     
   @Backport.StateObject private var context: _StackContext
   

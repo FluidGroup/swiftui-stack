@@ -68,13 +68,20 @@ public struct FluidStackDisplaying<Root: View>: UIViewControllerRepresentable, S
     context: Context
   ) {
 
-    let currentItems: [StackedView] = uiViewController.stackingViewControllers.map {
-      let hosting =
+    let currentItems: [StackedView] = uiViewController
+      .stackingViewControllers
+      .dropFirst()
+      .map {
+        let hosting =
         ($0 as! FluidViewController).content.bodyViewController as! _FluidStackHostingController
-      return hosting.stackedView
-    }
+        return hosting.stackedView
+      }
+    
+    let proposedItems = stackedViews
+    
+    let difference = proposedItems.difference(from: currentItems)
 
-    Log.debug(.default, stackedViews)
+    Log.debug(.default, difference)
 
   }
 
