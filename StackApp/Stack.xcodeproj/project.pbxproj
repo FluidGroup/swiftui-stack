@@ -20,6 +20,7 @@
 		4B77AA6128E4D1F9006307DA /* BookNesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B77AA6028E4D1F9006307DA /* BookNesting.swift */; };
 		4B77AA6328E54FE9006307DA /* BookNavigationStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B77AA6228E54FE9006307DA /* BookNavigationStack.swift */; };
 		4BB2F1BC28E995A3002CC534 /* FluidStack in Frameworks */ = {isa = PBXBuildFile; productRef = 4BB2F1BB28E995A3002CC534 /* FluidStack */; };
+		4BB2F1BE28E9F748002CC534 /* BookFluidStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB2F1BD28E9F748002CC534 /* BookFluidStack.swift */; };
 		4BC6C24928E4B7490081E217 /* Stack in Frameworks */ = {isa = PBXBuildFile; productRef = 4BC6C24828E4B7490081E217 /* Stack */; };
 		4BC6C24B28E4B8120081E217 /* BookStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC6C24A28E4B8120081E217 /* BookStack.swift */; };
 		4BC6C24D28E4B83B0081E217 /* StatefulPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC6C24C28E4B83B0081E217 /* StatefulPage.swift */; };
@@ -59,6 +60,7 @@
 		4B77AA5E28E4BF0C006307DA /* Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
 		4B77AA6028E4D1F9006307DA /* BookNesting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookNesting.swift; sourceTree = "<group>"; };
 		4B77AA6228E54FE9006307DA /* BookNavigationStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookNavigationStack.swift; sourceTree = "<group>"; };
+		4BB2F1BD28E9F748002CC534 /* BookFluidStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookFluidStack.swift; sourceTree = "<group>"; };
 		4BC6C24A28E4B8120081E217 /* BookStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookStack.swift; sourceTree = "<group>"; };
 		4BC6C24C28E4B83B0081E217 /* StatefulPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatefulPage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -126,6 +128,7 @@
 				4B77AA5C28E4BEA2006307DA /* Model.swift */,
 				4B77AA5E28E4BF0C006307DA /* Views.swift */,
 				4B77AA6028E4D1F9006307DA /* BookNesting.swift */,
+				4BB2F1BD28E9F748002CC534 /* BookFluidStack.swift */,
 			);
 			path = StackDemoApp;
 			sourceTree = "<group>";
@@ -302,6 +305,7 @@
 				4B77AA5F28E4BF0C006307DA /* Views.swift in Sources */,
 				4B77AA6328E54FE9006307DA /* BookNavigationStack.swift in Sources */,
 				4B77AA5D28E4BEA2006307DA /* Model.swift in Sources */,
+				4BB2F1BE28E9F748002CC534 /* BookFluidStack.swift in Sources */,
 				4BC6C24D28E4B83B0081E217 /* StatefulPage.swift in Sources */,
 				4B2A923C28E4B6F9006624AD /* AppDelegate.swift in Sources */,
 				4B77AA6128E4D1F9006307DA /* BookNesting.swift in Sources */,

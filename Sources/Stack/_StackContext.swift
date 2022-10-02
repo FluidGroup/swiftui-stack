@@ -303,22 +303,3 @@ extension Array {
   }
 
 }
-
-extension CollectionDifference {
-
-  func transform<U>(_ transform: (ChangeElement) -> U) -> CollectionDifference<U> {
-
-    let mapped = map { change -> CollectionDifference<U>.Change in
-      switch change {
-      case .insert(let offset, let element, let associatedWith):
-        return .insert(offset: offset, element: transform(element), associatedWith: associatedWith)
-      case .remove(let offset, let element, let associatedWith):
-        return .remove(offset: offset, element: transform(element), associatedWith: associatedWith)
-      }
-    }
-
-    return .init(mapped)!
-
-  }
-
-}

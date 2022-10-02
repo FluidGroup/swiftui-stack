@@ -12,6 +12,7 @@ struct ContentView: View {
   
   @State var path1 = StackPath()
   @State var path2 = StackPath([M<A>.init()])
+  @State var path3 = StackPath()
   
   var body: some View {
     Stack(identifier: .init("root")) {
@@ -42,6 +43,11 @@ struct ContentView: View {
         BookNavigationStack()
       } label: {
         Text("NavigationStack")
+      }
+      StackLink {
+        BookFluidStack(path: $path3)
+      } label: {
+        Text("FluidStack")
       }
       StackLink {
         BookNesting()
