@@ -6,8 +6,9 @@ enum StackingViewNode {
   case moment(StackedView)
 }
 
+@_spi(StackContext)
 @MainActor
-final class _StackContext: ObservableObject, Equatable {
+public final class _StackContext: ObservableObject, Equatable {
 
   private struct TypeKey: Hashable {
 
@@ -38,7 +39,7 @@ final class _StackContext: ObservableObject, Equatable {
     
   }
 
-  nonisolated static func == (lhs: _StackContext, rhs: _StackContext) -> Bool {
+  nonisolated public static func == (lhs: _StackContext, rhs: _StackContext) -> Bool {
     lhs === rhs
   }
 
@@ -198,7 +199,7 @@ final class _StackContext: ObservableObject, Equatable {
    Pops a view associated with given identifier.
    Turns off the flag of presenting if its Binding presents.
    */
-  func pop(identifier: _StackedViewIdentifier) {
+  public func pop(identifier: _StackedViewIdentifier) {
 
     stackedViews.removeAll(
       after: { e in
@@ -264,7 +265,8 @@ struct _StackFragmentKey: EnvironmentKey {
 
 extension EnvironmentValues {
 
-  var stackContext: _StackContext? {
+  @_spi(StackContext)
+  public var stackContext: _StackContext? {
     get { self[_StackContextKey.self] }
     set { self[_StackContextKey.self] = newValue }
   }

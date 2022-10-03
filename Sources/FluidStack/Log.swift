@@ -34,4 +34,5 @@ extension OSLog {
   }
   
   static let `default`: OSLog = makeOSLogInDebug { OSLog.init(subsystem: "FluidStack", category: "default") }
+  static let representing: OSLog = makeOSLogInDebug { OSLog.init(subsystem: "FluidStack", category: "Representing") }
 }

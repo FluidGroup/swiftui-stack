@@ -3,9 +3,13 @@ import FluidInterfaceKit
 import Stack
 import SwiftUI
 
-public typealias FluidStack<Data, Root: View> = _Stack<Data, Root, FluidStackDisplaying<Root>>
+@_spi(StackContext) import Stack
+
+public typealias FluidStack<Data, Root: View> = AbstractStack<Data, Root, FluidStackDisplaying<Root>>
 
 public struct FluidStackDisplaying<Root: View>: UIViewControllerRepresentable, StackDisplaying {
+  
+  @Environment(\.stackContext) var stackContext: _StackContext?
 
   public typealias UIViewControllerType = FluidStackController
 
@@ -21,7 +25,7 @@ public struct FluidStackDisplaying<Root: View>: UIViewControllerRepresentable, S
   }
 
   private func makeController(view: StackedView) -> FluidViewController {
-
+      
     let body = _FluidStackHostingController(stackedView: view)
 
     let controller = FluidViewController(
@@ -34,7 +38,9 @@ public struct FluidStackDisplaying<Root: View>: UIViewControllerRepresentable, S
       )
     )
 
-    body.navigationItem.leftBarButtonItem = .fluidChevronBackward(onTap: {
+    body.navigationItem.leftBarButtonItem = .fluidChevronBackward(onTap: { @MainActor [id = view.id] in
+      
+      stackContext?.pop(identifier: id)
       // FIXME:
     })
 
@@ -42,7 +48,9 @@ public struct FluidStackDisplaying<Root: View>: UIViewControllerRepresentable, S
   }
 
   public func makeUIViewController(context: Context) -> FluidInterfaceKit.FluidStackController {
-
+    
+    assert(stackContext != nil)
+    
     // FIXME: identifiers
 
     let controller = FluidStackController(
@@ -67,10 +75,16 @@ public struct FluidStackDisplaying<Root: View>: UIViewControllerRepresentable, S
     _ uiViewController: FluidInterfaceKit.FluidStackController,
     context: Context
   ) {
+    
+    assert(stackContext != nil)
+    
+    let currentViewControllers: [UIViewController] = Array(
+      uiViewController
+        .stackingViewControllers
+        .dropFirst()
+    )
 
-    let currentItems: [StackedView] = uiViewController
-      .stackingViewControllers
-      .dropFirst()
+    let currentItems: [StackedView] = currentViewControllers
       .map {
         let hosting =
         ($0 as! FluidViewController).content.bodyViewController as! _FluidStackHostingController
@@ -83,6 +97,26 @@ public struct FluidStackDisplaying<Root: View>: UIViewControllerRepresentable, S
 
     Log.debug(.default, difference)
 
+    for change in (difference.removals + difference.insertions) {
+      switch change {
+      case let .remove(offset, element, associatedWith):
+        
+        currentViewControllers[offset].fluidPop(transition: .disabled)
+                
+      case let .insert(offset, element, associatedWith):
+        
+        uiViewController.fluidPush(
+          makeController(view: element),
+          target: .current,
+          relation: .hierarchicalNavigation,
+          transition: .disabled,
+          completion: { event in
+            
+          }
+        )
+
+      }
+    }
   }
 
 }
