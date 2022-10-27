@@ -39,6 +39,19 @@ public struct FluidStackDisplaying<Root: View>: UIViewControllerRepresentable, S
         topBar: .navigation(.default)
       )
     )
+    
+    controller.addFluidStackActionHandler { action in
+      switch action {
+      case .willPush:
+        break
+      case .willPop:
+        break
+      }
+    }
+    
+    controller.removingInteraction = .leftToRightOnScreen
+    
+    // FIXME: handle poped by gesture.
 
     body.navigationItem.leftBarButtonItem = .fluidChevronBackward(onTap: { @MainActor [id = view.id] in
       guard let stackContext else {
