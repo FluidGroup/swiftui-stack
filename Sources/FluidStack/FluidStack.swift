@@ -5,8 +5,10 @@ import SwiftUI
 
 @_spi(StackContext) import Stack
 
+/// backed by ``FluidInterfaceKit/FluidStackController``
 public typealias FluidStack<Data, Root: View> = AbstractStack<Data, Root, FluidStackDisplaying<Root>>
 
+/// The implementation of ``AbstractStack``
 public struct FluidStackDisplaying<Root: View>: UIViewControllerRepresentable, StackDisplaying {
   
   @Environment(\.stackContext) var stackContext: _StackContext?
@@ -39,9 +41,12 @@ public struct FluidStackDisplaying<Root: View>: UIViewControllerRepresentable, S
     )
 
     body.navigationItem.leftBarButtonItem = .fluidChevronBackward(onTap: { @MainActor [id = view.id] in
+      guard let stackContext else {
+        assertionFailure()
+        return
+      }
       
-      stackContext?.pop(identifier: id)
-      // FIXME:
+      stackContext.pop(identifier: id)
     })
 
     return controller
@@ -109,7 +114,7 @@ public struct FluidStackDisplaying<Root: View>: UIViewControllerRepresentable, S
           makeController(view: element),
           target: .current,
           relation: .hierarchicalNavigation,
-          transition: .disabled,
+          transition: .jump,
           completion: { event in
             
           }
