@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B215AB4290C305600181FE1 /* BookAdditionalSafeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B215AB3290C305600181FE1 /* BookAdditionalSafeArea.swift */; };
 		4B2A923C28E4B6F9006624AD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2A923B28E4B6F9006624AD /* AppDelegate.swift */; };
 		4B2A923E28E4B6F9006624AD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2A923D28E4B6F9006624AD /* ContentView.swift */; };
 		4B2A924028E4B6FA006624AD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B2A923F28E4B6FA006624AD /* Assets.xcassets */; };
@@ -45,6 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4B215AB3290C305600181FE1 /* BookAdditionalSafeArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookAdditionalSafeArea.swift; sourceTree = "<group>"; };
 		4B2A923428E4B664006624AD /* swiftui-stack */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "swiftui-stack"; path = ..; sourceTree = "<group>"; };
 		4B2A923928E4B6F9006624AD /* StackDemoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StackDemoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B2A923B28E4B6F9006624AD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 				4B77AA5C28E4BEA2006307DA /* Model.swift */,
 				4B77AA5E28E4BF0C006307DA /* Views.swift */,
 				4B77AA6028E4D1F9006307DA /* BookNesting.swift */,
+				4B215AB3290C305600181FE1 /* BookAdditionalSafeArea.swift */,
 				4BB2F1BD28E9F748002CC534 /* BookFluidStack.swift */,
 				4B51F640290ACAAE0015CC21 /* Launch Screen.storyboard */,
 			);
@@ -305,6 +308,7 @@
 			files = (
 				4B77AA5B28E4BE75006307DA /* BookStackNoPath.swift in Sources */,
 				4BC6C24B28E4B8120081E217 /* BookStack.swift in Sources */,
+				4B215AB4290C305600181FE1 /* BookAdditionalSafeArea.swift in Sources */,
 				4B2A923E28E4B6F9006624AD /* ContentView.swift in Sources */,
 				4B77AA5F28E4BF0C006307DA /* Views.swift in Sources */,
 				4B77AA6328E54FE9006307DA /* BookNavigationStack.swift in Sources */,

@@ -46,6 +46,10 @@ public struct FluidStackDisplaying<Root: View>: UIViewControllerRepresentable, S
         break
       case .willPop:
         break
+      case .didPush:
+        break
+      case .didPop:
+        break
       }
     }
     

@@ -44,16 +44,25 @@ struct ContentView: View {
       } label: {
         Text("NavigationStack")
       }
+      
       StackLink {
         BookFluidStack(path: $path3)
       } label: {
         Text("FluidStack")
       }
+      
       StackLink {
         BookNesting()
           .background(Color.white)
       } label: {
         Text("Nesting")
+      }
+      
+      StackLink {
+        BookAdditionalSafeArea()
+          .background(Color.white)
+      } label: {
+        Text("AdditionalSafeArea")
       }
           
       TransitionView()
