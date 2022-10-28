@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/FluidGroup/FluidInterfaceKit.git",
       "state" : {
-        "revision" : "09a79541144a8af5cdc836537389cd60a83705e3",
-        "version" : "0.7.0"
+        "revision" : "a7c1d54f66ebd191a1e49bbb781e41def1d21e64",
+        "version" : "0.7.1"
       }
     },
     {

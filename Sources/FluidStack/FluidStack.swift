@@ -40,7 +40,13 @@ public struct FluidStackDisplaying<Root: View>: UIViewControllerRepresentable, S
       )
     )
     
-    controller.addFluidStackActionHandler { action in
+    controller.addFluidStackActionHandler { [id = view.id] action in
+      
+      guard let stackContext else {
+        assertionFailure()
+        return
+      }
+      
       switch action {
       case .willPush:
         break
@@ -49,7 +55,9 @@ public struct FluidStackDisplaying<Root: View>: UIViewControllerRepresentable, S
       case .didPush:
         break
       case .didPop:
-        break
+        // tells the context that the view has popped.
+        // this triggers updating view but differentiation would no changes.
+        stackContext.pop(identifier: id)
       }
     }
     
@@ -57,7 +65,7 @@ public struct FluidStackDisplaying<Root: View>: UIViewControllerRepresentable, S
     
     // FIXME: handle poped by gesture.
 
-    body.navigationItem.leftBarButtonItem = .fluidChevronBackward(onTap: { @MainActor [id = view.id] in
+    body.navigationItem.leftBarButtonItem = .fluidChevronBackward(onTap: { [id = view.id] in
       guard let stackContext else {
         assertionFailure()
         return
@@ -120,6 +128,9 @@ public struct FluidStackDisplaying<Root: View>: UIViewControllerRepresentable, S
     Log.debug(.default, difference)
 
     for change in (difference.removals + difference.insertions) {
+      
+      // FIXME: Handle precisely
+      
       switch change {
       case let .remove(offset, element, associatedWith):
         
