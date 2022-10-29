@@ -18,6 +18,7 @@ let package = Package(
   ],
   dependencies: [
     .package(url: "https://github.com/FluidGroup/FluidInterfaceKit.git", from: "0.5.0"),
+    .package(url: "https://github.com/nalexn/ViewInspector.git", from: "0.9.2"),
   ],
   targets: [
     .target(
@@ -33,7 +34,7 @@ let package = Package(
     ),
     .testTarget(
       name: "StackTests",
-      dependencies: ["Stack"]
+      dependencies: ["Stack", "ViewInspector"]
     ),
   ]
 )
