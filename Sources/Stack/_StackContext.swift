@@ -6,22 +6,22 @@ enum StackingViewNode {
   case moment(StackedView)
 }
 
+struct TypeKey: Hashable {
+  
+  let base: String
+  
+  init<T>(_ base: T.Type) {    
+    self.base = String(reflecting: base)
+  }
+  
+  init(any base: Any.Type) {
+    self.base = String(reflecting: base)
+  }
+}
+
 @_spi(StackContext)
 @MainActor
 public final class _StackContext: ObservableObject, Equatable {
-
-  private struct TypeKey: Hashable {
-
-    let base: String
-
-    init<T>(_ base: T.Type) {
-      self.base = String(reflecting: base)
-    }
-
-    init(any base: Any.Type) {
-      self.base = String(reflecting: base)
-    }
-  }
   
   private struct Destination {
     
@@ -139,17 +139,20 @@ public final class _StackContext: ObservableObject, Equatable {
    For value-push
    */
   @discardableResult
-  func push<Value: Hashable>(value: Value) -> _StackedViewIdentifier? {
+  func push<Value: Hashable>(value: Value, linkEnvironmentValues: LinkEnvironmentValues) -> _StackedViewIdentifier? {
     guard let id = _push(itemBox: .init(value)) else {
       return nil
     }
+    // FIXME: Use linkEnvironmentValues
     path.append(value)
     return id
   }
 
   @discardableResult
-  func push(destination: some View) -> _StackedViewIdentifier {
+  func push(destination: some View, linkEnvironmentValues: LinkEnvironmentValues) -> _StackedViewIdentifier {
 
+    // FIXME: Use linkEnvironmentValues
+    
     let identifier = _StackedViewIdentifier(id: UUID().uuidString)
 
     let stackedView = StackedView(

@@ -48,7 +48,7 @@ public struct StackPath: Equatable {
   public var count: Int { values.count }
   public var isEmpty: Bool { values.isEmpty }
 
-  internal(set) var values: [ItemBox]
+  var values: [ItemBox]
 
   public init() {
     self.values = []
