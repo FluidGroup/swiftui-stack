@@ -50,6 +50,7 @@ public final class _StackContext: ObservableObject, Equatable {
   /// Functions that creates a view associated with type of value.
   private var destinationTable: [TypeKey: Destination] = [:]
 
+  /// the parent context
   private weak var parent: _StackContext?
   let identifier: StackIdentifier
 
@@ -60,6 +61,7 @@ public final class _StackContext: ObservableObject, Equatable {
     Log.debug(.stack, "Init \(self)")
   }
 
+  /// Makes a relationship to parent.
   func set(parent: _StackContext?) {
     self.parent = parent
   }

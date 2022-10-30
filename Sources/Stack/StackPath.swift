@@ -17,6 +17,7 @@ public struct StackPath: Equatable {
       .init(self)
     }
 
+    /// a type-erase value
     private let storage: AnyHashable
 
     var value: any Hashable {
