@@ -21,7 +21,14 @@ public struct NavigationBar<Class: UINavigationBar>: UIViewRepresentable {
   }
     
   public func makeUIView(context: Context) -> UINavigationBar {
+    
     let bar = Class.init()
+    
+    bar.backgroundColor = .clear
+    bar.barTintColor = .clear
+    bar.shadowImage = UIImage()
+    bar.isTranslucent = true
+    bar.setBackgroundImage(UIImage(), for: .default)
     
     let item = UINavigationItem()
     item.title = "Hello"

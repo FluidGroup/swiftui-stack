@@ -70,7 +70,7 @@ public final class _StackContext: ObservableObject, Equatable {
 
     let views = path.values
       .map {
-        makeStackedView(itemBox: $0)?.0
+        makeStackedView(itemBox: $0, linkEnvironmentValues: .init())?.0
       }
       .compactMap { $0 }
 
@@ -102,7 +102,10 @@ public final class _StackContext: ObservableObject, Equatable {
     )
   }
 
-  private func makeStackedView(itemBox: StackPath.ItemBox) -> (StackedView, StackLookupStragety)? {
+  private func makeStackedView(
+    itemBox: StackPath.ItemBox,
+    linkEnvironmentValues: LinkEnvironmentValues
+  ) -> (StackedView, StackLookupStragety)? {
 
     let key = TypeKey(any: itemBox.subjectType)
 
@@ -115,34 +118,39 @@ public final class _StackContext: ObservableObject, Equatable {
     }
 
     let stackedView = StackedView(
-      associated: .value(itemBox),
+      material: .value(itemBox),
       identifier: .init(id: itemBox.id),
+      linkEnvironmentValues: linkEnvironmentValues,
       content: destination.make(item: itemBox)
     )
         
     return (stackedView, destination.target)
   }
 
-  @discardableResult
-  private func _push(itemBox: StackPath.ItemBox) -> _StackedViewIdentifier? {
-
-    guard let view = makeStackedView(itemBox: itemBox)?.0 else {
-      return nil
-    }
-
-    withAnimation(.spring()) {
-      stackedViews.append(view)
-    }
-
-    return view.id
-  }
-
   /**
    For value-push
    */
   @discardableResult
-  func push<Value: Hashable>(value: Value, linkEnvironmentValues: LinkEnvironmentValues) -> _StackedViewIdentifier? {
-    guard let id = _push(itemBox: .init(value)) else {
+  func push<Value: Hashable>(
+    value: Value,
+    linkEnvironmentValues: LinkEnvironmentValues
+  ) -> _StackedViewIdentifier? {
+    
+    func _push() -> _StackedViewIdentifier? {
+      
+      guard let view = makeStackedView(itemBox: .init(value), linkEnvironmentValues: linkEnvironmentValues)?.0 else {
+        return nil
+      }
+      
+      // TODO: consider using withAnimation
+      withAnimation(.spring()) {
+        stackedViews.append(view)
+      }
+      
+      return view.id
+    }
+    
+    guard let id = _push() else {
       return nil
     }
     // FIXME: Use linkEnvironmentValues
@@ -150,6 +158,9 @@ public final class _StackContext: ObservableObject, Equatable {
     return id
   }
 
+  /*
+   What uses this?
+   */
   @discardableResult
   func push(destination: some View, linkEnvironmentValues: LinkEnvironmentValues) -> _StackedViewIdentifier {
 
@@ -158,8 +169,9 @@ public final class _StackContext: ObservableObject, Equatable {
     let identifier = _StackedViewIdentifier(id: UUID().uuidString)
 
     let stackedView = StackedView(
-      associated: .volatile,
+      material: .volatile,
       identifier: identifier,
+      linkEnvironmentValues: linkEnvironmentValues,
       content: destination
     )
 
@@ -173,13 +185,16 @@ public final class _StackContext: ObservableObject, Equatable {
   /**
    For momentary-push
    */
-  func push(binding: Binding<Bool>, destination: some View) -> _StackedViewIdentifier {
+  func push(binding: Binding<Bool>, destination: some View, linkEnvironmentValues: LinkEnvironmentValues) -> _StackedViewIdentifier {
+    
+    // FIXME: Use linkEnvironmentValues
 
     let identifier = _StackedViewIdentifier(id: UUID().uuidString)
 
     let stackedView = StackedView(
-      associated: .moment(binding),
+      material: .moment(binding),
       identifier: identifier,
+      linkEnvironmentValues: linkEnvironmentValues,
       content: destination
     )
 
@@ -212,7 +227,7 @@ public final class _StackContext: ObservableObject, Equatable {
       },
       perform: { e in
 
-        switch e.associated {
+        switch e.material {
         case .value(let value):
 
           // sync current path

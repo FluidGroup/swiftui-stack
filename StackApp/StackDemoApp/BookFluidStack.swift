@@ -62,6 +62,7 @@ struct BookFluidStack: View {
             StackLink(value: M<A>()) {
               Text("Open A")
             }
+            .linkEnvironment(\.fluidMyOption, value: ())
             
             StackLink(value: M<B>()) {
               Text("Open B")

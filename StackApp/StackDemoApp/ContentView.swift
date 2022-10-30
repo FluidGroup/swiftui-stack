@@ -21,51 +21,66 @@ struct ContentView: View {
         path2 = .init([M<A>.init()])
       }
       
-      StackLink {
-        BookStack(path: $path1)
-          .background(Color.white)
-      } label: {
-        Text("Stack")
-      }
-      StackLink {
-        BookStack(path: $path2)
-          .background(Color.white)
-      } label: {
-        Text("Stack restore-path")
-      }
-      StackLink {
-        BookStackNoPath()
-          .background(Color.white)
-      } label: {
-        Text("Stack no path")
-      }
-      StackLink {
-        BookNavigationStack()
-      } label: {
-        Text("NavigationStack")
-      }
-      
-      StackLink {
-        BookFluidStack(path: $path3)
-      } label: {
-        Text("FluidStack")
-      }
-      
-      StackLink {
-        BookNesting()
-          .background(Color.white)
-      } label: {
-        Text("Nesting")
-      }
-      
-      StackLink {
-        BookAdditionalSafeArea()
-          .background(Color.white)
-      } label: {
-        Text("AdditionalSafeArea")
-      }
+      Form {
+        
+        Section {
+                 
+          StackLink {
+            BookStack(path: $path1)
+              .background(Color.white)
+          } label: {
+            Text("Stack")
+          }
+          StackLink {
+            BookStack(path: $path2)
+              .background(Color.white)
+          } label: {
+            Text("Stack restore-path")
+          }
+          StackLink {
+            BookStackNoPath()
+              .background(Color.white)
+          } label: {
+            Text("Stack no path")
+          }
+          StackLink {
+            BookNavigationStack()
+          } label: {
+            Text("NavigationStack")
+          }
+        } header: {
+          Text("Stack")
+        }
+        
+        Section {
           
-      TransitionView()
+          StackLink {
+            BookFluidStack(path: $path3)
+          } label: {
+            Text("FluidStack")
+          }
+          
+          StackLink {
+            BookNesting()
+              .background(Color.white)
+          } label: {
+            Text("Nesting")
+          }
+          
+          StackLink {
+            BookAdditionalSafeArea()
+              .background(Color.white)
+          } label: {
+            Text("AdditionalSafeArea")
+          }
+          
+          TransitionView()
+        } header: {
+          Text("FluidStack")
+        }
+
+      }
+            
     }
   }
 }

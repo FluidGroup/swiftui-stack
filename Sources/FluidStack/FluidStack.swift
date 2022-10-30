@@ -138,6 +138,7 @@ public struct FluidStackDisplaying<Root: View>: UIViewControllerRepresentable, S
                 
       case let .insert(offset, element, associatedWith):
         
+        print(element.linkEnvironmentValues)
         uiViewController.fluidPush(
           makeController(view: element),
           target: .current,

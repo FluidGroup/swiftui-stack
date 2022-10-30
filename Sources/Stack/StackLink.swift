@@ -56,7 +56,7 @@ public struct StackLink<Label: View, Destination: View>: View {
     .disabled(context == nil)
   }
   
-  public func setLinkEnvironment<Value>(_ keyPath: WritableKeyPath<LinkEnvironmentValues, Value>, value: Value) -> Self {
+  public func linkEnvironment<Value>(_ keyPath: WritableKeyPath<LinkEnvironmentValues, Value>, value: Value) -> Self {
     var modified = self
     modified.linkEnvironments[keyPath: keyPath] = value
     return modified

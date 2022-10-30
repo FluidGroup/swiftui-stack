@@ -130,7 +130,8 @@ struct EnvironmentReader<Content: View, Value>: View {
  */
 public struct StackedView: View, Identifiable, Equatable {
   
-  enum Associated {
+  /// a material of how this view is stacked.
+  public enum Material {
     case value(StackPath.ItemBox)
     case moment(Binding<Bool>)
     case volatile
@@ -143,16 +144,19 @@ public struct StackedView: View, Identifiable, Equatable {
   public let id: _StackedViewIdentifier
   
   private let content: AnyView
-  
-  let associated: Associated
+    
+  public let material: Material
+  public let linkEnvironmentValues: LinkEnvironmentValues
   
   init(
-    associated: Associated,
+    material: Material,
     identifier: _StackedViewIdentifier,
+    linkEnvironmentValues: LinkEnvironmentValues,
     content: some View
   ) {
-    self.associated = associated
+    self.material = material
     self.id = identifier
+    self.linkEnvironmentValues = linkEnvironmentValues
     self.content = .init(content)
   }
   
@@ -225,9 +229,11 @@ private struct StackMomentaryPushModifier<Destination: View>: ViewModifier {
           }
           
           if isPresented {
+            // FIXME: LinkEnvironmentValues
             currentIdentifier = context.push(
               binding: $isPresented,
-              destination: destination()
+              destination: destination(),
+              linkEnvironmentValues: .init()
             )
           } else {
             

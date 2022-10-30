@@ -3,24 +3,24 @@ import SwiftUI
 /// ``SwiftUI/NavigationPath``
 public struct StackPath: Equatable {
 
-  final class ItemBox: Hashable, Identifiable, CustomReflectable {
+  public final class ItemBox: Hashable, Identifiable, CustomReflectable {
 
-    static func == (lhs: StackPath.ItemBox, rhs: StackPath.ItemBox) -> Bool {
+    public static func == (lhs: StackPath.ItemBox, rhs: StackPath.ItemBox) -> Bool {
       lhs === rhs
     }
 
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
       ObjectIdentifier(self).hash(into: &hasher)
     }
 
-    var id: ObjectIdentifier {
+    public var id: ObjectIdentifier {
       .init(self)
     }
 
     /// a type-erase value
     private let storage: AnyHashable
 
-    var value: any Hashable {
+    public var value: any Hashable {
       storage.base as! any Hashable
     }
 
@@ -28,11 +28,11 @@ public struct StackPath: Equatable {
       self.storage = .init(value)
     }
 
-    var subjectType: Any.Type {
+    public var subjectType: Any.Type {
       return type(of: value)
     }
      
-    var customMirror: Mirror {
+    public var customMirror: Mirror {
       .init(
         self,
         children: [
