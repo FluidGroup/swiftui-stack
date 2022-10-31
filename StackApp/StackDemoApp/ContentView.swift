@@ -31,6 +31,16 @@ struct ContentView: View {
           } label: {
             Text("Stack")
           }
+          
+          if #available(iOS 14, *) {
+            StackLink {
+              BookStack_Grid()
+                .background(Color.white)
+            } label: {
+              Text("Stack - Grid")
+            }
+          }
+          
           StackLink {
             BookStack(path: $path2)
               .background(Color.white)
