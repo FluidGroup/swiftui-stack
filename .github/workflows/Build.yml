@@ -28,7 +28,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Test
-        run: xcodebuild -scheme StackTests -resultBundlePath results/StackTests.xcresult test -destination 'platform=iOS Simulator,name=iPhone 14 Pro,OS=16.4' -derivedDataPath ./DerivedData | xcpretty
+        run: xcodebuild -scheme StackTests -resultBundlePath results/StackTests.xcresult test -destination 'platform=iOS Simulator,name=iPhone 14 Pro,OS=16.4' | xcpretty
 
       - uses: kishikawakatsumi/xcresulttool@v1
         with:
