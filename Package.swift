@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-  name: "Stack",
+  name: "swiftui-stack",
   platforms: [.iOS(.v14)],
   products: [
     .library(
