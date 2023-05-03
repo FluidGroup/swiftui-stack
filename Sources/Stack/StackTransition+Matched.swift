@@ -163,8 +163,10 @@ private struct ContextualPopModifier: ViewModifier {
     content
       .modifier(
         VelocityDraggingModifier(
+          minimumDistance: 16,
           axis: [.horizontal, .vertical],
           springParameter: .interpolation(mass: 1, stiffness: 80, damping: 13),
+          gestureMode: .highPriority,
           handler: .init(onEndDragging: { velocity, offset, contentSize in
 
             if abs(velocity.dx) > 50 || abs(offset.width) > (contentSize.width / 2) {

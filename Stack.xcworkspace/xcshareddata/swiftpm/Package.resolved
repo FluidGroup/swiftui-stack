@@ -55,6 +55,15 @@
       }
     },
     {
+      "identity" : "swiftui-gesturevelocity",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/muukii/swiftui-GestureVelocity",
+      "state" : {
+        "revision" : "dd95ef32f5bb41ff454ca09209cd037cdd3bca8d",
+        "version" : "0.1.0"
+      }
+    },
+    {
       "identity" : "viewinspector",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/nalexn/ViewInspector.git",
