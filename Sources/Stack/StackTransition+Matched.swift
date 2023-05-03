@@ -37,7 +37,7 @@ extension StackTransitions {
           /// Content
           content
         }
-          // for backwards
+          // for unwind
           .matchedGeometryEffect(
             id: "movement:\(identifier)",
             in: usingNamespace!,
@@ -79,7 +79,15 @@ extension StackTransitions {
 
       func body(content: Content) -> some View {
 
-        content
+        ZStack {
+          /// expandable shape to make the frame flexible for matched-geometry
+          Color.clear
+
+          /// Content
+          content
+            // needs for unwind. give matchedGeometryEffect control for frame.
+            .frame(minWidth: 0, minHeight: 0, alignment: .top)
+        }
           .transition(
             AnyTransition.modifier(
               active: StyleModifier(opacity: 0, blurRadius: 0),

@@ -154,4 +154,3 @@ public struct StackLink<Label: View, Destination: View, Transition: StackTransit
   }
 
 }
-

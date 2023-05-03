@@ -26,6 +26,8 @@ struct BookFullScreenStack: View, PreviewProvider {
 
     }
 
+    @Environment(\.stackUnwindContext) var unwindContext
+
     @State var users: [Node] = User.generateDummyUsers().map { .user($0) }
     @Namespace var local
 
@@ -38,7 +40,11 @@ struct BookFullScreenStack: View, PreviewProvider {
         Stack {
 
           ScrollView {
-            VStack {
+            LazyVStack {
+
+              StackUnwindLink(target: .specific(unwindContext)) {
+                Text("Back to Menu")
+              }
 
               ForEach(users) { user in
                 switch user {
@@ -55,20 +61,20 @@ struct BookFullScreenStack: View, PreviewProvider {
                 }
               }
 
-//              ForEach(users) { user in
-//                switch user {
-//                case .user(let user):
-//
-//                  StackLink(
-//                    transition: .slide,
-//                    value: user
-//                  ) {
-//                    Cell(colorScheme: colorScheme, user: user)
-//                  }
-//                  .padding(.horizontal, 16)
-//
-//                }
-//              }
+              //              ForEach(users) { user in
+              //                switch user {
+              //                case .user(let user):
+              //
+              //                  StackLink(
+              //                    transition: .slide,
+              //                    value: user
+              //                  ) {
+              //                    Cell(colorScheme: colorScheme, user: user)
+              //                  }
+              //                  .padding(.horizontal, 16)
+              //
+              //                }
+              //              }
             }
 
           }
@@ -91,39 +97,37 @@ struct BookFullScreenStack: View, PreviewProvider {
     let user: User
 
     var body: some View {
-      HStack {
-        VStack(alignment: .leading) {
-          HStack(spacing: 12) {
-            Circle()
-              .fill(Color.init(white: 0.5, opacity: 0.3))
-              .frame(
-                width: 40,
-                height: 40,
-                alignment: .center
-              )
 
-            Text(user.name)
-              .font(.system(.body, design: .default))
-              .foregroundColor(colorScheme.cardHeadline)
+      VStack(alignment: .leading) {
+        HStack(spacing: 12) {
+          Circle()
+            .fill(Color.init(white: 0.5, opacity: 0.3))
+            .frame(
+              width: 40,
+              height: 40,
+              alignment: .center
+            )
 
-            Text(user.age.description)
-              .foregroundColor(colorScheme.cardParagraph)
+          Text(user.name)
+            .font(.system(.body, design: .default))
+            .foregroundColor(colorScheme.cardHeadline)
 
-            Spacer()
-          }
+          Text(user.age.description)
+            .foregroundColor(colorScheme.cardParagraph)
+
+          Spacer()
         }
-        .padding(EdgeInsets(top: 6, leading: 12, bottom: 6, trailing: 12))
-        .background(
-          RoundedRectangle(
-            cornerRadius: 8,
-            style: .continuous
-          )
-          .fill(
-            colorScheme.cardBackground
-          )
-        )
-
       }
+      .padding(EdgeInsets(top: 6, leading: 12, bottom: 6, trailing: 12))
+      .background(
+        RoundedRectangle(
+          cornerRadius: 8,
+          style: .continuous
+        )
+        .fill(
+          colorScheme.cardBackground
+        )
+      )
 
     }
 
@@ -139,27 +143,30 @@ struct BookFullScreenStack: View, PreviewProvider {
     var body: some View {
 
       ZStack {
-        colorScheme.background.ignoresSafeArea()
+
+        StackBackground {
+          colorScheme.background
+        }
 
         ScrollView {
           VStack {
-            
+
             Text(user.name)
               .font(.system(.body, design: .default))
               .foregroundColor(colorScheme.paragraph)
-            
+
             Text(user.age.description)
               .font(.system(.body, design: .default))
               .foregroundColor(colorScheme.paragraph)
-            
+
             Spacer()
-            
+
             StackLink(transition: .matched(identifier: user.id, in: local)) {
               Detail(user: user, colorScheme: .takeOne(except: colorScheme))
             } label: {
               Cell(colorScheme: .type4, user: user)
             }
-            
+
             StackUnwindLink {
               Text("Back")
             }

@@ -54,15 +54,15 @@ private struct StackEnvironmentModifier: ViewModifier {
 
   func body(content: Content) -> some View {
 
+    // needs for restoreing path in this timing.
+    _withValue(context)
+
     return
       content
       .onAppear {
         // keep to activate modifier.
       }
       .onDisappear {
-      }
-      .onReceive(Just(context)) { context in
-        _withValue(context)
       }
   }
 }

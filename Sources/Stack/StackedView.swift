@@ -37,6 +37,7 @@ public struct StackedView: View, Identifiable, Equatable {
   }
 
   public var body: some View {
+
     content
       .environment(\.stackIdentifier, id)
       .onAppear {
@@ -45,6 +46,7 @@ public struct StackedView: View, Identifiable, Equatable {
       .onDisappear {
 
       }
+
   }
 
 }

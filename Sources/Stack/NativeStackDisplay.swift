@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// A view that displays stacked views in all SwiftUI.
-public struct NativeStack<Root: View>: View, StackDisplaying {
+public struct NativeStackDisplay<Root: View>: View, StackDisplaying {
 
   @Environment(\.stackNamespaceID) var namespaceID
 

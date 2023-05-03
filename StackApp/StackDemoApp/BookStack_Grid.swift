@@ -7,6 +7,8 @@ struct BookStack_Grid: View {
 
   @State var data: [UserData] = UserData.generateDummyData(count: 50)
 
+  @Environment(\.stackUnwindContext) var unwindContext
+
   @Namespace var local
 
   var body: some View {
@@ -16,6 +18,11 @@ struct BookStack_Grid: View {
       ScrollView {
 
         LazyVStack {
+
+          StackUnwindLink(target: .specific(unwindContext)) {
+            Text("Back to Menu")
+          }
+          
           ForEach(data, id: \.id) { userData in
             makeUserCell(userData: userData)
           }
@@ -33,27 +40,28 @@ struct BookStack_Grid: View {
   fileprivate func makeUserCell(
     userData: UserData
   ) -> some View {
-    StackLink(transition: .matched(identifier: userData.id), value: userData) {
-      HStack(spacing: 12) {
-        Circle()
-          .fill(Color.gray)
-          .frame(
-            width: 40,
-            height: 40,
-            alignment: .center
-          )
-          .matchedGeometryEffect(id: "\(userData.id)-image", in: local)
+    StackLink(transition: .matched(identifier: userData.id, in: local), value: userData) {
+      VStack {
+        HStack(spacing: 12) {
+          Circle()
+            .fill(Color.gray)
+            .frame(
+              width: 40,
+              height: 40,
+              alignment: .center
+            )
+                    .matchedGeometryEffect(id: "\(userData.id)-image", in: local)
 
-        Text(userData.name)
-          .font(.system(.body, design: .default))
-          .matchedGeometryEffect(id: "\(userData.id)-name", in: local)
+          Text(userData.name)
+            .font(.system(.body, design: .default))
+                    .matchedGeometryEffect(id: "\(userData.id)-name", in: local)
 
-        Spacer()
+          Spacer()
+        }
+              .padding(.horizontal, 24)
+              .padding(.vertical, 8)
+              .background(Color.orange)
       }
-      .padding(.horizontal, 24)
-      .padding(.vertical, 8)
-      .background(Color.orange)
-
     }
   }
 
@@ -67,11 +75,7 @@ struct BookStack_Grid: View {
     var body: some View {
       ZStack {
 
-        // TODO: support safe-area including dragging
-        GeometryReader { p in
-          Color.purple.opacity(0.8)
-            .frame(width: p.size.width, height: p.size.height)
-        }
+        Color.blue.ignoresSafeArea()
 
         VStack(spacing: 20) {
 
@@ -124,9 +128,8 @@ struct BookStack_Grid: View {
               .foregroundColor(.gray)
           }
 
-          Spacer()
+          Spacer(minLength: 0)
         }
-        .padding()
       }
 
     }

@@ -1,4 +1,5 @@
 import SwiftUI
 
-public typealias Stack<Data, Root: View> = AbstractStack<Data, Root, NativeStack<Root>>
+/// A typealias a Stack using ``NativeStack``
+public typealias Stack<Data, Root: View> = AbstractStack<Data, Root, NativeStackDisplay<Root>>
 
