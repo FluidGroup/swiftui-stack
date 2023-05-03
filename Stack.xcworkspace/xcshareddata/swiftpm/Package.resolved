@@ -55,15 +55,6 @@
       }
     },
     {
-      "identity" : "swiftui-support",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/FluidGroup/swiftui-support",
-      "state" : {
-        "branch" : "main",
-        "revision" : "a104f4b9f3ec1bc7bd1f94a70aea198a710916b5"
-      }
-    },
-    {
       "identity" : "viewinspector",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/nalexn/ViewInspector.git",

@@ -1,0 +1,3 @@
+[submodule "submodules/swiftui-support"]
+	path = submodules/swiftui-support
+	url = https://github.com/FluidGroup/swiftui-support.git
