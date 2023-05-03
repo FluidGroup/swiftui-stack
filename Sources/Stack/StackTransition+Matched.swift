@@ -30,10 +30,6 @@ extension StackTransitions {
 
       func body(content: Content) -> some View {
 
-        if #available(iOS 15.0, *) {
-          let _ = print("Label", isActive, Self._printChanges())
-        }
-
         ZStack {
           /// expandable shape to make the frame flexible for matched-geometry
           /// it affects the destination.
@@ -82,10 +78,6 @@ extension StackTransitions {
       }
 
       func body(content: Content) -> some View {
-
-        if #available(iOS 15.0, *) {
-          let _ = print("Destination", Self._printChanges())
-        }
 
         content
           .transition(
@@ -149,17 +141,6 @@ extension StackTransitions {
           content
             .frame(minWidth: 0, minHeight: 0, alignment: .top)
         }
-        //        .matchedGeometryEffect(id: "shape", in: local, isSource: true)
-        //        .clipped()
-        //        .mask(
-        //          RoundedRectangle(cornerRadius: 16, style: .continuous)
-        //            .fill(Color.black)
-        //            .matchedGeometryEffect(id: "shape", in: local, properties: [.size], isSource: false)
-        //        )
-        //        .background(
-        //          RoundedRectangle(cornerRadius: 16, style: .continuous)
-        //            .fill(Color.clear)
-        //        )
 
       }
 
