@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B15FAB829FFED8A000442FA /* BookMatchedShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B15FAB729FFED89000442FA /* BookMatchedShape.swift */; };
 		4B215AB4290C305600181FE1 /* BookAdditionalSafeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B215AB3290C305600181FE1 /* BookAdditionalSafeArea.swift */; };
+		4B29A6FD29FC5C31003CCC00 /* BookFullScreenStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B29A6FC29FC5C31003CCC00 /* BookFullScreenStack.swift */; };
+		4B29A6FF29FC5CA1003CCC00 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B29A6FE29FC5CA1003CCC00 /* Colors.swift */; };
 		4B2A923C28E4B6F9006624AD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2A923B28E4B6F9006624AD /* AppDelegate.swift */; };
 		4B2A923E28E4B6F9006624AD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2A923D28E4B6F9006624AD /* ContentView.swift */; };
 		4B2A924028E4B6FA006624AD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B2A923F28E4B6FA006624AD /* Assets.xcassets */; };
@@ -16,6 +19,7 @@
 		4B2A925728E4B6FA006624AD /* StackDemoAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2A925628E4B6FA006624AD /* StackDemoAppUITests.swift */; };
 		4B2A925928E4B6FA006624AD /* StackDemoAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2A925828E4B6FA006624AD /* StackDemoAppUITestsLaunchTests.swift */; };
 		4B51F641290ACAAE0015CC21 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B51F640290ACAAE0015CC21 /* Launch Screen.storyboard */; };
+		4B6D472329FC2A5900658A0F /* swiftui-color in Frameworks */ = {isa = PBXBuildFile; productRef = 4B6D472229FC2A5900658A0F /* swiftui-color */; };
 		4B77AA5B28E4BE75006307DA /* BookStackNoPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B77AA5A28E4BE75006307DA /* BookStackNoPath.swift */; };
 		4B77AA5D28E4BEA2006307DA /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B77AA5C28E4BEA2006307DA /* Model.swift */; };
 		4B77AA5F28E4BF0C006307DA /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B77AA5E28E4BF0C006307DA /* Views.swift */; };
@@ -47,7 +51,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4B15FAB729FFED89000442FA /* BookMatchedShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMatchedShape.swift; sourceTree = "<group>"; };
 		4B215AB3290C305600181FE1 /* BookAdditionalSafeArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookAdditionalSafeArea.swift; sourceTree = "<group>"; };
+		4B29A6FC29FC5C31003CCC00 /* BookFullScreenStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookFullScreenStack.swift; sourceTree = "<group>"; };
+		4B29A6FE29FC5CA1003CCC00 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		4B2A923428E4B664006624AD /* swiftui-stack */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "swiftui-stack"; path = ..; sourceTree = "<group>"; };
 		4B2A923928E4B6F9006624AD /* StackDemoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StackDemoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B2A923B28E4B6F9006624AD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -76,6 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B6D472329FC2A5900658A0F /* swiftui-color in Frameworks */,
 				4BB2F1BC28E995A3002CC534 /* FluidStack in Frameworks */,
 				4BC6C24928E4B7490081E217 /* Stack in Frameworks */,
 			);
@@ -123,6 +131,8 @@
 		4B2A923A28E4B6F9006624AD /* StackDemoApp */ = {
 			isa = PBXGroup;
 			children = (
+				4B15FAB729FFED89000442FA /* BookMatchedShape.swift */,
+				4B29A6FC29FC5C31003CCC00 /* BookFullScreenStack.swift */,
 				4B2A923B28E4B6F9006624AD /* AppDelegate.swift */,
 				4B2A923D28E4B6F9006624AD /* ContentView.swift */,
 				4BC6C24A28E4B8120081E217 /* BookStack.swift */,
@@ -138,6 +148,7 @@
 				4B215AB3290C305600181FE1 /* BookAdditionalSafeArea.swift */,
 				4BB2F1BD28E9F748002CC534 /* BookFluidStack.swift */,
 				4B51F640290ACAAE0015CC21 /* Launch Screen.storyboard */,
+				4B29A6FE29FC5CA1003CCC00 /* Colors.swift */,
 			);
 			path = StackDemoApp;
 			sourceTree = "<group>";
@@ -193,6 +204,7 @@
 			packageProductDependencies = (
 				4BC6C24828E4B7490081E217 /* Stack */,
 				4BB2F1BB28E995A3002CC534 /* FluidStack */,
+				4B6D472229FC2A5900658A0F /* swiftui-color */,
 			);
 			productName = StackDemoApp;
 			productReference = 4B2A923928E4B6F9006624AD /* StackDemoApp.app */;
@@ -266,6 +278,9 @@
 				Base,
 			);
 			mainGroup = 4B2A91FE28E4B627006624AD;
+			packageReferences = (
+				4B6D472129FC2A5900658A0F /* XCRemoteSwiftPackageReference "swiftui-color" */,
+			);
 			productRefGroup = 4B2A920828E4B627006624AD /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -309,9 +324,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B15FAB829FFED8A000442FA /* BookMatchedShape.swift in Sources */,
 				4B77AA5B28E4BE75006307DA /* BookStackNoPath.swift in Sources */,
 				4BCFDBE7290FC271004D58D3 /* BookStack_Grid.swift in Sources */,
 				4BC6C24B28E4B8120081E217 /* BookStack.swift in Sources */,
+				4B29A6FF29FC5CA1003CCC00 /* Colors.swift in Sources */,
 				4B215AB4290C305600181FE1 /* BookAdditionalSafeArea.swift in Sources */,
 				4B2A923E28E4B6F9006624AD /* ContentView.swift in Sources */,
 				4B77AA5F28E4BF0C006307DA /* Views.swift in Sources */,
@@ -320,6 +337,7 @@
 				4BB2F1BE28E9F748002CC534 /* BookFluidStack.swift in Sources */,
 				4BC6C24D28E4B83B0081E217 /* StatefulPage.swift in Sources */,
 				4B2A923C28E4B6F9006624AD /* AppDelegate.swift in Sources */,
+				4B29A6FD29FC5C31003CCC00 /* BookFullScreenStack.swift in Sources */,
 				4B77AA6128E4D1F9006307DA /* BookNesting.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -479,6 +497,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"StackDemoApp/Preview Content\"";
+				DEVELOPMENT_TEAM = JX92XL88RZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -486,7 +505,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -508,6 +527,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"StackDemoApp/Preview Content\"";
+				DEVELOPMENT_TEAM = JX92XL88RZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -515,7 +535,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -537,7 +557,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = app.muukii.StackDemoAppTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -556,7 +576,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = app.muukii.StackDemoAppTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -574,7 +594,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = app.muukii.StackDemoAppUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -592,7 +612,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = app.muukii.StackDemoAppUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -644,7 +664,23 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		4B6D472129FC2A5900658A0F /* XCRemoteSwiftPackageReference "swiftui-color" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/FluidGroup/swiftui-color.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		4B6D472229FC2A5900658A0F /* swiftui-color */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4B6D472129FC2A5900658A0F /* XCRemoteSwiftPackageReference "swiftui-color" */;
+			productName = "swiftui-color";
+		};
 		4BB2F1BB28E995A3002CC534 /* FluidStack */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FluidStack;

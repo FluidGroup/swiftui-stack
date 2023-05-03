@@ -7,13 +7,13 @@ enum StackingViewNode {
 }
 
 struct TypeKey: Hashable {
-  
+
   let base: String
-  
-  init<T>(_ base: T.Type) {    
+
+  init<T>(_ base: T.Type) {
     self.base = String(reflecting: base)
   }
-  
+
   init(any base: Any.Type) {
     self.base = String(reflecting: base)
   }
@@ -22,21 +22,21 @@ struct TypeKey: Hashable {
 @_spi(StackContext)
 @MainActor
 public final class _StackContext: ObservableObject, Equatable {
-  
+
   private struct Destination {
-    
+
     let target: StackLookupStragety
     let _view: (StackPath.ItemBox) -> AnyView
-    
+
     init(target: StackLookupStragety, view: @escaping (StackPath.ItemBox) -> AnyView) {
       self.target = target
       self._view = view
     }
-    
+
     func make(item: StackPath.ItemBox) -> AnyView {
       _view(item)
     }
-    
+
   }
 
   nonisolated public static func == (lhs: _StackContext, rhs: _StackContext) -> Bool {
@@ -66,15 +66,19 @@ public final class _StackContext: ObservableObject, Equatable {
     self.parent = parent
   }
 
+  /**
+   Updates current stacked views with given path - Restoring state
+   */
   func receivePathUpdates(path: StackPath) {
 
     let views = path.values
       .map {
-        makeStackedView(itemBox: $0, linkEnvironmentValues: .init())?.0
+        makeStackedView(itemBox: $0, transition: .disabled, linkEnvironmentValues: .init())?.0
       }
       .compactMap { $0 }
 
-    stackedViews = views
+    self.stackedViews = views
+    self.path = path
 
   }
 
@@ -87,10 +91,10 @@ public final class _StackContext: ObservableObject, Equatable {
     let key = TypeKey(D.self)
 
     guard destinationTable[key] == nil else {
-      Log.debug(
-        .stack,
-        "The destination for \(D.self) is already registered. Currently restricted in overriding."
-      )
+//      Log.debug(
+//        .stack,
+//        "The destination for \(D.self) is already registered. Currently restricted in overriding."
+//      )
       return
     }
 
@@ -100,10 +104,12 @@ public final class _StackContext: ObservableObject, Equatable {
         AnyView(destination(itemBox.value as! D))
       }
     )
+
   }
 
   private func makeStackedView(
     itemBox: StackPath.ItemBox,
+    transition: some StackTransition,
     linkEnvironmentValues: LinkEnvironmentValues
   ) -> (StackedView, StackLookupStragety)? {
 
@@ -112,72 +118,86 @@ public final class _StackContext: ObservableObject, Equatable {
     guard let destination = destinationTable[key] else {
       Log.error(
         .stack,
-        "Failed to push - Stack could not found a destination for value \(itemBox) from \(key)."
+        """
+❌ Failed to push - Stack could not found a destination for value \(itemBox) from \(key).
+Make sure `stackDestination` methods are inside of stack. It won't work if using that from stack like `Stack { ... }.stackDestination`.
+"""
       )
       return nil
     }
 
     let stackedView = StackedView(
       material: .value(itemBox),
-      identifier: .init(id: itemBox.id),
+      identifier: itemBox.stackedViewIdentifier,
       linkEnvironmentValues: linkEnvironmentValues,
-      content: destination.make(item: itemBox)
+      content: destination.make(item: itemBox).modifier(transition.destinationModifier)
     )
-        
+
     return (stackedView, destination.target)
   }
 
   /**
    For value-push
+   Returns nil if push was failed
    */
   @discardableResult
   func push<Value: Hashable>(
     value: Value,
+    transition: some StackTransition,
     linkEnvironmentValues: LinkEnvironmentValues
   ) -> _StackedViewIdentifier? {
-    
-    func _push() -> _StackedViewIdentifier? {
-      
-      guard let view = makeStackedView(itemBox: .init(value), linkEnvironmentValues: linkEnvironmentValues)?.0 else {
+
+    func _push(itemBox: StackPath.ItemBox) -> StackPath.ItemBox? {
+
+      guard
+        let view = makeStackedView(
+          itemBox: itemBox,
+          transition: transition,
+          linkEnvironmentValues: linkEnvironmentValues
+        )?.0
+      else {
+        // failed to push
         return nil
       }
-      
-      // TODO: consider using withAnimation
-      withAnimation(.spring()) {
-        stackedViews.append(view)
-      }
-      
-      return view.id
+
+      stackedViews.append(view)
+
+      return itemBox
     }
-    
-    guard let id = _push() else {
+
+    let proposedItemBox = StackPath.ItemBox(value)
+
+    guard let itemBox = _push(itemBox: proposedItemBox) else {
       return nil
     }
     // FIXME: Use linkEnvironmentValues
-    path.append(value)
-    return id
+    path.append(itemBox: itemBox)
+    return itemBox.stackedViewIdentifier
   }
 
   /*
-   What uses this?
+   From StackLink, associated with destination
    */
   @discardableResult
-  func push(destination: some View, linkEnvironmentValues: LinkEnvironmentValues) -> _StackedViewIdentifier {
+  func push(
+    destination: some View,
+    transition: some StackTransition,
+    linkEnvironmentValues: LinkEnvironmentValues
+  ) -> _StackedViewIdentifier {
+    // TODO: how to validate the desination is already presented
 
     // FIXME: Use linkEnvironmentValues
-    
+
     let identifier = _StackedViewIdentifier(id: UUID().uuidString)
 
     let stackedView = StackedView(
       material: .volatile,
       identifier: identifier,
       linkEnvironmentValues: linkEnvironmentValues,
-      content: destination
+      content: destination.modifier(transition.destinationModifier)
     )
 
-    withAnimation(.spring()) {
-      stackedViews.append(stackedView)
-    }
+    stackedViews.append(stackedView)
 
     return identifier
   }
@@ -185,8 +205,12 @@ public final class _StackContext: ObservableObject, Equatable {
   /**
    For momentary-push
    */
-  func push(binding: Binding<Bool>, destination: some View, linkEnvironmentValues: LinkEnvironmentValues) -> _StackedViewIdentifier {
-    
+  func push(
+    binding: Binding<Bool>,
+    destination: some View,
+    linkEnvironmentValues: LinkEnvironmentValues
+  ) -> _StackedViewIdentifier {
+
     // FIXME: Use linkEnvironmentValues
 
     let identifier = _StackedViewIdentifier(id: UUID().uuidString)
@@ -198,21 +222,19 @@ public final class _StackContext: ObservableObject, Equatable {
       content: destination
     )
 
-    withAnimation(.spring()) {
-      stackedViews.append(stackedView)
-    }
+    stackedViews.append(stackedView)
 
     return identifier
   }
-  
+
   func lookup(strategy: StackLookupStragety) -> _StackContext? {
-    
+
     if strategy.where(identifier) {
       return self
     } else {
       return parent?.lookup(strategy: strategy)
     }
-    
+
   }
 
   /**
@@ -227,13 +249,11 @@ public final class _StackContext: ObservableObject, Equatable {
       },
       perform: { e in
 
+        Log.debug(.stack, "Pop => \(e)")
+
         switch e.material {
-        case .value(let value):
-
-          // sync current path
-          // TODO: O(n * m)? 😩
-          path.values.removeAll(where: { $0 == value })
-
+        case .value:
+          break
         case .moment(let binding):
 
           // turn off is-presenting binding
@@ -244,6 +264,21 @@ public final class _StackContext: ObservableObject, Equatable {
         }
       }
     )
+
+    let newPath = stackedViews.reduce(into: StackPath()) { partialResult, view in
+
+      switch view.material {
+      case .value(let itemBox):
+        partialResult.append(itemBox: itemBox)
+      case .moment:
+        break
+      case .volatile:
+        break
+      }
+
+    }
+
+    path = newPath
 
   }
 
@@ -275,11 +310,19 @@ public struct _StackedViewIdentifier: Hashable {
 
 }
 
-struct _StackContextKey: EnvironmentKey {
+private enum _StackNamespaceIDKey: EnvironmentKey {
+  static var defaultValue: Namespace.ID? { nil }
+}
+
+private enum _StackedViewNamespaceIDKey: EnvironmentKey {
+  static var defaultValue: Namespace.ID? { nil }
+}
+
+private enum _StackContextKey: EnvironmentKey {
   static var defaultValue: _StackContext? { nil }
 }
 
-struct _StackFragmentKey: EnvironmentKey {
+private enum _StackFragmentKey: EnvironmentKey {
   static var defaultValue: _StackedViewIdentifier? { nil }
 }
 
@@ -291,6 +334,14 @@ extension EnvironmentValues {
     set { self[_StackContextKey.self] = newValue }
   }
 
+  /// A namespace provided by stack
+  @_spi(Internal)
+  public var stackNamespaceID: Namespace.ID? {
+    get { self[_StackNamespaceIDKey.self] }
+    set { self[_StackNamespaceIDKey.self] = newValue }
+  }
+
+  /// An identifier for stacked view.
   var stackIdentifier: _StackedViewIdentifier? {
     get { self[_StackFragmentKey.self] }
     set { self[_StackFragmentKey.self] = newValue }

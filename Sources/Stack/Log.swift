@@ -37,5 +37,7 @@ extension OSLog {
   static let environment: OSLog = makeOSLogInDebug {
     OSLog.init(subsystem: "Book", category: "environment")
   }
+
+  static let `stack`: OSLog = makeOSLogInDebug { OSLog.init(subsystem: "stack", category: "default") }
 }
 
