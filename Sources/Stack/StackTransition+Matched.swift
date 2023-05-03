@@ -96,17 +96,7 @@ extension StackTransitions {
           )
 
           .modifier(
-            VelocityDraggingModifier(
-              springParameter: .interpolation(mass: 1, stiffness: 80, damping: 13),
-              handler: .init(onEndDragging: { velocity, offset, size in
-
-                withAnimation(.interpolatingSpring(mass: 1, stiffness: 80, damping: 13)) {
-                  unwindContext?.pop()
-                }
-
-                return .zero
-              })
-            )
+            ContextualPopModifier()
           )
           .matchedGeometryEffect(
             id: "mask:\(identifier)",
@@ -165,30 +155,22 @@ extension StackTransitions {
   }
 }
 
-struct ContextualPopModifier: ViewModifier {
+private struct ContextualPopModifier: ViewModifier {
 
   @Environment(\.stackUnwindContext) private var unwindContext
-
-  @State var size: CGSize = .zero
 
   func body(content: Content) -> some View {
     content
       .modifier(
         VelocityDraggingModifier(
           axis: [.horizontal, .vertical],
-          springParameter: .interpolation(mass: 10.0, stiffness: 200, damping: 100),
+          springParameter: .interpolation(mass: 1, stiffness: 80, damping: 13),
           handler: .init(onEndDragging: { velocity, offset, contentSize in
-
-            print(velocity, offset, contentSize, size)
 
             if abs(velocity.dx) > 50 || abs(offset.width) > (contentSize.width / 2) {
               Task { @MainActor in
                 withAnimation(
-                  .spring(
-                    response: 0.9,
-                    dampingFraction: 1,
-                    blendDuration: 0
-                  )
+                  .interpolatingSpring(mass: 1, stiffness: 80, damping: 13)
                 ) {
                   unwindContext?.pop()
                 }
@@ -200,5 +182,6 @@ struct ContextualPopModifier: ViewModifier {
           })
         )
       )
+
   }
 }
