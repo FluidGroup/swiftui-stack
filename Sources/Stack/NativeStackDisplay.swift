@@ -27,6 +27,7 @@ public struct NativeStackDisplay<Root: View>: View, StackDisplaying {
         view
           .zIndex(1) // https://sarunw.com/posts/how-to-fix-zstack-transition-animation-in-swiftui/
       }
+      .ignoresSafeArea()
 
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)

@@ -11,6 +11,7 @@ extension StackTransition where Self == StackTransitions.Matched {
 }
 
 extension StackTransitions {
+
   public struct Matched: StackTransition {
 
     private struct _LabelModifier: ViewModifier {
@@ -30,33 +31,36 @@ extension StackTransitions {
 
       func body(content: Content) -> some View {
 
-        ZStack {
+        ZStack(alignment: .center) {
           /// expandable shape to make the frame flexible for matched-geometry
           /// it affects the destination.
           Color.clear
           /// Content
           content
+            .opacity(isActive ? 0 : 1)
+            .blur(radius: isActive ? 20 : 0)
         }
-          // for unwind
-          .matchedGeometryEffect(
-            id: "movement:\(identifier)",
-            in: usingNamespace!,
-            properties: [.frame],
-            isSource: false
-          )
-          .matchedGeometryEffect(
-            id: "mask:\(identifier)",
-            in: usingNamespace!,
-            properties: [],
-            isSource: true
-          )
-          // for matching frame
-          .matchedGeometryEffect(
-            id: "frame:\(identifier)",
-            in: usingNamespace!,
-            properties: [.frame],
-            isSource: isActive == false
-          )
+
+        // for unwind
+        .matchedGeometryEffect(
+          id: "movement:\(identifier)",
+          in: usingNamespace!,
+          properties: [.frame],
+          isSource: false
+        )
+        .matchedGeometryEffect(
+          id: "mask:\(identifier)",
+          in: usingNamespace!,
+          properties: [],
+          isSource: true
+        )
+        // for matching frame
+        .matchedGeometryEffect(
+          id: "frame:\(identifier)",
+          in: usingNamespace!,
+          properties: [.frame],
+          isSource: isActive == false
+        )
 
       }
     }
@@ -69,6 +73,8 @@ extension StackTransitions {
       /// available in Stack
       @Environment(\.stackNamespaceID) private var stackNamespaceID
 
+      @State var appeared = false
+
       let specifiedNamespace: Namespace.ID?
 
       let identifier: any Hashable
@@ -79,45 +85,61 @@ extension StackTransitions {
 
       func body(content: Content) -> some View {
 
-        ZStack {
+        ZStack(alignment: .top) {
           /// expandable shape to make the frame flexible for matched-geometry
           Color.clear
 
           /// Content
           content
+            .modifier(ResizableModifier(isEnabled: true))
             // needs for unwind. give matchedGeometryEffect control for frame.
             .frame(minWidth: 0, minHeight: 0, alignment: .top)
         }
-          .transition(
-            AnyTransition.modifier(
-              active: StyleModifier(opacity: 0, blurRadius: 0),
-              identity: .identity
+
+        // for backwards
+        .matchedGeometryEffect(
+          id: "movement:\(identifier)",
+          in: usingNamespace!,
+          properties: [],
+          isSource: true
+        )
+        .transition(
+          AnyTransition.modifier(
+            active: DestinationStyleModifier(
+              opacity: 0,
+              blurRadius: 0
+            ),
+            identity: DestinationStyleModifier(
+              opacity: 1,
+              blurRadius: 0
             )
           )
+        )
+        .blur(radius: appeared ? 0 : 20)
+        .mask(
+          RoundedRectangle(cornerRadius: appeared ? UIScreen.main.displayCornerRadius : 4, style: .continuous).fill(Color.black)
+        )
+        .modifier(
+          ContextualPopModifier()
+        )
+        .matchedGeometryEffect(
+          id: "mask:\(identifier)",
+          in: usingNamespace!,
+          properties: [.frame],
+          isSource: false
+        )
+        .matchedGeometryEffect(
+          id: "frame:\(identifier)",
+          in: usingNamespace!,
+          properties: [.frame],
+          isSource: true
+        )
 
-          // for backwards
-          .matchedGeometryEffect(
-            id: "movement:\(identifier)",
-            in: usingNamespace!,
-            properties: [],
-            isSource: true
-          )
-
-          .modifier(
-            ContextualPopModifier()
-          )
-          .matchedGeometryEffect(
-            id: "mask:\(identifier)",
-            in: usingNamespace!,
-            properties: [.frame],
-            isSource: false
-          )
-          .matchedGeometryEffect(
-            id: "frame:\(identifier)",
-            in: usingNamespace!,
-            properties: [.frame],
-            isSource: true
-          )
+        .onAppear {
+          withAnimation {
+            appeared = true
+          }
+        }
       }
 
     }
@@ -158,6 +180,31 @@ extension StackTransitions {
 
     public var destinationModifier: some ViewModifier {
       _DestinationModifier(specifiedNamespace: specifiedNamespace, identifier: identifier)
+    }
+
+  }
+
+  private struct DestinationStyleModifier: ViewModifier {
+
+    public let opacity: Double
+    public let blurRadius: Double
+
+    public init(
+      opacity: Double = 1,
+      blurRadius: Double = 0
+    ) {
+      self.opacity = opacity
+      self.blurRadius = blurRadius
+    }
+
+    func body(content: Content) -> some View {
+      content
+        .opacity(opacity)
+        .blur(radius: blurRadius)
+    }
+
+    static var identity: Self {
+      .init()
     }
 
   }

@@ -106,3 +106,12 @@ extension EnvironmentValues {
   }
 }
 
+struct RestoreSafeAreaModifier: ViewModifier {
+
+  @Environment(\._safeAreaInsets) var safeAreaInsets
+
+  func body(content: Content) -> some View {
+    content._safeAreaInsets(safeAreaInsets)
+  }
+
+}

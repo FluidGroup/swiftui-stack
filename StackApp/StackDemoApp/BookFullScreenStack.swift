@@ -3,33 +3,113 @@ import SwiftUI
 
 struct BookFullScreenStack: View, PreviewProvider {
   var body: some View {
-    Content()
+    Root()
   }
 
   static var previews: some View {
     Self()
   }
 
-  private struct Content: View {
+  private struct ContentFragment: View {
 
-    let colorScheme = ColorScheme.type1
-
-    enum Node: Hashable, Identifiable {
-      case user(User)
-
-      var id: String {
-        switch self {
-        case .user(let user):
-          return "user_\(user.id)"
-        }
-      }
-
-    }
-
-    @Environment(\.stackUnwindContext) var unwindContext
+    let colorScheme: ColorScheme
 
     @State var users: [Node] = User.generateDummyUsers().map { .user($0) }
     @Namespace var local
+
+    var body: some View {
+
+      LazyVStack(spacing: 16) {
+        //
+        // carousel
+        ScrollView(.horizontal) {
+          LazyHStack(spacing: 8) {
+            ForEach(users) { user in
+              switch user {
+              case .user(let user):
+
+                StackLink(
+                  transition: .matched(identifier: user.id.description + "Carousel", in: local),
+                  value: user
+                ) {
+
+                  CircularCell(colorScheme: colorScheme, user: user)
+
+                }
+
+              }
+            }
+          }
+          .padding(.horizontal, 16)
+        }
+
+        LazyVStack {
+
+          ForEach(users) { user in
+            switch user {
+            case .user(let user):
+
+              StackLink(
+                transition: .matched(identifier: user.id.description + "List", in: local),
+                value: user
+              ) {
+                ListCell(colorScheme: colorScheme, user: user)
+
+              }
+
+            }
+          }
+
+        }
+        .padding(.horizontal, 16)
+
+        LazyVGrid(columns: [.init(.flexible()), .init(.flexible())]) {
+
+          ForEach(users) { user in
+            switch user {
+            case .user(let user):
+
+              StackLink(
+                transition: .matched(identifier: user.id.description + "Grid", in: local),
+                value: user
+              ) {
+                ListCell(colorScheme: colorScheme, user: user)
+
+              }
+
+            }
+          }
+
+        }
+        .padding(.horizontal, 16)
+
+      }
+      .stackDestination(
+        for: User.self,
+        destination: { user in
+          Detail(user: user, colorScheme: .takeOne(except: colorScheme))
+        }
+      )
+    }
+  }
+
+  enum Node: Hashable, Identifiable {
+    case user(User)
+
+    var id: String {
+      switch self {
+      case .user(let user):
+        return "user_\(user.id)"
+      }
+    }
+
+  }
+
+  private struct Root: View {
+
+    let colorScheme = ColorScheme.type1
+
+    @Environment(\.stackUnwindContext) var unwindContext
 
     var body: some View {
       ZStack {
@@ -40,83 +120,13 @@ struct BookFullScreenStack: View, PreviewProvider {
         Stack {
 
           ScrollView {
-
-            StackUnwindLink(target: .specific(unwindContext)) {
-              Text("Back to Menu")
-            }
-
-            LazyVStack(spacing: 16) {
-//
-              // carousel
-              ScrollView(.horizontal) {
-                LazyHStack(spacing: 8) {
-                  ForEach(users) { user in
-                    switch user {
-                    case .user(let user):
-
-                      StackLink(
-                        transition: .matched(identifier: user.id.description + "Carousel", in: local),
-                        value: user
-                      ) {
-
-                        CircularCell(colorScheme: colorScheme, user: user)
-
-                      }
-
-                    }
-                  }
-                }
-                .padding(.horizontal, 16)
+            VStack {
+              StackUnwindLink(target: .specific(unwindContext)) {
+                Text("back to menu")
               }
-
-              LazyVStack {
-
-                ForEach(users) { user in
-                  switch user {
-                  case .user(let user):
-
-                    StackLink(
-                      transition: .matched(identifier: user.id.description + "List", in: local),
-                      value: user
-                    ) {
-                      ListCell(colorScheme: colorScheme, user: user)
-
-                    }
-
-                  }
-                }
-
-              }
-              .padding(.horizontal, 16)
-
-              LazyVGrid(columns: [.init(.flexible()), .init(.flexible())]) {
-
-                ForEach(users) { user in
-                  switch user {
-                  case .user(let user):
-
-                    StackLink(
-                      transition: .matched(identifier: user.id.description + "Grid", in: local),
-                      value: user
-                    ) {
-                      ListCell(colorScheme: colorScheme, user: user)
-
-                    }
-
-                  }
-                }
-
-              }
-              .padding(.horizontal, 16)
-
+              ContentFragment(colorScheme: .type1)
             }
           }
-          .stackDestination(
-            for: User.self,
-            destination: { user in
-              Detail(user: user)
-            }
-          )
 
         }
 
@@ -208,7 +218,7 @@ struct BookFullScreenStack: View, PreviewProvider {
   struct Detail: View {
 
     let user: User
-    var colorScheme = ColorScheme.type2
+    var colorScheme: ColorScheme
 
     @Namespace var local
 
@@ -236,12 +246,14 @@ struct BookFullScreenStack: View, PreviewProvider {
             StackLink(transition: .matched(identifier: user.id, in: local)) {
               Detail(user: user, colorScheme: .takeOne(except: colorScheme))
             } label: {
-              ListCell(colorScheme: .type4, user: user)
+              ListCell(colorScheme: colorScheme, user: user)
             }
 
             StackUnwindLink {
               Text("Back")
             }
+
+            ContentFragment(colorScheme: colorScheme)
           }
         }
         .padding(10)

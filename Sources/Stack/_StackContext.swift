@@ -130,7 +130,9 @@ Make sure `stackDestination` methods are inside of stack. It won't work if using
       material: .value(itemBox),
       identifier: itemBox.stackedViewIdentifier,
       linkEnvironmentValues: linkEnvironmentValues,
-      content: destination.make(item: itemBox).modifier(transition.destinationModifier)
+      content: destination.make(item: itemBox)
+        .modifier(RestoreSafeAreaModifier())
+        .modifier(transition.destinationModifier)
     )
 
     return (stackedView, destination.target)
@@ -194,7 +196,9 @@ Make sure `stackDestination` methods are inside of stack. It won't work if using
       material: .volatile,
       identifier: identifier,
       linkEnvironmentValues: linkEnvironmentValues,
-      content: destination.modifier(transition.destinationModifier)
+      content: destination
+        .modifier(RestoreSafeAreaModifier())
+        .modifier(transition.destinationModifier)
     )
 
     stackedViews.append(stackedView)
