@@ -31,6 +31,8 @@
 		4BC6C24B28E4B8120081E217 /* BookStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC6C24A28E4B8120081E217 /* BookStack.swift */; };
 		4BC6C24D28E4B83B0081E217 /* StatefulPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC6C24C28E4B83B0081E217 /* StatefulPage.swift */; };
 		4BCFDBE7290FC271004D58D3 /* BookStack_Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BCFDBE6290FC271004D58D3 /* BookStack_Grid.swift */; };
+		4BDA70642A0382F5001AC9AF /* IGTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDA70632A0382F5001AC9AF /* IGTabView.swift */; };
+		4BDA70662A0382FE001AC9AF /* IGAppRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDA70652A0382FE001AC9AF /* IGAppRoot.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +79,8 @@
 		4BC6C24A28E4B8120081E217 /* BookStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookStack.swift; sourceTree = "<group>"; };
 		4BC6C24C28E4B83B0081E217 /* StatefulPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatefulPage.swift; sourceTree = "<group>"; };
 		4BCFDBE6290FC271004D58D3 /* BookStack_Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookStack_Grid.swift; sourceTree = "<group>"; };
+		4BDA70632A0382F5001AC9AF /* IGTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGTabView.swift; sourceTree = "<group>"; };
+		4BDA70652A0382FE001AC9AF /* IGAppRoot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGAppRoot.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +137,7 @@
 		4B2A923A28E4B6F9006624AD /* StackDemoApp */ = {
 			isa = PBXGroup;
 			children = (
+				4BDA70622A0382D3001AC9AF /* Instagram */,
 				4B15FAB729FFED89000442FA /* BookMatchedShape.swift */,
 				4B29A6FC29FC5C31003CCC00 /* BookFullScreenStack.swift */,
 				4B2A923B28E4B6F9006624AD /* AppDelegate.swift */,
@@ -185,6 +190,15 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4BDA70622A0382D3001AC9AF /* Instagram */ = {
+			isa = PBXGroup;
+			children = (
+				4BDA70652A0382FE001AC9AF /* IGAppRoot.swift */,
+				4BDA70632A0382F5001AC9AF /* IGTabView.swift */,
+			);
+			path = Instagram;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -332,12 +346,14 @@
 				4BC6C24B28E4B8120081E217 /* BookStack.swift in Sources */,
 				4B29A6FF29FC5CA1003CCC00 /* Colors.swift in Sources */,
 				4B215AB4290C305600181FE1 /* BookAdditionalSafeArea.swift in Sources */,
+				4BDA70662A0382FE001AC9AF /* IGAppRoot.swift in Sources */,
 				4B2A923E28E4B6F9006624AD /* ContentView.swift in Sources */,
 				4B77AA5F28E4BF0C006307DA /* Views.swift in Sources */,
 				4B77AA6328E54FE9006307DA /* BookNavigationStack.swift in Sources */,
 				4B77AA5D28E4BEA2006307DA /* Model.swift in Sources */,
 				4BB2F1BE28E9F748002CC534 /* BookFluidStack.swift in Sources */,
 				4BC6C24D28E4B83B0081E217 /* StatefulPage.swift in Sources */,
+				4BDA70642A0382F5001AC9AF /* IGTabView.swift in Sources */,
 				4B2A923C28E4B6F9006624AD /* AppDelegate.swift in Sources */,
 				4B29A6FD29FC5C31003CCC00 /* BookFullScreenStack.swift in Sources */,
 				4B77AA6128E4D1F9006307DA /* BookNesting.swift in Sources */,

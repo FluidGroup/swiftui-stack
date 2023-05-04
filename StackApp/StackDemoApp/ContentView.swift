@@ -93,6 +93,12 @@ struct ContentView: View {
           } label: {
             Text("Matched Shape")
           }
+
+          StackLink {
+            IGAppRoot()
+          } label: {
+            Text("Instagram")
+          }
         } header: {
           Text("Playgrounds")
         }

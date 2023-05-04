@@ -40,43 +40,76 @@ struct BookFullScreenStack: View, PreviewProvider {
         Stack {
 
           ScrollView {
-            LazyVStack {
 
-              StackUnwindLink(target: .specific(unwindContext)) {
-                Text("Back to Menu")
-              }
-
-              ForEach(users) { user in
-                switch user {
-                case .user(let user):
-
-                  StackLink(
-                    transition: .matched(identifier: user.id, in: local),
-                    value: user
-                  ) {
-                    Cell(colorScheme: .type1, user: user)
-
-                  }
-                  .padding(.horizontal, 16)
-                }
-              }
-
-              //              ForEach(users) { user in
-              //                switch user {
-              //                case .user(let user):
-              //
-              //                  StackLink(
-              //                    transition: .slide,
-              //                    value: user
-              //                  ) {
-              //                    Cell(colorScheme: colorScheme, user: user)
-              //                  }
-              //                  .padding(.horizontal, 16)
-              //
-              //                }
-              //              }
+            StackUnwindLink(target: .specific(unwindContext)) {
+              Text("Back to Menu")
             }
 
+            LazyVStack(spacing: 16) {
+//
+              // carousel
+              ScrollView(.horizontal) {
+                LazyHStack(spacing: 8) {
+                  ForEach(users) { user in
+                    switch user {
+                    case .user(let user):
+
+                      StackLink(
+                        transition: .matched(identifier: user.id.description + "Carousel", in: local),
+                        value: user
+                      ) {
+
+                        CircularCell(colorScheme: colorScheme, user: user)
+
+                      }
+
+                    }
+                  }
+                }
+                .padding(.horizontal, 16)
+              }
+
+              LazyVStack {
+
+                ForEach(users) { user in
+                  switch user {
+                  case .user(let user):
+
+                    StackLink(
+                      transition: .matched(identifier: user.id.description + "List", in: local),
+                      value: user
+                    ) {
+                      ListCell(colorScheme: colorScheme, user: user)
+
+                    }
+
+                  }
+                }
+
+              }
+              .padding(.horizontal, 16)
+
+              LazyVGrid(columns: [.init(.flexible()), .init(.flexible())]) {
+
+                ForEach(users) { user in
+                  switch user {
+                  case .user(let user):
+
+                    StackLink(
+                      transition: .matched(identifier: user.id.description + "Grid", in: local),
+                      value: user
+                    ) {
+                      ListCell(colorScheme: colorScheme, user: user)
+
+                    }
+
+                  }
+                }
+
+              }
+              .padding(.horizontal, 16)
+
+            }
           }
           .stackDestination(
             for: User.self,
@@ -91,7 +124,46 @@ struct BookFullScreenStack: View, PreviewProvider {
     }
   }
 
-  struct Cell: View {
+  struct CircularCell: View {
+    let colorScheme: ColorScheme
+    let user: User
+
+    var body: some View {
+
+      VStack(alignment: .leading) {
+        VStack(spacing: 12) {
+          Circle()
+            .fill(Color.init(white: 0.5, opacity: 0.3))
+            .frame(
+              width: 40,
+              height: 40,
+              alignment: .center
+            )
+
+          Text(user.name)
+            .font(.system(.body, design: .default))
+            .foregroundColor(colorScheme.cardHeadline)
+
+          Text(user.age.description)
+            .foregroundColor(colorScheme.cardParagraph)
+
+        }
+      }
+      .padding(EdgeInsets(top: 6, leading: 12, bottom: 6, trailing: 12))
+      .background(
+        RoundedRectangle(
+          cornerRadius: 8,
+          style: .continuous
+        )
+        .fill(
+          colorScheme.cardBackground
+        )
+      )
+
+    }
+  }
+
+  struct ListCell: View {
 
     let colorScheme: ColorScheme
     let user: User
@@ -164,7 +236,7 @@ struct BookFullScreenStack: View, PreviewProvider {
             StackLink(transition: .matched(identifier: user.id, in: local)) {
               Detail(user: user, colorScheme: .takeOne(except: colorScheme))
             } label: {
-              Cell(colorScheme: .type4, user: user)
+              ListCell(colorScheme: .type4, user: user)
             }
 
             StackUnwindLink {
