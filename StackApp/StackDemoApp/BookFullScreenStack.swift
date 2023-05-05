@@ -14,7 +14,16 @@ struct BookFullScreenStack: View, PreviewProvider {
 
     let colorScheme: ColorScheme
 
-    @State var users: [Node] = User.generateDummyUsers().map { .user($0) }
+    let users: [Node] = User.generateDummyUsers().map { .user($0) }
+
+    let dataForSlideTransition = Post(
+      id: "slide",
+      artworkImageURL: nil,
+      title: "Push style transition",
+      subTitle: "Supports gesture to pop",
+      body: ""
+    )
+
     @Namespace var local
 
     var body: some View {
@@ -42,6 +51,11 @@ struct BookFullScreenStack: View, PreviewProvider {
           }
           .padding(.horizontal, 16)
         }
+
+        StackLink(transition: .slide, value: Hashed(dataForSlideTransition, id: \.id)) {
+          PostCell(colorScheme: colorScheme, post: dataForSlideTransition)
+        }
+        .padding(.horizontal, 16)
 
         LazyVStack {
 
@@ -84,12 +98,6 @@ struct BookFullScreenStack: View, PreviewProvider {
         .padding(.horizontal, 16)
 
       }
-      .stackDestination(
-        for: User.self,
-        destination: { user in
-          Detail(user: user, colorScheme: .takeOne(except: colorScheme))
-        }
-      )
     }
   }
 
@@ -126,6 +134,15 @@ struct BookFullScreenStack: View, PreviewProvider {
               }
               ContentFragment(colorScheme: .type1)
             }
+          }
+          .stackDestination(
+            for: User.self,
+            destination: { user in
+              Detail(user: user, colorScheme: .takeOne(except: colorScheme))
+            }
+          )
+          .stackDestination(for: Hashed<Post, String>.self) { data in
+            PostDetail(colorScheme: .takeOne(except: colorScheme), post: data.value)
           }
 
         }
@@ -259,6 +276,124 @@ struct BookFullScreenStack: View, PreviewProvider {
         .padding(10)
       }
 
+    }
+
+  }
+
+  struct Hashed<Value: Equatable, Key: Hashable>: Hashable {
+
+    let idKeyPath: KeyPath<Value, Key>
+    let value: Value
+
+    func hash(into hasher: inout Hasher) {
+      value[keyPath: idKeyPath].hash(into: &hasher)
+    }
+
+    init(_ value: Value, id: KeyPath<Value, Key>) {
+      self.value = value
+      self.idKeyPath = id
+    }
+
+  }
+
+  struct Post: Identifiable, Equatable {
+
+    let id: String
+
+    let artworkImageURL: URL?
+    let title: String
+    let subTitle: String
+    let body: String
+
+  }
+
+  struct PostCell: View {
+
+    let colorScheme: ColorScheme
+    let post: Post
+
+    var body: some View {
+
+      VStack(alignment: .leading) {
+        HStack(spacing: 12) {
+          RoundedRectangle(cornerRadius: 8, style: .continuous)
+            .fill(colorScheme.background)
+            .frame(
+              width: 40,
+              height: 40,
+              alignment: .center
+            )
+
+          VStack(alignment: .leading) {
+            Text(post.title)
+              .font(.system(.body, design: .default))
+              .foregroundColor(colorScheme.cardHeadline)
+
+            Text(post.subTitle)
+              .foregroundColor(colorScheme.cardParagraph)
+          }
+
+          Spacer()
+        }
+      }
+      .padding(EdgeInsets(top: 6, leading: 12, bottom: 6, trailing: 12))
+      .background(
+        RoundedRectangle(
+          cornerRadius: 8,
+          style: .continuous
+        )
+        .fill(
+          colorScheme.cardBackground
+        )
+      )
+    }
+
+  }
+
+  struct PostDetail: View {
+
+    let colorScheme: ColorScheme
+    let post: Post
+
+    var body: some View {
+      ZStack {
+
+        StackBackground {
+          colorScheme.background
+        }
+
+        ScrollView {
+          VStack {
+
+            Text(post.title)
+              .font(.system(.body, design: .default))
+              .foregroundColor(colorScheme.paragraph)
+
+            Text(post.subTitle)
+              .font(.system(.body, design: .default))
+              .foregroundColor(colorScheme.paragraph)
+
+            Text(post.body)
+              .font(.system(.body, design: .default))
+              .foregroundColor(colorScheme.paragraph)
+
+            Spacer()
+
+            StackUnwindLink {
+              Text("Back")
+            }
+
+            Text("Others")
+              .font(.title2)
+              .foregroundColor(colorScheme.headline)
+              .relative(horizontal: .leading)
+              .padding(.horizontal, 16)
+
+            ContentFragment(colorScheme: colorScheme)
+          }
+        }
+        .padding(10)
+      }
     }
 
   }

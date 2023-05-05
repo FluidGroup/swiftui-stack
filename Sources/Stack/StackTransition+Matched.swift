@@ -91,7 +91,7 @@ extension StackTransitions {
 
           /// Content
           content
-            .modifier(ResizableModifier(isEnabled: true))
+//            .modifier(ResizableModifier(isEnabled: true))
             // needs for unwind. give matchedGeometryEffect control for frame.
             .frame(minWidth: 0, minHeight: 0, alignment: .top)
         }
@@ -218,7 +218,7 @@ private struct ContextualPopModifier: ViewModifier {
     content
       .modifier(
         VelocityDraggingModifier(
-          minimumDistance: 16,
+          minimumDistance: 1,
           axis: [.horizontal, .vertical],
           springParameter: .interpolation(mass: 1, stiffness: 80, damping: 13),
           gestureMode: .highPriority,

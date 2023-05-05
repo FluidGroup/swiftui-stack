@@ -35,8 +35,10 @@ extension StackTransitions {
           )
           .modifier(
             VelocityDraggingModifier(
+              minimumDistance: 1,
               axis: .horizontal,
               horizontalBoundary: .init(min: 0, max: .infinity, bandLength: 0),
+              gestureMode: .highPriority,
               handler: .init(onEndDragging: { velocity, offset, contentSize in
 
                 print(velocity, offset, contentSize)
