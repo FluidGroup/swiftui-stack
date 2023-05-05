@@ -57,7 +57,7 @@ extension StackTransitions {
           )
           .modifier(
             VelocityDraggingModifier(
-              minimumDistance: 1,
+              minimumDistance: 20,
               axis: .horizontal,
               horizontalBoundary: .init(min: 0, max: .infinity, bandLength: 0),
               springParameter: .interpolation(mass: 1.0, stiffness: 500, damping: 500),

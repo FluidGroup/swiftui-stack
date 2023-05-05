@@ -196,7 +196,7 @@ private struct ContextualPopModifier: ViewModifier {
     content
       .modifier(
         VelocityDraggingModifier(
-          minimumDistance: 1,
+          minimumDistance: 20,
           axis: [.horizontal, .vertical],
           springParameter: .interpolation(mass: 1, stiffness: 80, damping: 13),
           gestureMode: .highPriority,
