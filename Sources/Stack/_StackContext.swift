@@ -241,6 +241,24 @@ Make sure `stackDestination` methods are inside of stack. It won't work if using
 
   }
 
+  public func popAll() {
+
+    stackedViews.removeAll { e in
+      switch e.material {
+      case .value:
+        break
+      case .moment(let binding):
+        // turn off is-presenting binding
+        binding.wrappedValue = false
+      case .volatile:
+        break
+      }
+      return true
+    }
+
+    path = .init()
+  }
+
   /**
    Pops a view associated with given identifier.
    Turns off the flag of presenting if its Binding presents.
