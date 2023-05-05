@@ -4,7 +4,7 @@ import SwiftUISupport
 
 extension StackTransition where Self == StackTransitions.Matched {
 
-  public static func matched(identifier: any Hashable, in namespace: Namespace.ID? = nil) -> Self {
+  public static func matched(identifier: some Hashable, in namespace: Namespace.ID? = nil) -> Self {
     .init(identifier: identifier, in: namespace)
   }
 
@@ -23,7 +23,7 @@ extension StackTransitions {
 
       let specifiedNamespace: Namespace.ID?
 
-      let identifier: any Hashable
+      let identifier: AnyHashable
 
       private var usingNamespace: Namespace.ID? {
         specifiedNamespace ?? stackNamespaceID
@@ -43,20 +43,20 @@ extension StackTransitions {
 
         // for unwind
         .matchedGeometryEffect(
-          id: "movement:\(identifier)",
+          id: "movement".concat(identifier),
           in: usingNamespace!,
           properties: [.frame],
           isSource: false
         )
         .matchedGeometryEffect(
-          id: "mask:\(identifier)",
+          id: "mask".concat(identifier),
           in: usingNamespace!,
           properties: [],
           isSource: true
         )
         // for matching frame
         .matchedGeometryEffect(
-          id: "frame:\(identifier)",
+          id: "frame".concat(identifier),
           in: usingNamespace!,
           properties: [.frame],
           isSource: isActive == false
@@ -77,7 +77,7 @@ extension StackTransitions {
 
       let specifiedNamespace: Namespace.ID?
 
-      let identifier: any Hashable
+      let identifier: AnyHashable
 
       private var usingNamespace: Namespace.ID? {
         specifiedNamespace ?? stackNamespaceID
@@ -98,7 +98,7 @@ extension StackTransitions {
 
         // for backwards
         .matchedGeometryEffect(
-          id: "movement:\(identifier)",
+          id: "movement".concat(identifier),
           in: usingNamespace!,
           properties: [],
           isSource: true
@@ -123,13 +123,13 @@ extension StackTransitions {
           ContextualPopModifier()
         )
         .matchedGeometryEffect(
-          id: "mask:\(identifier)",
+          id: "mask".concat(identifier),
           in: usingNamespace!,
           properties: [.frame],
           isSource: false
         )
         .matchedGeometryEffect(
-          id: "frame:\(identifier)",
+          id: "frame".concat(identifier),
           in: usingNamespace!,
           properties: [.frame],
           isSource: true
@@ -144,41 +144,19 @@ extension StackTransitions {
 
     }
 
-    private struct ContainerView<Content: View>: View {
-
-      private let content: Content
-      private let namespace: Namespace.ID
-      @Namespace var local
-
-      init(content: Content, namespace: Namespace.ID) {
-        self.content = content
-        self.namespace = namespace
-      }
-
-      var body: some View {
-        ZStack {
-          Color.purple
-          content
-            .frame(minWidth: 0, minHeight: 0, alignment: .top)
-        }
-
-      }
-
-    }
-
-    public let identifier: any Hashable
+    public let identifier: AnyHashable
     public let specifiedNamespace: Namespace.ID?
 
-    init(identifier: any Hashable, in namespace: Namespace.ID?) {
+    init(identifier: AnyHashable, in namespace: Namespace.ID?) {
       self.identifier = identifier
       self.specifiedNamespace = namespace
     }
 
-    public var labelModifier: some ViewModifier {
+    public func labelModifier() -> some ViewModifier {
       _LabelModifier(specifiedNamespace: specifiedNamespace, identifier: identifier)
     }
 
-    public var destinationModifier: some ViewModifier {
+    public func destinationModifier(context: DestinationContext) -> some ViewModifier {
       _DestinationModifier(specifiedNamespace: specifiedNamespace, identifier: identifier)
     }
 

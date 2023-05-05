@@ -11,13 +11,8 @@ let package = Package(
       name: "Stack",
       targets: ["Stack"]
     ),
-    .library(
-      name: "FluidStack",
-      targets: ["FluidStack"]
-    )
   ],
   dependencies: [
-    .package(url: "https://github.com/FluidGroup/FluidInterfaceKit.git", from: "0.5.0"),
     .package(url: "https://github.com/FluidGroup/swiftui-GestureVelocity", from: "0.1.0"),
 //    .package(url: "https://github.com/FluidGroup/swiftui-support", from: "0.3.0"),
     .package(url: "https://github.com/FluidGroup/swiftui-support", branch: "main"),
@@ -29,13 +24,6 @@ let package = Package(
       dependencies: [
         .product(name: "GestureVelocity", package: "swiftui-GestureVelocity"),
         .product(name: "SwiftUISupport", package: "swiftui-support"),
-      ]
-    ),
-    .target(
-      name: "FluidStack",
-      dependencies: [
-        "Stack",
-        .product(name: "FluidInterfaceKit", package: "FluidInterfaceKit"),
       ]
     ),
     .testTarget(

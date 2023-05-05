@@ -23,11 +23,33 @@ extension StackTransitions {
 
     private struct _DestinationModifier: ViewModifier {
 
+      let context: DestinationContext
+
+      @Environment(\.stackNamespaceID) var stackNamespace
+
       /// available in Stack
       @Environment(\.stackUnwindContext) var unwindContext
 
+      private func effectIdentifier() -> MatchedGeometryEffectIdentifiers.EdgeTrailing {
+        switch context.backgroundContent {
+        case .root:
+          return .init(content: .root)
+        case .stacked(let id):
+          return .init(content: .stacked(id))
+        }
+      }
+
+
       func body(content: Content) -> some View {
+
         content
+          .matchedGeometryEffect(
+            id: effectIdentifier(),
+            in: stackNamespace!,
+            properties: .frame,
+            anchor: .leading,
+            isSource: true
+          )
           .transition(
             .move(edge: .trailing).animation(
               .spring(response: 0.6, dampingFraction: 1, blendDuration: 0)
@@ -38,6 +60,7 @@ extension StackTransitions {
               minimumDistance: 1,
               axis: .horizontal,
               horizontalBoundary: .init(min: 0, max: .infinity, bandLength: 0),
+              springParameter: .interpolation(mass: 1.0, stiffness: 500, damping: 500),
               gestureMode: .highPriority,
               handler: .init(onEndDragging: { velocity, offset, contentSize in
 
@@ -61,12 +84,12 @@ extension StackTransitions {
       }
     }
 
-    public var labelModifier: some ViewModifier {
+    public func labelModifier() -> some ViewModifier {
       _LabelModifier()
     }
 
-    public var destinationModifier: some ViewModifier {
-      _DestinationModifier()
+    public func destinationModifier(context: DestinationContext) -> some ViewModifier { 
+      _DestinationModifier(context: context)
     }
   }
 

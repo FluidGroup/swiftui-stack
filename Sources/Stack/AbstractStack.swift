@@ -1,20 +1,19 @@
 import SwiftUI
-/**
 
- A view that receives a root view and views for displaying.
- It's an abstract view that uses a concrete view to display.
- You may use ``Stack`` for basic stacking.
-
- - TODO:
- - [x] Path
- - [x] momentary presentation
- - [ ] Nesting support
-
- memo:
- https://www.avanderlee.com/swiftui/navigationlink-programmatically-binding/
- */
+/// A view that receives a root view and views for displaying.
+/// It's an abstract view that uses a concrete view to display.
+/// You may use ``Stack`` for basic stacking.
+///
+/// - TODO:
+/// - [x] Path
+/// - [x] momentary presentation
+/// - [ ] Nesting support
+///
+/// memo:
+/// https://www.avanderlee.com/swiftui/navigationlink-programmatically-binding/
 @MainActor
-public struct AbstractStack<Data, Root: View, Target: StackDisplaying>: View where Target.Root == Root {
+public struct AbstractStack<Data, Root: View, Target: StackDisplaying>: View
+where Target.Root == ModifiedContent<Root, AbstractStackRootModifier> {
 
   @StateObject private var context: _StackContext
 
@@ -56,7 +55,7 @@ public struct AbstractStack<Data, Root: View, Target: StackDisplaying>: View whe
 
       GeometryReader { proxy in
         Target(
-          root: root,
+          root: root.modifier(AbstractStackRootModifier(namespace: namespace)),
           stackedViews: context.stackedViews
         )
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -66,21 +65,28 @@ public struct AbstractStack<Data, Root: View, Target: StackDisplaying>: View whe
         .environment(\.stackNamespaceID, namespace)
         // workaround
         .environmentObject(context)
-        .onReceive(context.$path, perform: { path in
-          Log.debug(.stack, "Receive \(path)")
+        .onReceive(
+          context.$path,
+          perform: { path in
+            Log.debug(.stack, "Updated Path : \(path)")
 
-          pathBinding?.wrappedValue = path
-          self.currentPath = path
-        })
-        .onChangeWithPrevious(of: pathBinding?.wrappedValue, emitsInitial: true, perform: { path, _ in
+            pathBinding?.wrappedValue = path
+            self.currentPath = path
+          }
+        )
+        .onChangeWithPrevious(
+          of: pathBinding?.wrappedValue,
+          emitsInitial: true,
+          perform: { path, _ in
 
-          /*
+            /*
            Updates current stacking with path changes.
            */
-          guard let path, path != self.currentPath else { return }
+            guard let path, path != self.currentPath else { return }
 
-          context.receivePathUpdates(path: path)
-        })
+            context.receivePathUpdates(path: path)
+          }
+        )
         .onChangeWithPrevious(of: parentContext, emitsInitial: true) { parent, _ in
           context.set(parent: parent)
         }
@@ -91,6 +97,29 @@ public struct AbstractStack<Data, Root: View, Target: StackDisplaying>: View whe
 
   }
 
+}
+
+public struct AbstractStackRootModifier: ViewModifier {
+
+  let namespace: Namespace.ID
+
+  public func body(content: Content) -> some View {
+    ZStack {
+      content
+        // as ignoring safe-area above, retores the safe-area
+        .modifier(RestoreSafeAreaModifier())
+    }
+    // bit tricky - for animations to run as fullscreen.
+    .ignoresSafeArea()
+    // built-in matched geometry effect, some transitions may use.
+    .matchedGeometryEffect(
+      id: MatchedGeometryEffectIdentifiers.EdgeTrailing(content: .root),
+      in: namespace,
+      anchor: .trailing,
+      isSource: false
+    )
+
+  }
 }
 
 private enum SafeAreaInsetsKey: EnvironmentKey {

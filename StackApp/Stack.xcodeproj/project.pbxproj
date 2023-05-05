@@ -25,8 +25,6 @@
 		4B77AA5F28E4BF0C006307DA /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B77AA5E28E4BF0C006307DA /* Views.swift */; };
 		4B77AA6128E4D1F9006307DA /* BookNesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B77AA6028E4D1F9006307DA /* BookNesting.swift */; };
 		4B77AA6328E54FE9006307DA /* BookNavigationStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B77AA6228E54FE9006307DA /* BookNavigationStack.swift */; };
-		4BB2F1BC28E995A3002CC534 /* FluidStack in Frameworks */ = {isa = PBXBuildFile; productRef = 4BB2F1BB28E995A3002CC534 /* FluidStack */; };
-		4BB2F1BE28E9F748002CC534 /* BookFluidStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB2F1BD28E9F748002CC534 /* BookFluidStack.swift */; };
 		4BC6C24928E4B7490081E217 /* Stack in Frameworks */ = {isa = PBXBuildFile; productRef = 4BC6C24828E4B7490081E217 /* Stack */; };
 		4BC6C24B28E4B8120081E217 /* BookStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC6C24A28E4B8120081E217 /* BookStack.swift */; };
 		4BC6C24D28E4B83B0081E217 /* StatefulPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC6C24C28E4B83B0081E217 /* StatefulPage.swift */; };
@@ -75,7 +73,6 @@
 		4B77AA6028E4D1F9006307DA /* BookNesting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookNesting.swift; sourceTree = "<group>"; };
 		4B77AA6228E54FE9006307DA /* BookNavigationStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookNavigationStack.swift; sourceTree = "<group>"; };
 		4B92D47E2A0267D80053760B /* swiftui-support */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "swiftui-support"; path = "../submodules/swiftui-support"; sourceTree = "<group>"; };
-		4BB2F1BD28E9F748002CC534 /* BookFluidStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookFluidStack.swift; sourceTree = "<group>"; };
 		4BC6C24A28E4B8120081E217 /* BookStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookStack.swift; sourceTree = "<group>"; };
 		4BC6C24C28E4B83B0081E217 /* StatefulPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatefulPage.swift; sourceTree = "<group>"; };
 		4BCFDBE6290FC271004D58D3 /* BookStack_Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookStack_Grid.swift; sourceTree = "<group>"; };
@@ -89,7 +86,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B6D472329FC2A5900658A0F /* swiftui-color in Frameworks */,
-				4BB2F1BC28E995A3002CC534 /* FluidStack in Frameworks */,
 				4BC6C24928E4B7490081E217 /* Stack in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -153,7 +149,6 @@
 				4B77AA5E28E4BF0C006307DA /* Views.swift */,
 				4B77AA6028E4D1F9006307DA /* BookNesting.swift */,
 				4B215AB3290C305600181FE1 /* BookAdditionalSafeArea.swift */,
-				4BB2F1BD28E9F748002CC534 /* BookFluidStack.swift */,
 				4B51F640290ACAAE0015CC21 /* Launch Screen.storyboard */,
 				4B29A6FE29FC5CA1003CCC00 /* Colors.swift */,
 			);
@@ -219,7 +214,6 @@
 			name = StackDemoApp;
 			packageProductDependencies = (
 				4BC6C24828E4B7490081E217 /* Stack */,
-				4BB2F1BB28E995A3002CC534 /* FluidStack */,
 				4B6D472229FC2A5900658A0F /* swiftui-color */,
 			);
 			productName = StackDemoApp;
@@ -351,7 +345,6 @@
 				4B77AA5F28E4BF0C006307DA /* Views.swift in Sources */,
 				4B77AA6328E54FE9006307DA /* BookNavigationStack.swift in Sources */,
 				4B77AA5D28E4BEA2006307DA /* Model.swift in Sources */,
-				4BB2F1BE28E9F748002CC534 /* BookFluidStack.swift in Sources */,
 				4BC6C24D28E4B83B0081E217 /* StatefulPage.swift in Sources */,
 				4BDA70642A0382F5001AC9AF /* IGTabView.swift in Sources */,
 				4B2A923C28E4B6F9006624AD /* AppDelegate.swift in Sources */,
@@ -698,10 +691,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4B6D472129FC2A5900658A0F /* XCRemoteSwiftPackageReference "swiftui-color" */;
 			productName = "swiftui-color";
-		};
-		4BB2F1BB28E995A3002CC534 /* FluidStack */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = FluidStack;
 		};
 		4BC6C24828E4B7490081E217 /* Stack */ = {
 			isa = XCSwiftPackageProductDependency;

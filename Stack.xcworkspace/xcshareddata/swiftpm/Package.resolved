@@ -1,57 +1,21 @@
 {
   "pins" : [
     {
-      "identity" : "fluidinterfacekit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/FluidGroup/FluidInterfaceKit.git",
-      "state" : {
-        "revision" : "a7c1d54f66ebd191a1e49bbb781e41def1d21e64",
-        "version" : "0.7.1"
-      }
-    },
-    {
-      "identity" : "geometrykit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/FluidGroup/GeometryKit",
-      "state" : {
-        "revision" : "6cf96dcb220e1b612ba57a717234cbdbf877c009",
-        "version" : "1.1.0"
-      }
-    },
-    {
-      "identity" : "matchedtransition",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/FluidGroup/MatchedTransition",
-      "state" : {
-        "revision" : "bf97b6f5e133a6ffbc34ac7ca36f355eec84d3af",
-        "version" : "1.3.0"
-      }
-    },
-    {
-      "identity" : "resultbuilderkit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/FluidGroup/ResultBuilderKit.git",
-      "state" : {
-        "revision" : "34aa57fcee5ec3ee0f368b05cb53c7919c188ab2",
-        "version" : "1.3.0"
-      }
-    },
-    {
-      "identity" : "rideau",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/FluidGroup/Rideau.git",
-      "state" : {
-        "revision" : "f803dc498fe79da483173daf3b04a2a23ef1a9c2",
-        "version" : "2.2.0"
-      }
-    },
-    {
       "identity" : "swiftui-color",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/FluidGroup/swiftui-color",
       "state" : {
         "revision" : "c55af612894b03c876f4fc1601e7c1afb843bcd8",
         "version" : "1.0.0"
+      }
+    },
+    {
+      "identity" : "swiftui-gesturevelocity",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/muukii/swiftui-GestureVelocity",
+      "state" : {
+        "revision" : "dd95ef32f5bb41ff454ca09209cd037cdd3bca8d",
+        "version" : "0.1.0"
       }
     },
     {

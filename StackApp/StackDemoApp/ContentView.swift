@@ -106,12 +106,6 @@ struct ContentView: View {
         Section {
 
           StackLink {
-            BookFluidStack(path: $path3)
-          } label: {
-            Text("FluidStack")
-          }
-
-          StackLink {
             BookNesting()
               .background(Color.white)
           } label: {

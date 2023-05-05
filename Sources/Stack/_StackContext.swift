@@ -91,10 +91,10 @@ public final class _StackContext: ObservableObject, Equatable {
     let key = TypeKey(D.self)
 
     guard destinationTable[key] == nil else {
-//      Log.debug(
-//        .stack,
-//        "The destination for \(D.self) is already registered. Currently restricted in overriding."
-//      )
+      //      Log.debug(
+      //        .stack,
+      //        "The destination for \(D.self) is already registered. Currently restricted in overriding."
+      //      )
       return
     }
 
@@ -119,23 +119,36 @@ public final class _StackContext: ObservableObject, Equatable {
       Log.error(
         .stack,
         """
-❌ Failed to push - Stack could not found a destination for value \(itemBox) from \(key).
-Make sure `stackDestination` methods are inside of stack. It won't work if using that from stack like `Stack { ... }.stackDestination`.
-"""
+        ❌ Failed to push - Stack could not found a destination for value \(itemBox) from \(key).
+        Make sure `stackDestination` methods are inside of stack. It won't work if using that from stack like `Stack { ... }.stackDestination`.
+        """
       )
       return nil
     }
+
+    stackedViews.last?.id
 
     let stackedView = StackedView(
       material: .value(itemBox),
       identifier: itemBox.stackedViewIdentifier,
       linkEnvironmentValues: linkEnvironmentValues,
       content: destination.make(item: itemBox)
-        .modifier(RestoreSafeAreaModifier())
-        .modifier(transition.destinationModifier)
+        .modifier(
+          RestoreSafeAreaModifier()
+            .concat(
+              transition.destinationModifier(context: makeDestinationContext())
+            )
+        )
     )
 
     return (stackedView, destination.target)
+  }
+
+  private func makeDestinationContext() -> DestinationContext {
+    if let id = stackedViews.last?.id {
+      return .init(backgroundContent: .stacked(id))
+    }
+    return .init(backgroundContent: .root)
   }
 
   /**
@@ -196,9 +209,14 @@ Make sure `stackDestination` methods are inside of stack. It won't work if using
       material: .volatile,
       identifier: identifier,
       linkEnvironmentValues: linkEnvironmentValues,
-      content: destination
-        .modifier(RestoreSafeAreaModifier())
-        .modifier(transition.destinationModifier)
+      content:
+        destination
+        .modifier(
+          RestoreSafeAreaModifier()
+            .concat(
+              transition.destinationModifier(context: makeDestinationContext())
+            )
+        )
     )
 
     stackedViews.append(stackedView)

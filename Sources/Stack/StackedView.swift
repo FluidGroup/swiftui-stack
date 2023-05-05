@@ -24,6 +24,8 @@ public struct StackedView: View, Identifiable, Equatable {
   public let material: Material
   public let linkEnvironmentValues: LinkEnvironmentValues
 
+  @Environment(\.stackNamespaceID) var stackNamespace
+
   init(
     material: Material,
     identifier: _StackedViewIdentifier,
@@ -39,6 +41,12 @@ public struct StackedView: View, Identifiable, Equatable {
   public var body: some View {
 
     content
+      .matchedGeometryEffect(
+        id: MatchedGeometryEffectIdentifiers.EdgeTrailing(content: .stacked(id)),
+        in: stackNamespace!,
+        anchor: .trailing,
+        isSource: false
+      )
       .environment(\.stackIdentifier, id)
       .onAppear {
 

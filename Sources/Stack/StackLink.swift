@@ -137,7 +137,7 @@ public struct StackLink<Label: View, Destination: View, Transition: StackTransit
 
     } label: {
       label
-        .modifier(transition.labelModifier)
+        .modifier(transition.labelModifier())
         .environment(\.stackedViewIdentifier, context?.stackedViews.first { $0.id == currentIdentifier }?.id)
     }
     .disabled(context == nil)

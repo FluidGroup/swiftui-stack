@@ -1,12 +1,24 @@
 import SwiftUI
 
+public struct DestinationContext {
+
+  public enum BackgroundContent {
+    case root
+    case stacked(_StackedViewIdentifier)
+  }
+
+  /// a content that currently displaying on top.
+  public let backgroundContent: BackgroundContent
+
+}
+
 public protocol StackTransition {
 
   associatedtype LabelModifier: ViewModifier
   associatedtype DestinationModifier: ViewModifier
 
-  var labelModifier: LabelModifier { get }
-  var destinationModifier: DestinationModifier { get }
+  func labelModifier() -> LabelModifier
+  func destinationModifier(context: DestinationContext) -> DestinationModifier
 
 }
 
@@ -40,11 +52,11 @@ extension StackTransitions {
       }
     }
 
-    public var labelModifier: some ViewModifier {
+    public func labelModifier() -> some ViewModifier {
       _Modifier()
     }
 
-    public var destinationModifier: some ViewModifier {
+    public func destinationModifier(context: DestinationContext) -> some ViewModifier {
       _Modifier()
     }
 
@@ -74,11 +86,11 @@ extension StackTransitions {
       self.transition = transition
     }
 
-    public var labelModifier: some ViewModifier {
+    public func labelModifier() -> some ViewModifier {
       _LabelModifier()
     }
 
-    public var destinationModifier: some ViewModifier {
+    public func destinationModifier(context: DestinationContext) -> some ViewModifier {
       _DestinationModifier(transition: transition)
     }
 
