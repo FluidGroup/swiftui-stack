@@ -1,5 +1,6 @@
 import Stack
 import SwiftUI
+import SwiftUISupport
 
 struct BookFullScreenStack: View, PreviewProvider {
   var body: some View {
@@ -8,6 +9,18 @@ struct BookFullScreenStack: View, PreviewProvider {
 
   static var previews: some View {
     Self()
+
+    PostDetail(
+      colorScheme: .type10,
+      post: Post(
+        id: "slide",
+        artworkImageURL: nil,
+        title: "Push style transition",
+        subTitle: "Supports gesture to pop",
+        body: ""
+      )
+    )
+
   }
 
   private struct ContentFragment: View {
