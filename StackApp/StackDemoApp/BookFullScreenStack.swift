@@ -283,6 +283,10 @@ struct BookFullScreenStack: View, PreviewProvider {
               Text("Back")
             }
 
+            StackUnwindLink(mode: .all) {
+              Text("Back to Root")
+            }
+
             ContentFragment(colorScheme: colorScheme)
           }
         }

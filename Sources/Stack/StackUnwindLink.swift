@@ -14,16 +14,25 @@ public struct StackUnwindLink<Label: View>: View {
     case specific(StackUnwindContext?)
   }
 
+  public enum UnwindMode {
+    /// pop one
+    case one
+    /// pop to root
+    case all
+  }
+
   /// It appears if this view is in ``AbstractStack``.
   @Environment(\.stackUnwindContext) private var automaticUnwindContext
 
   public let target: Target
+  public let mode: UnwindMode
 
   private let label: Label
   private let animation: Animation
   
   public init(
     target: Target = .automatic,
+    mode: UnwindMode = .one,
     animation: Animation = .spring(
       response: 0.4,
       dampingFraction: 0.8,
@@ -32,6 +41,7 @@ public struct StackUnwindLink<Label: View>: View {
     @ViewBuilder label: () -> Label
   ) {
     self.target = target
+    self.mode = mode
     self.animation = animation
     self.label = label()
   }
@@ -53,10 +63,19 @@ public struct StackUnwindLink<Label: View>: View {
         return
       }
 
-      // FIXME: how to run animation, inheriting specified transition
-      withAnimation(animation) {
-        targetUnwindContext.pop()
+      switch mode {
+      case .all:
+        // FIXME: how to run animation, inheriting specified transition
+        withAnimation(animation) {
+          targetUnwindContext.popAll()
+        }
+      case .one:
+        // FIXME: how to run animation, inheriting specified transition
+        withAnimation(animation) {
+          targetUnwindContext.pop()
+        }
       }
+
       
     } label: {
       label
@@ -82,6 +101,10 @@ public struct StackUnwindContext {
 
   public func pop() {
     stackContext.pop(identifier: stackIdentifier)
+  }
+
+  public func popAll() {
+    stackContext.popAll()
   }
 
 }
