@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4B15FAB829FFED8A000442FA /* BookMatchedShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B15FAB729FFED89000442FA /* BookMatchedShape.swift */; };
-		4B215AB4290C305600181FE1 /* BookAdditionalSafeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B215AB3290C305600181FE1 /* BookAdditionalSafeArea.swift */; };
 		4B29A6FD29FC5C31003CCC00 /* BookFullScreenStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B29A6FC29FC5C31003CCC00 /* BookFullScreenStack.swift */; };
 		4B29A6FF29FC5CA1003CCC00 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B29A6FE29FC5CA1003CCC00 /* Colors.swift */; };
 		4B2A923C28E4B6F9006624AD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2A923B28E4B6F9006624AD /* AppDelegate.swift */; };
@@ -52,7 +51,6 @@
 
 /* Begin PBXFileReference section */
 		4B15FAB729FFED89000442FA /* BookMatchedShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMatchedShape.swift; sourceTree = "<group>"; };
-		4B215AB3290C305600181FE1 /* BookAdditionalSafeArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookAdditionalSafeArea.swift; sourceTree = "<group>"; };
 		4B29A6FC29FC5C31003CCC00 /* BookFullScreenStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookFullScreenStack.swift; sourceTree = "<group>"; };
 		4B29A6FE29FC5CA1003CCC00 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		4B2A923428E4B664006624AD /* swiftui-stack */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "swiftui-stack"; path = ..; sourceTree = "<group>"; };
@@ -148,7 +146,6 @@
 				4B77AA5C28E4BEA2006307DA /* Model.swift */,
 				4B77AA5E28E4BF0C006307DA /* Views.swift */,
 				4B77AA6028E4D1F9006307DA /* BookNesting.swift */,
-				4B215AB3290C305600181FE1 /* BookAdditionalSafeArea.swift */,
 				4B51F640290ACAAE0015CC21 /* Launch Screen.storyboard */,
 				4B29A6FE29FC5CA1003CCC00 /* Colors.swift */,
 			);
@@ -339,7 +336,6 @@
 				4BCFDBE7290FC271004D58D3 /* BookStack_Grid.swift in Sources */,
 				4BC6C24B28E4B8120081E217 /* BookStack.swift in Sources */,
 				4B29A6FF29FC5CA1003CCC00 /* Colors.swift in Sources */,
-				4B215AB4290C305600181FE1 /* BookAdditionalSafeArea.swift in Sources */,
 				4BDA70662A0382FE001AC9AF /* IGAppRoot.swift in Sources */,
 				4B2A923E28E4B6F9006624AD /* ContentView.swift in Sources */,
 				4B77AA5F28E4BF0C006307DA /* Views.swift in Sources */,

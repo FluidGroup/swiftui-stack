@@ -112,13 +112,6 @@ struct ContentView: View {
             Text("Nesting")
           }
 
-          StackLink {
-            BookAdditionalSafeArea()
-              .background(Color.white)
-          } label: {
-            Text("AdditionalSafeArea")
-          }
-
           TransitionView()
         } header: {
           Text("FluidStack")
