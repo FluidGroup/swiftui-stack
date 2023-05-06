@@ -56,7 +56,7 @@ extension StackTransitions {
           )
           .modifier(
             SnapDraggingModifier(
-              activation: .init(minimumDistance: 20, regionToActivate: .edgeLeading),
+              activation: .init(minimumDistance: 20, regionToActivate: .edge(.leading)),
               axis: .horizontal,
               horizontalBoundary: .init(min: 0, max: .infinity, bandLength: 0),
               springParameter: .interpolation(mass: 1.0, stiffness: 500, damping: 500),

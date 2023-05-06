@@ -199,7 +199,7 @@ private struct ContextualPopModifier: ViewModifier {
     content
       .modifier(
         SnapDraggingModifier(
-          activation: .init(minimumDistance: 20, regionToActivate: .edgeLeading),
+          activation: .init(minimumDistance: 20, regionToActivate: .edge([.horizontal])),
           axis: [.horizontal, .vertical],
           springParameter: .interpolation(mass: 1, stiffness: 80, damping: 13),
           gestureMode: .highPriority,
