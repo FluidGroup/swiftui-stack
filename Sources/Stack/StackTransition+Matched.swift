@@ -1,5 +1,5 @@
-import GestureVelocity
 import SwiftUI
+import SwiftUISnapDraggingModifier
 import SwiftUISupport
 
 extension StackTransition where Self == StackTransitions.Matched {
@@ -91,7 +91,7 @@ extension StackTransitions {
 
           /// Content
           content
-//            .modifier(ResizableModifier(isEnabled: true))
+            //            .modifier(ResizableModifier(isEnabled: true))
             // needs for unwind. give matchedGeometryEffect control for frame.
             .frame(minWidth: 0, minHeight: 0, alignment: .top)
         }
@@ -117,7 +117,10 @@ extension StackTransitions {
         )
         .blur(radius: appeared ? 0 : 20)
         .mask(
-          RoundedRectangle(cornerRadius: appeared ? UIScreen.main.displayCornerRadius : 4, style: .continuous).fill(Color.black)
+          RoundedRectangle(
+            cornerRadius: appeared ? UIScreen.main.displayCornerRadius : 4,
+            style: .continuous
+          ).fill(Color.black)
         )
         .modifier(
           ContextualPopModifier()
@@ -195,8 +198,8 @@ private struct ContextualPopModifier: ViewModifier {
   func body(content: Content) -> some View {
     content
       .modifier(
-        VelocityDraggingModifier(
-          minimumDistance: 20,
+        SnapDraggingModifier(
+          activation: .init(minimumDistance: 20, regionToActivate: .edgeLeading),
           axis: [.horizontal, .vertical],
           springParameter: .interpolation(mass: 1, stiffness: 80, damping: 13),
           gestureMode: .highPriority,

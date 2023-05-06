@@ -9,6 +9,7 @@ public struct NavigationBar<Class: UINavigationBar>: UIViewRepresentable {
     let item = UINavigationItem()
 
     public func position(for bar: UIBarPositioning) -> UIBarPosition {
+      print(#function)
       return .topAttached
     }
   }
@@ -27,7 +28,7 @@ public struct NavigationBar<Class: UINavigationBar>: UIViewRepresentable {
 
     let bar = Class.init()
 
-    bar.backgroundColor = .clear
+    bar.backgroundColor = .red
     bar.barTintColor = .clear
     bar.shadowImage = UIImage()
     bar.isTranslucent = true

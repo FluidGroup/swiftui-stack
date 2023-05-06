@@ -13,17 +13,18 @@ let package = Package(
     ),
   ],
   dependencies: [
-    .package(url: "https://github.com/FluidGroup/swiftui-GestureVelocity", from: "0.1.0"),
+
 //    .package(url: "https://github.com/FluidGroup/swiftui-support", from: "0.3.0"),
-    .package(url: "https://github.com/FluidGroup/swiftui-support", branch: "main"),
+    .package(url: "https://github.com/FluidGroup/swiftui-support", from: "0.4.1"),
+    .package(url: "https://github.com/FluidGroup/swiftui-snap-dragging-modifier", from: "1.0.0"),
     .package(url: "https://github.com/nalexn/ViewInspector.git", from: "0.9.2"),
   ],
   targets: [
     .target(
       name: "Stack",
       dependencies: [
-        .product(name: "GestureVelocity", package: "swiftui-GestureVelocity"),
         .product(name: "SwiftUISupport", package: "swiftui-support"),
+        .product(name: "SwiftUISnapDraggingModifier", package: "swiftui-snap-dragging-modifier"),
       ]
     ),
     .testTarget(

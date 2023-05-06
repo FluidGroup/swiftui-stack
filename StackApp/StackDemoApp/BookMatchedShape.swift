@@ -1,5 +1,6 @@
 @_spi(Internal) import Stack
 import SwiftUI
+import SwiftUISnapDraggingModifier
 import SwiftUISupport
 
 struct BookMatchedShape: View, PreviewProvider {
@@ -136,7 +137,7 @@ struct BookMatchedShape: View, PreviewProvider {
         isSource: true
       )
       .modifier(
-        VelocityDraggingModifier(
+        SnapDraggingModifier(
           springParameter: .interpolation(mass: 1, stiffness: 80, damping: 13),
           handler: .init(onEndDragging: { velocity, offset, size in
 

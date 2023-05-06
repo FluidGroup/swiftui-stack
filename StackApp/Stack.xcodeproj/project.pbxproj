@@ -65,6 +65,7 @@
 		4B2A925628E4B6FA006624AD /* StackDemoAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackDemoAppUITests.swift; sourceTree = "<group>"; };
 		4B2A925828E4B6FA006624AD /* StackDemoAppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackDemoAppUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		4B51F640290ACAAE0015CC21 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		4B554D5D2A06D29A00DA1BF2 /* swiftui-snap-dragging-modifier */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "swiftui-snap-dragging-modifier"; path = "../submodules/swiftui-snap-dragging-modifier"; sourceTree = "<group>"; };
 		4B77AA5A28E4BE75006307DA /* BookStackNoPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookStackNoPath.swift; sourceTree = "<group>"; };
 		4B77AA5C28E4BEA2006307DA /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		4B77AA5E28E4BF0C006307DA /* Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
@@ -108,6 +109,7 @@
 		4B2A91FE28E4B627006624AD = {
 			isa = PBXGroup;
 			children = (
+				4B554D5D2A06D29A00DA1BF2 /* swiftui-snap-dragging-modifier */,
 				4B92D47E2A0267D80053760B /* swiftui-support */,
 				4B2A923428E4B664006624AD /* swiftui-stack */,
 				4B2A923A28E4B6F9006624AD /* StackDemoApp */,

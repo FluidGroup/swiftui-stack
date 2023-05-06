@@ -10,12 +10,12 @@
       }
     },
     {
-      "identity" : "swiftui-gesturevelocity",
+      "identity" : "swiftui-gesture-velocity",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/muukii/swiftui-GestureVelocity",
+      "location" : "https://github.com/FluidGroup/swiftui-gesture-velocity",
       "state" : {
-        "revision" : "dd95ef32f5bb41ff454ca09209cd037cdd3bca8d",
-        "version" : "0.1.0"
+        "revision" : "9c83f8995f9e5efc29db2fca4b9ff058283f1603",
+        "version" : "1.0.0"
       }
     },
     {

@@ -1,5 +1,5 @@
-import GestureVelocity
 import SwiftUI
+import SwiftUISnapDraggingModifier
 import SwiftUISupport
 
 extension StackTransition where Self == StackTransitions.Slide {
@@ -39,7 +39,6 @@ extension StackTransitions {
         }
       }
 
-
       func body(content: Content) -> some View {
 
         content
@@ -56,8 +55,8 @@ extension StackTransitions {
             )
           )
           .modifier(
-            VelocityDraggingModifier(
-              minimumDistance: 20,
+            SnapDraggingModifier(
+              activation: .init(minimumDistance: 20, regionToActivate: .edgeLeading),
               axis: .horizontal,
               horizontalBoundary: .init(min: 0, max: .infinity, bandLength: 0),
               springParameter: .interpolation(mass: 1.0, stiffness: 500, damping: 500),
@@ -88,7 +87,7 @@ extension StackTransitions {
       _LabelModifier()
     }
 
-    public func destinationModifier(context: DestinationContext) -> some ViewModifier { 
+    public func destinationModifier(context: DestinationContext) -> some ViewModifier {
       _DestinationModifier(context: context)
     }
   }

@@ -1,3 +1,6 @@
 [submodule "submodules/swiftui-support"]
 	path = submodules/swiftui-support
 	url = https://github.com/FluidGroup/swiftui-support.git
+[submodule "submodules/swiftui-snap-dragging-modifier"]
+	path = submodules/swiftui-snap-dragging-modifier
+	url = https://github.com/FluidGroup/swiftui-snap-dragging-modifier.git
