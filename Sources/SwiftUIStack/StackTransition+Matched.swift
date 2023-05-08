@@ -67,6 +67,7 @@ extension StackTransitions {
           /// actual content is displaying as overlay for center alignment in transition.
           content
             .hidden()
+            .allowsHitTesting(false)
 
           base
         }
@@ -98,7 +99,7 @@ extension StackTransitions {
 
         let base = ZStack(alignment: .top) {
           /// expandable shape to make the frame flexible for matched-geometry
-          Color.clear
+          Color.clear.hidden().allowsHitTesting(false)
 
           /// Content
           content
@@ -149,6 +150,7 @@ extension StackTransitions {
           properties: [.frame],
           isSource: true
         )
+        .measureSize($targetSize)
 
         .onAppear {
           withAnimation {
@@ -156,15 +158,8 @@ extension StackTransitions {
           }
         }
 
-        ZStack {
+        base
 
-          Color.clear
-            .measureSize($targetSize)
-            .hidden()
-
-          base
-
-        }
       }
 
     }
