@@ -35,7 +35,7 @@ public struct StackUnwindLink<Label: View>: View {
     mode: UnwindMode = .one,
     animation: Animation = .spring(
       response: 0.4,
-      dampingFraction: 0.8,
+      dampingFraction: 1,
       blendDuration: 0
     ),
     @ViewBuilder label: () -> Label

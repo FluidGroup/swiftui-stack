@@ -32,18 +32,15 @@ struct BookStack: View {
 
     VStack {
 
-      NavigationBar(title: "Stack Demo")
-
       StackUnwindLink {
         Text("Back")
       }
 
       VStack {
 
-        RelativeView(vertical: .center, horizontal: .left) {
-          Text("Stack")
-            .font(.title)
-        }
+        Text("Stack")
+          .font(.title)
+          .relative(vertical: .center, horizontal: .leading)
 
         Stack(path: $path) {
 
@@ -135,10 +132,9 @@ struct BookStack: View {
 
       VStack {
 
-        RelativeView(vertical: .center, horizontal: .left) {
-          Text("Controls")
-            .font(.title)
-        }
+        Text("Controls")
+          .font(.title)
+          .relative(vertical: .center, horizontal: .leading)
 
         VStack {
           Button("\(counter.description)") {
@@ -171,10 +167,9 @@ struct BookStack: View {
 
       VStack {
 
-        RelativeView(vertical: .center, horizontal: .left) {
-          Text("Path")
-            .font(.title)
-        }
+        Text("Path")
+          .font(.title)
+          .relative(vertical: .center, horizontal: .leading)
 
       }
       .padding(.horizontal, 20)
