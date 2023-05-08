@@ -31,36 +31,45 @@ extension StackTransitions {
 
       func body(content: Content) -> some View {
 
-        ZStack(alignment: .center) {
-          /// expandable shape to make the frame flexible for matched-geometry
-          /// it affects the destination.
-          Color.clear
-          /// Content
-          content
-            .opacity(isActive ? 0 : 1)
-            .blur(radius: isActive ? 20 : 0)
-        }
+        let base = Color.clear.hidden()
+          .overlay(
+            /// Content
+            content
+            //              .frame(width: targetSize.width, height: targetSize.height, alignment: .center)
+            //              .modifier(ResizableModifier(isEnabled: true))
+              .opacity(isActive ? 0 : 1)
+              .blur(radius: isActive ? 10 : 0)
+          )
 
         // for unwind
-        .matchedGeometryEffect(
-          id: "movement".concat(identifier),
-          in: usingNamespace!,
-          properties: [.frame],
-          isSource: false
-        )
-        .matchedGeometryEffect(
-          id: "mask".concat(identifier),
-          in: usingNamespace!,
-          properties: [],
-          isSource: true
-        )
+          .matchedGeometryEffect(
+            id: "movement".concat(identifier),
+            in: usingNamespace!,
+            properties: [.frame],
+            isSource: false
+          )
+          .matchedGeometryEffect(
+            id: "mask".concat(identifier),
+            in: usingNamespace!,
+            properties: [],
+            isSource: true
+          )
         // for matching frame
-        .matchedGeometryEffect(
-          id: "frame".concat(identifier),
-          in: usingNamespace!,
-          properties: [.frame],
-          isSource: isActive == false
-        )
+          .matchedGeometryEffect(
+            id: "frame".concat(identifier),
+            in: usingNamespace!,
+            properties: [.frame],
+            isSource: isActive == false
+          )
+
+        ZStack {
+          /// to make bounds
+          /// actual content is displaying as overlay for center alignment in transition.
+          content
+            .hidden()
+
+          base
+        }
 
       }
     }
@@ -79,23 +88,26 @@ extension StackTransitions {
 
       let identifier: AnyHashable
 
+      @State var targetSize: CGSize = .zero
+
       private var usingNamespace: Namespace.ID? {
         specifiedNamespace ?? stackNamespaceID
       }
 
       func body(content: Content) -> some View {
 
-        ZStack(alignment: .top) {
+        let base = ZStack(alignment: .top) {
           /// expandable shape to make the frame flexible for matched-geometry
           Color.clear
 
           /// Content
           content
-            //            .modifier(ResizableModifier(isEnabled: true))
+          // to have constrained size if it's neutral sizing view.
+            .frame(width: targetSize.width, height: targetSize.height)
+//            .modifier(ResizableModifier(isEnabled: true))
             // needs for unwind. give matchedGeometryEffect control for frame.
             .frame(minWidth: 0, minHeight: 0, alignment: .top)
         }
-
         // for backwards
         .matchedGeometryEffect(
           id: "movement".concat(identifier),
@@ -115,10 +127,10 @@ extension StackTransitions {
             )
           )
         )
-        .blur(radius: appeared ? 0 : 20)
+        .blur(radius: appeared ? 0 : 10)
         .mask(
           RoundedRectangle(
-            cornerRadius: appeared ? UIScreen.main.displayCornerRadius : 4,
+            cornerRadius: appeared ? 0 : 8,
             style: .continuous
           ).fill(Color.black)
         )
@@ -142,6 +154,16 @@ extension StackTransitions {
           withAnimation {
             appeared = true
           }
+        }
+
+        ZStack {
+
+          Color.clear
+            .measureSize($targetSize)
+            .hidden()
+
+          base
+
         }
       }
 
@@ -195,20 +217,34 @@ private struct ContextualPopModifier: ViewModifier {
 
   @Environment(\.stackUnwindContext) private var unwindContext
 
+  @State var isTracking = false
+
   func body(content: Content) -> some View {
     content
+      .mask(
+        RoundedRectangle(
+          cornerRadius: isTracking ? 8 : 0,
+          style: .continuous
+        ).fill(Color.black)
+      )
       .modifier(
         SnapDraggingModifier(
           activation: .init(minimumDistance: 20, regionToActivate: .edge([.horizontal])),
           axis: [.horizontal, .vertical],
-          springParameter: .interpolation(mass: 1, stiffness: 80, damping: 13),
+          springParameter: .interpolation(mass: 2, stiffness: 200, damping: 32),
           gestureMode: .highPriority,
-          handler: .init(onEndDragging: { velocity, offset, contentSize in
+          handler: .init(
+            onStartDragging: {
+              isTracking = true
+            },
+            onEndDragging: { velocity, offset, contentSize in
+
+              isTracking = false
 
             if abs(velocity.dx) > 50 || abs(offset.width) > (contentSize.width / 2) {
               Task { @MainActor in
                 withAnimation(
-                  .interpolatingSpring(mass: 1, stiffness: 80, damping: 13)
+                  .interpolatingSpring(mass: 2, stiffness: 200, damping: 32)
                 ) {
                   unwindContext?.pop()
                 }
