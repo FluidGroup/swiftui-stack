@@ -16,7 +16,7 @@ jobs:
           xcode-version: "14.3"
       - uses: actions/checkout@v2
       - name: xcodebuild
-        run: xcodebuild -scheme Stack -sdk iphoneos -destination 'generic/platform=iOS'
+        run: xcodebuild -scheme SwiftUIStack -sdk iphoneos -destination 'generic/platform=iOS'
 
   test:
     runs-on: macos-13
