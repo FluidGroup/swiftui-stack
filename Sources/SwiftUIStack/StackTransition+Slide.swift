@@ -63,13 +63,11 @@ extension StackTransitions {
               gestureMode: .highPriority,
               handler: .init(onEndDragging: { velocity, offset, contentSize in
 
-                print(velocity, offset, contentSize)
-
                 if velocity.dx > 50 || offset.width > (contentSize.width / 2) {
 
                   // waiting for animation to complete
                   Task { @MainActor in
-                    try? await Task.sleep(nanoseconds: 300_000_000)
+                    try? await Task.sleep(nanoseconds: 280_000_000)
                     unwindContext?.pop()
                   }
 
