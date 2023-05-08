@@ -2,7 +2,7 @@ import SwiftUI
 import ViewInspector
 import XCTest
 
-@testable import Stack
+@testable import SwiftUIStack
 
 final class StackTests: XCTestCase {
 

@@ -1,6 +1,6 @@
 
 import SwiftUI
-import Stack
+import SwiftUIStack
 
 struct BookNesting: View {
   var body: some View {

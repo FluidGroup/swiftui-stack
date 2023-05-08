@@ -1,4 +1,4 @@
-@_spi(Internal) import Stack
+@_spi(Internal) import SwiftUIStack
 import SwiftUI
 import SwiftUISnapDraggingModifier
 import SwiftUISupport

@@ -1,4 +1,4 @@
-import Stack
+import SwiftUIStack
 import SwiftUI
 import SwiftUISupport
 import swiftui_color

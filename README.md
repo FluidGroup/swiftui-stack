@@ -18,7 +18,7 @@ Example Usage
 1. Import the Stack module in your SwiftUI view file:
 
 ```swift
-import Stack
+import SwiftUIStack
 ```
 
 2. Use the Stack container in your view hierarchy:

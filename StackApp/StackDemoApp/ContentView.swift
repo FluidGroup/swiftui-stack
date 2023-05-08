@@ -5,7 +5,7 @@
 //  Created by Muukii on 2022/09/29.
 //
 
-import Stack
+import SwiftUIStack
 import SwiftUI
 
 struct ContentView: View {

@@ -24,7 +24,7 @@
 		4B77AA5F28E4BF0C006307DA /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B77AA5E28E4BF0C006307DA /* Views.swift */; };
 		4B77AA6128E4D1F9006307DA /* BookNesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B77AA6028E4D1F9006307DA /* BookNesting.swift */; };
 		4B77AA6328E54FE9006307DA /* BookNavigationStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B77AA6228E54FE9006307DA /* BookNavigationStack.swift */; };
-		4BC6C24928E4B7490081E217 /* Stack in Frameworks */ = {isa = PBXBuildFile; productRef = 4BC6C24828E4B7490081E217 /* Stack */; };
+		4BC315B42A09423600D86A6C /* SwiftUIStack in Frameworks */ = {isa = PBXBuildFile; productRef = 4BC315B32A09423600D86A6C /* SwiftUIStack */; };
 		4BC6C24B28E4B8120081E217 /* BookStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC6C24A28E4B8120081E217 /* BookStack.swift */; };
 		4BC6C24D28E4B83B0081E217 /* StatefulPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC6C24C28E4B83B0081E217 /* StatefulPage.swift */; };
 		4BCFDBE7290FC271004D58D3 /* BookStack_Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BCFDBE6290FC271004D58D3 /* BookStack_Grid.swift */; };
@@ -85,7 +85,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B6D472329FC2A5900658A0F /* swiftui-color in Frameworks */,
-				4BC6C24928E4B7490081E217 /* Stack in Frameworks */,
+				4BC315B42A09423600D86A6C /* SwiftUIStack in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -212,8 +212,8 @@
 			);
 			name = StackDemoApp;
 			packageProductDependencies = (
-				4BC6C24828E4B7490081E217 /* Stack */,
 				4B6D472229FC2A5900658A0F /* swiftui-color */,
+				4BC315B32A09423600D86A6C /* SwiftUIStack */,
 			);
 			productName = StackDemoApp;
 			productReference = 4B2A923928E4B6F9006624AD /* StackDemoApp.app */;
@@ -690,9 +690,9 @@
 			package = 4B6D472129FC2A5900658A0F /* XCRemoteSwiftPackageReference "swiftui-color" */;
 			productName = "swiftui-color";
 		};
-		4BC6C24828E4B7490081E217 /* Stack */ = {
+		4BC315B32A09423600D86A6C /* SwiftUIStack */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = Stack;
+			productName = SwiftUIStack;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

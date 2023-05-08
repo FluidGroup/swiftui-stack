@@ -1,5 +1,5 @@
 import SwiftUI
-import Stack
+import SwiftUIStack
 
 struct BookStackNoPath: View {
   

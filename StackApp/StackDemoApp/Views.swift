@@ -1,4 +1,4 @@
-import Stack
+import SwiftUIStack
 import SwiftUI
 
 struct ModelView<Content: View>: View {
