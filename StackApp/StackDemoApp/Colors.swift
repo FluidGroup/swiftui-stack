@@ -275,7 +275,16 @@ struct ColorScheme: Equatable {
   ]
 
   static func takeOne(except one: ColorScheme) -> ColorScheme {
-    allTypes.filter { $0 != one }.randomElement()!
+
+    let i = allTypes.firstIndex(of: one)!
+
+    let next = i.advanced(by: 1)
+
+    guard allTypes.indices.contains(next) else {
+      return allTypes.first!
+    }
+
+    return allTypes[next]
   }
 
 }

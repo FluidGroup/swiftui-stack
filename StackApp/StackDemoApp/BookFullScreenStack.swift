@@ -29,6 +29,61 @@ struct BookFullScreenStack: View, PreviewProvider {
 
     let users: [Node] = User.generateDummyUsers().map { .user($0) }
 
+    let postsForCarousel: [Post] = [
+      Post(
+        id: "carousel-1",
+        artworkImageURL: nil,
+        title: "Carousel",
+        subTitle: "Tap to see",
+        body: ""
+      ),
+      Post(
+        id: "carousel-2",
+        artworkImageURL: nil,
+        title: "Carousel",
+        subTitle: "Tap to see",
+        body: ""
+      ),
+      Post(
+        id: "carousel-3",
+        artworkImageURL: nil,
+        title: "Carousel",
+        subTitle: "Tap to see",
+        body: ""
+      ),
+      Post(
+        id: "carousel-4",
+        artworkImageURL: nil,
+        title: "Carousel",
+        subTitle: "Tap to see",
+        body: ""
+      ),
+      Post(
+        id: "carousel-5",
+        artworkImageURL: nil,
+        title: "Carousel",
+        subTitle: "Tap to see",
+        body: ""
+      ),
+      Post(
+        id: "carousel-6",
+        artworkImageURL: nil,
+        title: "Carousel",
+        subTitle: "Tap to see",
+        body: ""
+      )
+    ]
+
+    let postsForList: [Post] = [
+      Post(
+        id: "a",
+        artworkImageURL: nil,
+        title: "Contextual style transition",
+        subTitle: "Tap to see",
+        body: ""
+      )
+    ]
+
     let dataForSlideTransition = Post(
       id: "slide",
       artworkImageURL: nil,
@@ -36,6 +91,37 @@ struct BookFullScreenStack: View, PreviewProvider {
       subTitle: "Supports gesture to pop",
       body: ""
     )
+
+    let postsForGrid: [Post] = [
+      Post(
+        id: "grid-1",
+        artworkImageURL: nil,
+        title: "Grid",
+        subTitle: "Tap to see",
+        body: ""
+      ),
+      Post(
+        id: "grid-2",
+        artworkImageURL: nil,
+        title: "Grid",
+        subTitle: "Tap to see",
+        body: ""
+      ),
+      Post(
+        id: "grid-3",
+        artworkImageURL: nil,
+        title: "Grid",
+        subTitle: "Tap to see",
+        body: ""
+      ),
+      Post(
+        id: "grid-4",
+        artworkImageURL: nil,
+        title: "Grid",
+        subTitle: "Tap to see",
+        body: ""
+      )
+    ]
 
     @Namespace var local
 
@@ -45,45 +131,64 @@ struct BookFullScreenStack: View, PreviewProvider {
         //
         // carousel
         ScrollView(.horizontal) {
-          LazyHStack(spacing: 8) {
-            ForEach(users) { user in
-              switch user {
-              case .user(let user):
+          LazyHStack {
 
-                StackLink(
-                  transition: .matched(identifier: user.id.description + "Carousel", in: local),
-                  value: user
-                ) {
-
-                  CircularCell(colorScheme: colorScheme, user: user)
-
-                }
-
+            ForEach(postsForCarousel) { post in
+              StackLink(
+                transition: .matched(identifier: post.id.description + "Shaped", in: local),
+                value: Hashed(post, id: \.id)
+              ) {
+                ShapedGridCell(colorScheme: colorScheme, post: post)
               }
             }
+
+          }
+          .padding(.horizontal, 16)
+        }
+
+        ScrollView(.horizontal) {
+          LazyHStack {
+
+            ForEach(postsForCarousel) { post in
+              StackLink(
+                transition: .matched(identifier: post.id.description + "non", in: local),
+                value: Hashed(post, id: \.id)
+              ) {
+                GridCell(colorScheme: colorScheme, post: post)
+              }
+            }
+
           }
           .padding(.horizontal, 16)
         }
 
         StackLink(transition: .slide, value: Hashed(dataForSlideTransition, id: \.id)) {
-          PostCell(colorScheme: colorScheme, post: dataForSlideTransition)
+          ShapedPostCell(colorScheme: colorScheme, post: dataForSlideTransition)
         }
         .padding(.horizontal, 16)
 
         LazyVStack {
 
-          ForEach(users) { user in
-            switch user {
-            case .user(let user):
+          ForEach(postsForList) { post in
+            StackLink(
+              transition: .matched(identifier: post.id.description + "Shaped", in: local),
+              value: Hashed(post, id: \.id)
+            ) {
+              ShapedPostCell(colorScheme: colorScheme, post: post)
+            }
+          }
 
-              StackLink(
-                transition: .matched(identifier: user.id.description + "List", in: local),
-                value: user
-              ) {
-                ListCell(colorScheme: colorScheme, user: user)
+        }
+        .padding(.horizontal, 16)
 
-              }
+        LazyVStack {
 
+          ForEach(postsForList) { post in
+            StackLink(
+              transition: .matched(identifier: post.id.description + "Non", in: local),
+              value: Hashed(post, id: \.id)
+            ) {
+              PostCell(colorScheme: colorScheme, post: post)
             }
           }
 
@@ -92,18 +197,26 @@ struct BookFullScreenStack: View, PreviewProvider {
 
         LazyVGrid(columns: [.init(.flexible()), .init(.flexible())]) {
 
-          ForEach(users) { user in
-            switch user {
-            case .user(let user):
+          ForEach(postsForGrid) { post in
+            StackLink(
+              transition: .matched(identifier: post.id.description + "Shaped", in: local),
+              value: Hashed(post, id: \.id)
+            ) {
+              ShapedPostCell(colorScheme: colorScheme, post: post)
+            }
+          }
 
-              StackLink(
-                transition: .matched(identifier: user.id.description + "Grid", in: local),
-                value: user
-              ) {
-                ListCell(colorScheme: colorScheme, user: user)
+        }
+        .padding(.horizontal, 16)
 
-              }
+        LazyVGrid(columns: [.init(.flexible()), .init(.flexible())]) {
 
+          ForEach(postsForGrid) { post in
+            StackLink(
+              transition: .matched(identifier: post.id.description + "Non", in: local),
+              value: Hashed(post, id: \.id)
+            ) {
+              PostCell(colorScheme: colorScheme, post: post)
             }
           }
 
@@ -126,52 +239,15 @@ struct BookFullScreenStack: View, PreviewProvider {
 
   }
 
-  private struct Root: View {
 
-    let colorScheme = ColorScheme.type1
-
-    @Environment(\.stackUnwindContext) var unwindContext
-
-    var body: some View {
-      ZStack {
-
-        colorScheme.background
-          .ignoresSafeArea()
-
-        Stack {
-
-          ScrollView {
-            VStack {
-              StackUnwindLink(target: .specific(unwindContext)) {
-                Text("back to menu")
-              }
-              ContentFragment(colorScheme: .type1)
-            }
-          }
-          .stackDestination(
-            for: User.self,
-            destination: { user in
-              Detail(user: user, colorScheme: .takeOne(except: colorScheme))
-            }
-          )
-          .stackDestination(for: Hashed<Post, String>.self) { data in
-            PostDetail(colorScheme: .takeOne(except: colorScheme), post: data.value)
-          }
-
-        }
-
-      }
-    }
-  }
-
-  struct CircularCell: View {
+  struct ShapedGridCell: View {
     let colorScheme: ColorScheme
-    let user: User
+    let post: Post
 
     var body: some View {
 
       VStack(alignment: .leading) {
-        VStack(spacing: 12) {
+        VStack(spacing: 0) {
           Circle()
             .fill(Color.init(white: 0.5, opacity: 0.3))
             .frame(
@@ -179,17 +255,9 @@ struct BookFullScreenStack: View, PreviewProvider {
               height: 40,
               alignment: .center
             )
-
-          Text(user.name)
-            .font(.system(.body, design: .default))
-            .foregroundColor(colorScheme.cardHeadline)
-
-          Text(user.age.description)
-            .foregroundColor(colorScheme.cardParagraph)
-
         }
       }
-      .padding(EdgeInsets(top: 6, leading: 12, bottom: 6, trailing: 12))
+      .padding(12)
       .background(
         RoundedRectangle(
           cornerRadius: 8,
@@ -203,7 +271,29 @@ struct BookFullScreenStack: View, PreviewProvider {
     }
   }
 
-  struct ListCell: View {
+  struct GridCell: View {
+    let colorScheme: ColorScheme
+    let post: Post
+
+    var body: some View {
+
+      VStack(alignment: .leading) {
+        VStack(spacing: 0) {
+          Circle()
+            .fill(Color.init(white: 0.5, opacity: 0.3))
+            .frame(
+              width: 40,
+              height: 40,
+              alignment: .center
+            )
+        }
+      }
+      .padding(12)
+    }
+  }
+
+
+  struct ShapedListCell: View {
 
     let colorScheme: ColorScheme
     let user: User
@@ -245,6 +335,49 @@ struct BookFullScreenStack: View, PreviewProvider {
 
   }
 
+  private struct Root: View {
+
+    let colorScheme = ColorScheme.type10
+
+    @Environment(\.stackUnwindContext) var unwindContext
+
+    @State var lastColorScheme = ColorScheme.type10
+
+    var body: some View {
+      ZStack {
+
+        colorScheme.background
+          .ignoresSafeArea()
+
+        Stack {
+
+          ScrollView {
+            VStack {
+              StackUnwindLink(target: .specific(unwindContext)) {
+                Text("back to menu")
+              }
+              ContentFragment(colorScheme: colorScheme)
+            }
+          }
+          .stackDestination(
+            for: User.self,
+            destination: { user in
+              Detail(user: user, colorScheme: .takeOne(except: colorScheme))
+            }
+          )
+          .stackDestination(for: Hashed<Post, String>.self) { data in
+            // not good
+            let _ = self.lastColorScheme = ColorScheme.takeOne(except: lastColorScheme)
+            PostDetail(colorScheme: .takeOne(except: lastColorScheme), post: data.value)
+          }
+
+        }
+
+      }
+    }
+  }
+
+
   struct Detail: View {
 
     let user: User
@@ -273,24 +406,30 @@ struct BookFullScreenStack: View, PreviewProvider {
 
             Spacer()
 
-            StackLink(transition: .matched(identifier: user.id, in: local)) {
-              Detail(user: user, colorScheme: .takeOne(except: colorScheme))
-            } label: {
-              ListCell(colorScheme: colorScheme, user: user)
-            }
+            VStack {
 
-            StackUnwindLink {
-              Text("Back")
-            }
+              HStack {
+                StackUnwindLink {
+                  Text("Back")
+                }
+                Spacer()
+                StackUnwindLink(mode: .all) {
+                  Text("Back to Root")
+                }
+              }
 
-            StackUnwindLink(mode: .all) {
-              Text("Back to Root")
+              StackLink(transition: .matched(identifier: user.id, in: local)) {
+                Detail(user: user, colorScheme: .takeOne(except: colorScheme))
+              } label: {
+                ShapedListCell(colorScheme: colorScheme, user: user)
+              }
+
             }
+            .padding(.horizontal, 16)
 
             ContentFragment(colorScheme: colorScheme)
           }
         }
-        .padding(10)
       }
 
     }
@@ -324,7 +463,7 @@ struct BookFullScreenStack: View, PreviewProvider {
 
   }
 
-  struct PostCell: View {
+  struct ShapedPostCell: View {
 
     let colorScheme: ColorScheme
     let post: Post
@@ -333,7 +472,7 @@ struct BookFullScreenStack: View, PreviewProvider {
 
       VStack(alignment: .leading) {
         HStack(spacing: 12) {
-          RoundedRectangle(cornerRadius: 8, style: .continuous)
+          RoundedRectangle(cornerRadius: 4, style: .continuous)
             .fill(colorScheme.background)
             .frame(
               width: 40,
@@ -353,7 +492,7 @@ struct BookFullScreenStack: View, PreviewProvider {
           Spacer()
         }
       }
-      .padding(EdgeInsets(top: 6, leading: 12, bottom: 6, trailing: 12))
+      .padding(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 12))
       .background(
         RoundedRectangle(
           cornerRadius: 8,
@@ -363,6 +502,41 @@ struct BookFullScreenStack: View, PreviewProvider {
           colorScheme.cardBackground
         )
       )
+    }
+
+  }
+
+  struct PostCell: View {
+
+    let colorScheme: ColorScheme
+    let post: Post
+
+    var body: some View {
+
+      VStack(alignment: .leading) {
+        HStack(spacing: 12) {
+          RoundedRectangle(cornerRadius: 4, style: .continuous)
+            .fill(colorScheme.cardBackground)
+            .frame(
+              width: 40,
+              height: 40,
+              alignment: .center
+            )
+
+          VStack(alignment: .leading) {
+            Text(post.title)
+              .font(.system(.body, design: .default))
+              .foregroundColor(colorScheme.headline)
+
+            Text(post.subTitle)
+              .foregroundColor(colorScheme.paragraph)
+          }
+
+          Spacer()
+        }
+      }
+      .padding(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 12))
+
     }
 
   }
@@ -409,7 +583,6 @@ struct BookFullScreenStack: View, PreviewProvider {
             ContentFragment(colorScheme: colorScheme)
           }
         }
-        .padding(10)
       }
     }
 
