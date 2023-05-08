@@ -24,7 +24,7 @@ jobs:
       - name: Generate
         run: |
           $(xcrun --find docc) process-archive \
-            transform-for-static-hosting ".build/Build/Products/Debug-iphoneos/Stack.doccarchive" \
+            transform-for-static-hosting ".build/Build/Products/Debug-iphoneos/SwiftUIStack.doccarchive" \
             --output-path public \
             --hosting-base-path "swiftui-stack"
       - name: Deploy
