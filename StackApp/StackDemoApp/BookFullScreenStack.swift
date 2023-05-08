@@ -1,10 +1,21 @@
-import SwiftUIStack
 import SwiftUI
+import SwiftUIStack
 import SwiftUISupport
 
 struct BookFullScreenStack: View, PreviewProvider {
+
+  @State var path: StackPath = .init([
+//    Post(
+//      id: "slide",
+//      artworkImageURL: nil,
+//      title: "Push style transition",
+//      subTitle: "Supports gesture to pop",
+//      body: ""
+//    )
+  ] as [Post])
+
   var body: some View {
-    Root()
+    Root(path: $path)
   }
 
   static var previews: some View {
@@ -71,7 +82,7 @@ struct BookFullScreenStack: View, PreviewProvider {
         title: "Carousel",
         subTitle: "Tap to see",
         body: ""
-      )
+      ),
     ]
 
     let postsForList: [Post] = [
@@ -120,7 +131,7 @@ struct BookFullScreenStack: View, PreviewProvider {
         title: "Grid",
         subTitle: "Tap to see",
         body: ""
-      )
+      ),
     ]
 
     @Namespace var local
@@ -136,7 +147,7 @@ struct BookFullScreenStack: View, PreviewProvider {
             ForEach(postsForCarousel) { post in
               StackLink(
                 transition: .matched(identifier: post.id.description + "Shaped", in: local),
-                value: Hashed(post, id: \.id)
+                value: post
               ) {
                 ShapedGridCell(colorScheme: colorScheme, post: post)
               }
@@ -152,7 +163,7 @@ struct BookFullScreenStack: View, PreviewProvider {
             ForEach(postsForCarousel) { post in
               StackLink(
                 transition: .matched(identifier: post.id.description + "non", in: local),
-                value: Hashed(post, id: \.id)
+                value: post
               ) {
                 GridCell(colorScheme: colorScheme, post: post)
               }
@@ -162,7 +173,7 @@ struct BookFullScreenStack: View, PreviewProvider {
           .padding(.horizontal, 16)
         }
 
-        StackLink(transition: .slide, value: Hashed(dataForSlideTransition, id: \.id)) {
+        StackLink(transition: .slide, value: dataForSlideTransition) {
           ShapedPostCell(colorScheme: colorScheme, post: dataForSlideTransition)
         }
         .padding(.horizontal, 16)
@@ -172,7 +183,7 @@ struct BookFullScreenStack: View, PreviewProvider {
           ForEach(postsForList) { post in
             StackLink(
               transition: .matched(identifier: post.id.description + "Shaped", in: local),
-              value: Hashed(post, id: \.id)
+              value: post
             ) {
               ShapedPostCell(colorScheme: colorScheme, post: post)
             }
@@ -186,7 +197,7 @@ struct BookFullScreenStack: View, PreviewProvider {
           ForEach(postsForList) { post in
             StackLink(
               transition: .matched(identifier: post.id.description + "Non", in: local),
-              value: Hashed(post, id: \.id)
+              value: post
             ) {
               PostCell(colorScheme: colorScheme, post: post)
             }
@@ -200,7 +211,7 @@ struct BookFullScreenStack: View, PreviewProvider {
           ForEach(postsForGrid) { post in
             StackLink(
               transition: .matched(identifier: post.id.description + "Shaped", in: local),
-              value: Hashed(post, id: \.id)
+              value: post
             ) {
               ShapedPostCell(colorScheme: colorScheme, post: post)
             }
@@ -214,7 +225,7 @@ struct BookFullScreenStack: View, PreviewProvider {
           ForEach(postsForGrid) { post in
             StackLink(
               transition: .matched(identifier: post.id.description + "Non", in: local),
-              value: Hashed(post, id: \.id)
+              value: post
             ) {
               PostCell(colorScheme: colorScheme, post: post)
             }
@@ -238,7 +249,6 @@ struct BookFullScreenStack: View, PreviewProvider {
     }
 
   }
-
 
   struct ShapedGridCell: View {
     let colorScheme: ColorScheme
@@ -292,7 +302,6 @@ struct BookFullScreenStack: View, PreviewProvider {
     }
   }
 
-
   struct ShapedListCell: View {
 
     let colorScheme: ColorScheme
@@ -343,13 +352,15 @@ struct BookFullScreenStack: View, PreviewProvider {
 
     @State var lastColorScheme = ColorScheme.type10
 
+    @Binding var path: StackPath
+
     var body: some View {
       ZStack {
 
         colorScheme.background
           .ignoresSafeArea()
 
-        Stack {
+        Stack(path: $path) {
 
           ScrollView {
             VStack {
@@ -365,10 +376,10 @@ struct BookFullScreenStack: View, PreviewProvider {
               Detail(user: user, colorScheme: .takeOne(except: colorScheme))
             }
           )
-          .stackDestination(for: Hashed<Post, String>.self) { data in
+          .stackDestination(for: Post.self) { post in
             // not good
             let _ = self.lastColorScheme = ColorScheme.takeOne(except: lastColorScheme)
-            PostDetail(colorScheme: .takeOne(except: lastColorScheme), post: data.value)
+            PostDetail(colorScheme: .takeOne(except: lastColorScheme), post: post)
           }
 
         }
@@ -376,7 +387,6 @@ struct BookFullScreenStack: View, PreviewProvider {
       }
     }
   }
-
 
   struct Detail: View {
 
@@ -436,23 +446,23 @@ struct BookFullScreenStack: View, PreviewProvider {
 
   }
 
-  struct Hashed<Value: Equatable, Key: Hashable>: Hashable {
+  //  struct Hashed<Value: Equatable, Key: Hashable>: Hashable {
+  //
+  //    let idKeyPath: KeyPath<Value, Key>
+  //    let value: Value
+  //
+  //    func hash(into hasher: inout Hasher) {
+  //      value[keyPath: idKeyPath].hash(into: &hasher)
+  //    }
+  //
+  //    init(_ value: Value, id: KeyPath<Value, Key>) {
+  //      self.value = value
+  //      self.idKeyPath = id
+  //    }
+  //
+  //  }
 
-    let idKeyPath: KeyPath<Value, Key>
-    let value: Value
-
-    func hash(into hasher: inout Hasher) {
-      value[keyPath: idKeyPath].hash(into: &hasher)
-    }
-
-    init(_ value: Value, id: KeyPath<Value, Key>) {
-      self.value = value
-      self.idKeyPath = id
-    }
-
-  }
-
-  struct Post: Identifiable, Equatable {
+  struct Post: Identifiable, Hashable {
 
     let id: String
 
