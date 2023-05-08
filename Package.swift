@@ -8,8 +8,8 @@ let package = Package(
   platforms: [.iOS(.v14)],
   products: [
     .library(
-      name: "Stack",
-      targets: ["Stack"]
+      name: "SwiftUIStack",
+      targets: ["SwiftUIStack"]
     ),
   ],
   dependencies: [
@@ -19,15 +19,15 @@ let package = Package(
   ],
   targets: [
     .target(
-      name: "Stack",
+      name: "SwiftUIStack",
       dependencies: [
         .product(name: "SwiftUISupport", package: "swiftui-support"),
         .product(name: "SwiftUISnapDraggingModifier", package: "swiftui-snap-dragging-modifier"),
       ]
     ),
     .testTarget(
-      name: "StackTests",
-      dependencies: ["Stack", "ViewInspector"]
+      name: "SwiftUIStackTests",
+      dependencies: ["SwiftUIStack", "ViewInspector"]
     ),
   ]
 )
