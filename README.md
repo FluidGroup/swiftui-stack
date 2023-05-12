@@ -1,5 +1,11 @@
 [WIP]
 
+
+![stack](https://github.com/FluidGroup/swiftui-stack/assets/1888355/58a5ee2f-c44b-4aa1-8254-34a2b59cda1b)
+
+
+
+
 Custom Stack Navigation for SwiftUI
 ---
 This library provides a custom container view for SwiftUI that offers an alternative to the standard NavigationStack. It aims to improve the customizability of transitions during screen navigation by moving away from the behaviors of UINavigationController and UINavigationBar.
