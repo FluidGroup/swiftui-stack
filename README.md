@@ -4,8 +4,6 @@
 ![stack](https://github.com/FluidGroup/swiftui-stack/assets/1888355/58a5ee2f-c44b-4aa1-8254-34a2b59cda1b)
 
 
-
-
 Custom Stack Navigation for SwiftUI
 ---
 This library provides a custom container view for SwiftUI that offers an alternative to the standard NavigationStack. It aims to improve the customizability of transitions during screen navigation by moving away from the behaviors of UINavigationController and UINavigationBar.
@@ -21,7 +19,7 @@ To use this library, you'll need to work with three main symbols: Stack, StackLi
 
 Example Usage
 ---
-1. Import the Stack module in your SwiftUI view file:
+1. Import the SwiftUIStack module in your SwiftUI view file:
 
 ```swift
 import SwiftUIStack
@@ -31,9 +29,9 @@ import SwiftUIStack
 
 ```swift
 var body: some View {
-    Stack {
-        // Your views here...
-    }
+  Stack {
+    // Your views here...
+  }
 }
 ```
 
@@ -41,7 +39,15 @@ var body: some View {
 
 ```swift
 StackLink(transition: .slide, value: someValue) {
-    Text("Navigate to detail view")
+  Text("Navigate to detail view")
+}
+```
+
+You can also set the matched transition in the transition parameter using a unique identifier and a namespace:
+
+```swift
+StackLink(transition: .matched(identifier: user.id, in: local), value: someValue) {
+  Text("Navigate to detail view with matched transition")
 }
 ```
 
@@ -49,7 +55,7 @@ StackLink(transition: .slide, value: someValue) {
 
 ```swift
 StackUnwindLink {
-    Text("Back to previous view")
+  Text("Back to previous view")
 }
 ```
 
@@ -61,7 +67,7 @@ In stacked views, you can access the unwindContext as an EnvironmentValue. You c
 @Environment(\.stackUnwindContext) var unwindContext
 
 StackUnwindLink(target: .specific(unwindContext)) {
-    Text("Back to Menu")
+  Text("Back to Menu")
 }
 ```
 
@@ -71,7 +77,7 @@ StackUnwindLink now supports different modes for navigation. To navigate back to
 
 ```swift
 StackUnwindLink(mode: .all) {
-    Text("Back to Root")
+  Text("Back to Root")
 }
 ```
 
