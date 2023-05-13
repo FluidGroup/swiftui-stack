@@ -1,8 +1,5 @@
-[WIP]
-
 
 ![stack](https://github.com/FluidGroup/swiftui-stack/assets/1888355/58a5ee2f-c44b-4aa1-8254-34a2b59cda1b)
-
 
 Custom Stack Navigation for SwiftUI
 ---
@@ -12,6 +9,8 @@ Features
 ---
 - Customizable transitions during screen navigation
 - Contextual animations similar to iOS home screen app icons and app screens
+- Familiar API to NavigationView and NavigationStack for ease of use
+- Path support for restoring previously navigated views
 
 Getting Started
 ---
@@ -95,4 +94,4 @@ Contributing
 
 License
 ---
-(Include information about the project's license)
+This project is licensed under the Apache License, Version 2.0. See the [LICENSE](LICENSE) file for more information.
