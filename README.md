@@ -86,7 +86,15 @@ This technique is useful for nested stacks when you need to send a message acros
 
 Installation
 ---
-(Include instructions for installation via Swift Package Manager, CocoaPods, or other methods, if applicable)
+This library currently only supports installation via Swift Package Manager.
+
+To add the package to your project, you can manually add it to your Package.swift file:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/FluidGroup/swiftui-stack.git", from: "1.0.0")
+]
+```
 
 Contributing
 ---
