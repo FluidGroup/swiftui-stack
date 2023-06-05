@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "rideau",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/FluidGroup/Rideau",
+      "state" : {
+        "revision" : "fa560b52c246863dee5ab4b03197f6e4a9794607",
+        "version" : "2.3.1"
+      }
+    },
+    {
       "identity" : "swiftui-color",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/FluidGroup/swiftui-color",
