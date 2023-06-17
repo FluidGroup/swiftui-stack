@@ -8,7 +8,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.SymbolicBreakpoint">
          <BreakpointContent
             uuid = "17A6C845-4738-4639-A620-32306778ADCC"
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "Yes"
             symbolName = "UIApplicationMain"
@@ -24,7 +24,7 @@
             <Locations>
                <Location
                   uuid = "17A6C845-4738-4639-A620-32306778ADCC - ca8a62ba89de0751"
-                  shouldBeEnabled = "No"
+                  shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "UIKit.UIApplicationMain(Swift.Int32, Swift.Optional&lt;Swift.UnsafeMutablePointer&lt;Swift.UnsafeMutablePointer&lt;Swift.Int8&gt;&gt;&gt;, Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Swift.String&gt;) -&gt; Swift.Int32"
@@ -34,10 +34,20 @@
                </Location>
                <Location
                   uuid = "17A6C845-4738-4639-A620-32306778ADCC - dc2f8c5e001177f0"
-                  shouldBeEnabled = "No"
+                  shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "UIApplicationMain"
+                  moduleName = "UIKitCore"
+                  usesParentBreakpointCondition = "Yes"
+                  offsetFromSymbolStart = "0">
+               </Location>
+               <Location
+                  uuid = "17A6C845-4738-4639-A620-32306778ADCC - ed0225d50b1c0976"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "UIKit.UIApplicationMain(Swift.Int32, Swift.Optional&lt;Swift.UnsafeMutablePointer&lt;Swift.UnsafeMutablePointer&lt;Swift.Int8&gt;&gt;&gt;, Swift.Optional&lt;Swift.String&gt;, Swift.Optional&lt;Swift.String&gt;) -&gt; Swift.Int32"
                   moduleName = "UIKitCore"
                   usesParentBreakpointCondition = "Yes"
                   offsetFromSymbolStart = "0">

@@ -38,7 +38,7 @@ extension StackTransitions {
             //              .frame(width: targetSize.width, height: targetSize.height, alignment: .center)
             //              .modifier(ResizableModifier(isEnabled: true))
               .opacity(isActive ? 0 : 1)
-              .blur(radius: isActive ? 10 : 0)
+//              .blur(radius: isActive ? 10 : 0)
           )
 
         // for unwind
@@ -128,7 +128,7 @@ extension StackTransitions {
             )
           )
         )
-        .blur(radius: appeared ? 0 : 10)
+//        .blur(radius: appeared ? 0 : 10)
         .mask(
           RoundedRectangle(
             cornerRadius: appeared ? 0 : 8,
@@ -224,7 +224,7 @@ private struct ContextualPopModifier: ViewModifier {
       )
       .modifier(
         SnapDraggingModifier(
-          activation: .init(minimumDistance: 20, regionToActivate: .edge([.horizontal])),
+          activation: .init(minimumDistance: 20, regionToActivate: .screen),
           axis: [.horizontal, .vertical],
           springParameter: .interpolation(mass: 2, stiffness: 200, damping: 32),
           gestureMode: .highPriority,
