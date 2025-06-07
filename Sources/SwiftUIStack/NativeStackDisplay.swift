@@ -18,18 +18,23 @@ public struct NativeStackDisplay<Root: View>: View, StackDisplaying {
 
   public var body: some View {
     ZStack {
-
-      VStack {
+     
+      if stackedViews.isEmpty {
         root
+      } else {
+        //      // TODO: Use IndexedCollection
+        ForEach(Array(stackedViews.enumerated()), id: \.element.id) { i, view in
+          if i == stackedViews.indices.last {
+            view
+              .zIndex(Double(i + 1)) // https://sarunw.com/posts/how-to-fix-zstack-transition-animation-in-swiftui/
+          } else {
+//            view
+//              .zIndex(Double(i + 1)) // https://sarunw.com/posts/how-to-fix-zstack-transition-animation-in-swiftui/
+          }
+        }
+        .ignoresSafeArea()
       }
-
-      // TODO: Use IndexedCollection
-      ForEach(Array(stackedViews.enumerated()), id: \.element.id) { i, view in
-        view
-          .zIndex(Double(i + 1)) // https://sarunw.com/posts/how-to-fix-zstack-transition-animation-in-swiftui/
-      }
-      .ignoresSafeArea()
-
+            
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
 

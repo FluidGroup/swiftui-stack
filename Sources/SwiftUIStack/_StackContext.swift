@@ -126,8 +126,6 @@ public final class _StackContext: ObservableObject, Equatable {
       return nil
     }
 
-    stackedViews.last?.id
-
     let stackedView = StackedView(
       material: .value(itemBox),
       identifier: itemBox.stackedViewIdentifier,
