@@ -40,7 +40,7 @@ struct BookStack: View {
 
         Text("Stack")
           .font(.title)
-          .relative(vertical: .center, horizontal: .leading)
+          .frame(maxWidth: .infinity, alignment: .leading)
 
         Stack(path: $path) {
 
@@ -134,7 +134,7 @@ struct BookStack: View {
 
         Text("Controls")
           .font(.title)
-          .relative(vertical: .center, horizontal: .leading)
+          .frame(maxWidth: .infinity, alignment: .leading)
 
         VStack {
           Button("\(counter.description)") {
@@ -169,7 +169,7 @@ struct BookStack: View {
 
         Text("Path")
           .font(.title)
-          .relative(vertical: .center, horizontal: .leading)
+          .frame(maxWidth: .infinity, alignment: .leading)
 
       }
       .padding(.horizontal, 20)

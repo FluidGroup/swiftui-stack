@@ -41,7 +41,7 @@ extension StackTransitions {
 @available(iOS 17, *)
 private struct _Transition: Transition {
 
-  func body(content: Content, phase: TransitionPhase) -> some View {
+  nonisolated func body(content: Content, phase: TransitionPhase) -> some View {
     content
       .opacity(phase.isIdentity ? 1 : 0)
       .modifier(

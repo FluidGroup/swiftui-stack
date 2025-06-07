@@ -587,7 +587,7 @@ struct BookFullScreenStack: View, PreviewProvider {
             Text("Others")
               .font(.title2)
               .foregroundColor(colorScheme.headline)
-              .relative(horizontal: .leading)
+              .frame(maxWidth: .infinity, alignment: .leading)
               .padding(.horizontal, 16)
 
             ContentFragment(colorScheme: colorScheme)

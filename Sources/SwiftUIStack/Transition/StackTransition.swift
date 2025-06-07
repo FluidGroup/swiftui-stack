@@ -17,7 +17,9 @@ public protocol StackTransition {
   associatedtype LabelModifier: ViewModifier
   associatedtype DestinationModifier: ViewModifier
 
+  @MainActor
   func labelModifier() -> LabelModifier
+  @MainActor
   func destinationModifier(context: DestinationContext) -> DestinationModifier
 
 }

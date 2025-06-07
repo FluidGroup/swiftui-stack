@@ -35,13 +35,13 @@ extension StackTransitions {
           .overlay(
             /// Content
             content
-            //              .frame(width: targetSize.width, height: targetSize.height, alignment: .center)
-            //              .modifier(ResizableModifier(isEnabled: true))
+              //              .frame(width: targetSize.width, height: targetSize.height, alignment: .center)
+              //              .modifier(ResizableModifier(isEnabled: true))
               .opacity(isActive ? 0 : 1)
-//              .blur(radius: isActive ? 10 : 0)
+            //              .blur(radius: isActive ? 10 : 0)
           )
 
-        // for unwind
+          // for unwind
           .matchedGeometryEffect(
             id: "movement".concat(identifier),
             in: usingNamespace!,
@@ -54,7 +54,7 @@ extension StackTransitions {
             properties: [],
             isSource: true
           )
-        // for matching frame
+          // for matching frame
           .matchedGeometryEffect(
             id: "frame".concat(identifier),
             in: usingNamespace!,
@@ -103,9 +103,9 @@ extension StackTransitions {
 
           /// Content
           content
-          // to have constrained size if it's neutral sizing view.
+            // to have constrained size if it's neutral sizing view.
             .frame(width: targetSize.width, height: targetSize.height)
-//            .modifier(ResizableModifier(isEnabled: true))
+            //            .modifier(ResizableModifier(isEnabled: true))
             // needs for unwind. give matchedGeometryEffect control for frame.
             .frame(minWidth: 0, minHeight: 0, alignment: .top)
         }
@@ -128,7 +128,7 @@ extension StackTransitions {
             )
           )
         )
-//        .blur(radius: appeared ? 0 : 10)
+        //        .blur(radius: appeared ? 0 : 10)
         .mask(
           RoundedRectangle(
             cornerRadius: appeared ? 0 : 8,
@@ -213,6 +213,7 @@ private struct ContextualPopModifier: ViewModifier {
   @Environment(\.stackUnwindContext) private var unwindContext
 
   @State var isTracking = false
+  @State var offset: CGSize = .zero
 
   func body(content: Content) -> some View {
     content
@@ -223,11 +224,12 @@ private struct ContextualPopModifier: ViewModifier {
         ).fill(Color.black)
       )
       .modifier(
-        SnapDraggingModifier(
+        SnapDraggingModifier.init(
+          gestureMode: .highPriority,
+          offset: $offset,
           activation: .init(minimumDistance: 20, regionToActivate: .screen),
           axis: [.horizontal, .vertical],
           springParameter: .interpolation(mass: 2, stiffness: 200, damping: 32),
-          gestureMode: .highPriority,
           handler: .init(
             onStartDragging: {
               isTracking = true
@@ -236,19 +238,21 @@ private struct ContextualPopModifier: ViewModifier {
 
               isTracking = false
 
-            if abs(velocity.dx) > 50 || abs(offset.width) > (contentSize.width / 2) {
-              Task { @MainActor in
-                withAnimation(
-                  .interpolatingSpring(mass: 2, stiffness: 200, damping: 32)
-                ) {
-                  unwindContext?.pop()
+              if abs(velocity.dx) > 50 || abs(offset.width) > (contentSize.width / 2) {
+                Task { @MainActor in
+                  withAnimation(
+                    .interpolatingSpring(mass: 2, stiffness: 200, damping: 32)
+                  ) {
+                    unwindContext?.pop()
+                  }
                 }
+                return .zero
+              } else {
+                return .zero
               }
-              return .zero
-            } else {
-              return .zero
             }
-          })
+          )
+
         )
       )
 

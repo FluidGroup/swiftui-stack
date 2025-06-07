@@ -86,33 +86,28 @@ private struct StackMomentaryPushModifier<Destination: View>: ViewModifier {
   func body(content: Content) -> some View {
 
     content
-      .onChangeWithPrevious(
-        of: isPresented,
-        emitsInitial: true,
-        perform: { isPresented, _ in
-
-          guard let context = context?.lookup(strategy: target) else {
-            return
-          }
-
-          if isPresented {
-            // FIXME: LinkEnvironmentValues
-            currentIdentifier = context.push(
-              binding: $isPresented,
-              destination: destination(),
-              linkEnvironmentValues: .init()
-            )
-          } else {
-
-            if let currentIdentifier {
-              self.currentIdentifier = nil
-              context.pop(identifier: currentIdentifier)
-            }
-
-          }
-
+      .onChange(of: isPresented, initial: true, { oldValue, newValue in
+        guard let context = context?.lookup(strategy: target) else {
+          return
         }
-      )
+        
+        if newValue {
+          // FIXME: LinkEnvironmentValues
+          currentIdentifier = context.push(
+            binding: $isPresented,
+            destination: destination(),
+            linkEnvironmentValues: .init()
+          )
+        } else {
+          
+          if let currentIdentifier {
+            self.currentIdentifier = nil
+            context.pop(identifier: currentIdentifier)
+          }
+          
+        }
 
+      })
+     
   }
 }

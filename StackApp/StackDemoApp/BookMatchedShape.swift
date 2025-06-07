@@ -136,19 +136,19 @@ struct BookMatchedShape: View, PreviewProvider {
         properties: [],
         isSource: true
       )
-      .modifier(
-        SnapDraggingModifier(
-          springParameter: .interpolation(mass: 1, stiffness: 80, damping: 13),
-          handler: .init(onEndDragging: { velocity, offset, size in
-
-            withAnimation(.interpolatingSpring(mass: 1, stiffness: 80, damping: 13)) {
-              controller.details = []
-            }
-
-            return .zero
-          })
-        )
-      )
+//      .modifier(
+//        SnapDraggingModifier(
+//          springParameter: .interpolation(mass: 1, stiffness: 80, damping: 13),
+//          handler: .init(onEndDragging: { velocity, offset, size in
+//
+//            withAnimation(.interpolatingSpring(mass: 1, stiffness: 80, damping: 13)) {
+//              controller.details = []
+//            }
+//
+//            return .zero
+//          })
+//        )
+//      )
       .matchedGeometryEffect(
         id: "frame",
         in: local,

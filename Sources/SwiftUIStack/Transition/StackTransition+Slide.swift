@@ -30,6 +30,8 @@ extension StackTransitions {
       /// available in Stack
       @Environment(\.stackUnwindContext) var unwindContext
 
+      @State private var offset: CGSize = .zero
+
       private func effectIdentifier() -> MatchedGeometryEffectIdentifiers.EdgeTrailing {
         switch context.backgroundContent {
         case .root:
@@ -56,11 +58,12 @@ extension StackTransitions {
           )
           .modifier(
             SnapDraggingModifier(
+              gestureMode: .highPriority,
+              offset: $offset,
               activation: .init(minimumDistance: 20, regionToActivate: .edge(.leading)),
               axis: .horizontal,
               horizontalBoundary: .init(min: 0, max: .infinity, bandLength: 0),
               springParameter: .interpolation(mass: 1.0, stiffness: 500, damping: 500),
-              gestureMode: .highPriority,
               handler: .init(onEndDragging: { velocity, offset, contentSize in
 
                 if velocity.dx > 50 || offset.width > (contentSize.width / 2) {

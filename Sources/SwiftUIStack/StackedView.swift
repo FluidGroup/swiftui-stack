@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// A wrapper view that displays content with identifier which uses on Pop operation.
-public struct StackedView: View, Identifiable, Equatable {
+public struct StackedView: View, Identifiable, @preconcurrency Equatable {
 
   /// a material of how this view is stacked.
   public enum Material {

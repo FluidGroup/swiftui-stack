@@ -74,23 +74,18 @@ where Target.Root == ModifiedContent<Root, AbstractStackRootModifier> {
             self.currentPath = path
           }
         )
-        .onChangeWithPrevious(
-          of: pathBinding?.wrappedValue,
-          emitsInitial: true,
-          perform: { path, _ in
-
-            /*
+        .onChange(of: pathBinding?.wrappedValue, initial: true, { oldValue, path in
+          /*
            Updates current stacking with path changes.
            */
-            guard let path, path != self.currentPath else { return }
-
-            context.receivePathUpdates(path: path)
-          }
-        )
-        .onChangeWithPrevious(of: parentContext, emitsInitial: true) { parent, _ in
+          guard let path, path != self.currentPath else { return }
+          
+          context.receivePathUpdates(path: path)
+        })
+        .onChange(of: parentContext, initial: true, { _, parent in
           context.set(parent: parent)
-        }
-
+        })
+       
       }
 
     }
