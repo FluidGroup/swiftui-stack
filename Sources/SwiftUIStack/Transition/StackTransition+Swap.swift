@@ -44,16 +44,26 @@ private struct _Transition: Transition {
   func body(content: Content, phase: TransitionPhase) -> some View {
     content
       .opacity(phase.isIdentity ? 1 : 0)
+      .modifier(
+        _ScaleEffect(
+          scale: .init(
+            width: phase.isIdentity ? 1 : 0.9,
+            height: phase.isIdentity ? 1 : 0.9
+          )
+        )
+        .ignoredByLayout()
+      )
       .blur(radius: {
         switch phase {
         case .willAppear:
-          return 30
+          return 4
         case .identity:
           return 0
         case .didDisappear:
-          return 30
+          return 4
         }
       }())
   }
   
 }
+
