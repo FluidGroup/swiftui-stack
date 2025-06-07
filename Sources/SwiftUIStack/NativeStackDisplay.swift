@@ -23,9 +23,10 @@ public struct NativeStackDisplay<Root: View>: View, StackDisplaying {
         root
       }
 
-      ForEach(stackedViews) { view in
+      // TODO: Use IndexedCollection
+      ForEach(Array(stackedViews.enumerated()), id: \.element.id) { i, view in
         view
-          .zIndex(1) // https://sarunw.com/posts/how-to-fix-zstack-transition-animation-in-swiftui/
+          .zIndex(Double(i + 1)) // https://sarunw.com/posts/how-to-fix-zstack-transition-animation-in-swiftui/
       }
       .ignoresSafeArea()
 
