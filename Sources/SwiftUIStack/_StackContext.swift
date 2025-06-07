@@ -327,9 +327,9 @@ public final class _StackContext: ObservableObject, Equatable {
   }
 }
 
-public struct _StackedViewIdentifier: Hashable {
+public struct _StackedViewIdentifier: Sendable, Hashable {
 
-  enum Identifier: Hashable {
+  enum Identifier: Sendable, Hashable {
     case objectIdentifier(ObjectIdentifier)
     case string(String)
   }

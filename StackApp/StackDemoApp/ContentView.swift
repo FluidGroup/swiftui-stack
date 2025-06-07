@@ -5,8 +5,8 @@
 //  Created by Muukii on 2022/09/29.
 //
 
-import SwiftUIStack
 import SwiftUI
+import SwiftUIStack
 
 struct ContentView: View {
 
@@ -60,6 +60,36 @@ struct ContentView: View {
 
         } header: {
           Text("Stack")
+        }
+
+        if #available(iOS 17, *) {
+          Section {
+            StackLink(
+              transition: StackTransitions.Swap(),
+              value: UUID().uuidString
+            ) {
+              Text("Next")
+            }
+          } header: {
+            Text("Swap transition")
+          }
+          .stackDestination(for: String.self) { value in
+            ZStack {
+              Rectangle().fill(.background)
+              VStack {
+                Text("\(value)")
+                StackLink(
+                  transition: StackTransitions.Swap(),
+                  value: UUID().uuidString
+                ) {
+                  Text("Next")
+                }
+                StackUnwindLink {
+                  Text("Pop")
+                }
+              }
+            }
+          }
         }
 
         Section {

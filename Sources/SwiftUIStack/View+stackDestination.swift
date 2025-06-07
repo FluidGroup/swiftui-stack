@@ -17,7 +17,11 @@ extension View {
           guard let context else {
             return
           }
-          context.registerDestination(for: data.self, target: target, destination: destination)
+          context.registerDestination(
+            for: data.self,
+            target: target,
+            destination: destination
+          )
         }
       )
     )
